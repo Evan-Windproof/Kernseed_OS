@@ -1,0 +1,10 @@
+0x000000000000fff0 in ?? ()
+Hardware assisted breakpoint 1 at 0xffffffff800011c0: file kernel/core/main.c, line 27.
+
+Breakpoint 1, kernel_main () at kernel/core/main.c:27
+27	    boot_state.serial_ok = serial_init();
+rsp            0xffffffff800131a8  0xffffffff800131a8
+eflags         0x46                [ IOPL=0 ZF PF ]
+[Inferior 1 (process 1) detached]
+/workspace/Kernseed_OS/build/test-results/20261103T212951Z/gdb-128M/check.gdb:23: Error in sourced command file:
+Cannot evaluate ((unsigned long)$eflags & 0x600) == 0: Invalid cast.

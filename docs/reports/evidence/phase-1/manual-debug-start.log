@@ -1,0 +1,26 @@
+HOST_CC="cc" ./scripts/fetch-limine.sh
+limine.h: OK
+limine.c: OK
+limine-bios-hdd.h: OK
+limine-bios.sys: OK
+limine-bios-cd.bin: OK
+limine-uefi-cd.bin: OK
+BOOTX64.EFI: OK
+LICENSE: OK
+make[1]: Entering directory '/workspace/Kernseed_OS/.cache/limine'
+make[1]: 'limine' is up to date.
+make[1]: Leaving directory '/workspace/Kernseed_OS/.cache/limine'
+./scripts/run.sh debug
+limine: Loading executable `boot():/boot/kernseed.elf`...
+Kernseed OS - Phase 1
+Independent x86-64 monolithic kernel
+Kernseed OS - Phase 1
+Boot: Limine base revision 3
+BSS: zero checked
+C runtime: selftest passed
+CPU: long mode, paging, IRQs disabled
+CR3: 0x0000000007f55000
+Framebuffer: 800x600x32
+No scheduler, keyboard or shell yet
+BOOT_READY: entering idle loop
+qemu-system-x86_64: terminating on signal 15 from pid 4367 (python3)
