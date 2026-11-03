@@ -1,0 +1,3 @@
+Initial observed QEMU error: qemu: could not load PC BIOS 'bios-256k.bin'
+Cause: rootless extraction stores firmware under usr/share/seabios.
+Fix: add that verified package directory to the QEMU -L search paths.

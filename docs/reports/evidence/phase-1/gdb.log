@@ -1,0 +1,27 @@
+0x000000000000fff0 in ?? ()
+Hardware assisted breakpoint 1 at 0xffffffff800011c0: file kernel/core/main.c, line 27.
+
+Breakpoint 1, kernel_main () at kernel/core/main.c:27
+27	    boot_state.serial_ok = serial_init();
+rsp            0xffffffff800131a8  0xffffffff800131a8
+eflags         0x46                [ IOPL=0 ZF PF ]
+PASS GDB entry: ABI stack, DF/IF, BSS
+Hardware assisted breakpoint 2 at 0xffffffff80001b6e: file kernel/arch/x86_64/entry.S, line 19.
+
+Breakpoint 2, kernel_idle () at kernel/arch/x86_64/entry.S:19
+19	    cli
+PASS GDB state: long mode, actual page table, runtime, framebuffer
+$1 = {stage = 0x2, cr0 = 0x80010011, cr3 = 0x7f65000, cr4 = 0x20, efer = 0xd00, rflags = 0x2, framebuffer_address = 0xffff8000fd000000, width = 0x320, height = 0x258, pitch = 0xc80, bpp = 0x20, runtime_result = 0x0, serial_ok = 0x1, bss_ok = 0x1}
+rip            0xffffffff80001b6e  0xffffffff80001b6e <kernel_idle>
+rsp            0xffffffff80013198  0xffffffff80013198
+eflags         0x46                [ IOPL=0 ZF PF ]
+cr0            0x80010011          [ PG WP ET PE ]
+cr3            0x7f65000           [ PDBR=32613 PCID=0 ]
+cr4            0x20                [ PAE ]
+Hardware assisted breakpoint 3 at 0xffffffff80001b6f: file kernel/arch/x86_64/entry.S, line 22.
+
+Breakpoint 3, kernel_idle () at kernel/arch/x86_64/entry.S:22
+22	    hlt                         /* NMI/debug may resume; loop back to HLT. */
+=> 0xffffffff80001b6f <kernel_idle+1>:	hlt
+   0xffffffff80001b70 <kernel_idle+2>:	jmp    0xffffffff80001b6f <kernel_idle+1>
+[Inferior 1 (process 1) detached]

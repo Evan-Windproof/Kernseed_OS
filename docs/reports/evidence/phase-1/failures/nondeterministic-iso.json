@@ -1,0 +1,11 @@
+{
+  "description": "Observed clean build mismatch before fixed GPT GUID",
+  "first": {
+    "kernseed.elf": "4082d47a93a7e6b104d88fcdc85fec12b52c85a170bd4ca03a449770bf39551d",
+    "kernseed.iso": "7613747a1977fdc72e87497cfb3023ccf6d7ec4b6e918b4b16c13afb72a12fa5"
+  },
+  "second": {
+    "kernseed.elf": "4082d47a93a7e6b104d88fcdc85fec12b52c85a170bd4ca03a449770bf39551d",
+    "kernseed.iso": "23b012894d2dd10bca16463cad83a753808c65f243604c61ef9ab240bba9fad6"
+  }
+}
