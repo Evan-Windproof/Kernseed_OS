@@ -4,8 +4,8 @@
 
 Kernseed OS 使用 **C11 + 少量 x86-64 汇编**编写内核，由 **Limine** 引导，借助 **QEMU** 启动、**GDB** 调试。项目由 Codex 主导实现，发起人进行构建、运行与审查。它不是 Linux 发行版，也不依赖 Linux 用户空间；与 Orfreon、Evavind 等其他项目无关。
 
-> **当前版本：Phase 4（内核任务与抢占式调度）**
-> 已能从 ISO 启动，加载自有 GDT/TSS/IDT，处理 CPU 异常并通过 IRQ0 维护真实 tick；**尚无键盘输入、Shell或文件系统**。屏幕停留在 `BOOT READY - ENTERING IDLE LOOP` 属于预期结果，而非死机。
+> **当前版本：Phase 5（键盘、文本终端与模块化 Shell）**
+> 已能从 ISO 启动，加载自有 GDT/TSS/IDT，处理 CPU 异常并通过 IRQ0 维护真实 tick；**已支持键盘、模块化Shell；尚无文件系统**。默认启动后应出现 `ks>` 提示符；BOOT READY仅是较早的内核初始化标记。
 >
 > 仅供学习与研究，不适用于生产环境；项目计划在教学目标完成后停止长期维护。
 
@@ -44,7 +44,7 @@ make -j2
 make run
 ```
 
-成功时，QEMU 内会显示 `KERNSEED OS - PHASE 4`、CPU 与 framebuffer 信息，以及 `BOOT READY - ENTERING IDLE LOOP`。**此阶段不能输入命令**。关闭 QEMU 窗口即可退出；若终端仍运行，按 `Ctrl+C`。
+成功时，QEMU 内会显示 `KERNSEED OS - PHASE 5`、CPU 与 framebuffer 信息，以及 `BOOT READY - ENTERING IDLE LOOP`。**在QEMU窗口键盘输入help开始交互**。关闭 QEMU 窗口即可退出；若终端仍运行，按 `Ctrl+C`。
 
 ## 首次安装与 WSL 2 准备
 
@@ -195,33 +195,35 @@ gdb -x scripts/debug.gdb
 启动画面示意（实际寄存器地址会因运行而变化）：
 
 ```text
-KERNSEED OS - PHASE 4
+KERNSEED OS - PHASE 5
 BOOT: LIMINE BASE REVISION 3
 BSS: ZERO CHECKED
 C RUNTIME: SELFTEST PASSED
 CPU: LONG MODE  PAGING  INITIAL IF=0
 CR3: 0X...
 FRAMEBUFFER: 800X600X32
-NO SCHEDULER, KEYBOARD OR SHELL YET
+PREEMPTIVE TASKS AND MODULAR SHELL
 GDT TSS IDT: LOADED, DF IST READY
 SOFTWARE INT: REGISTER/IRET SELFTEST PASSED
 PIT: IRQ0 ONLY, DIVISOR=11932 (ABOUT 100 HZ)
 BOOT READY - ENTERING IDLE LOOP
+KERNSEED SHELL: TYPE HELP
+KS>
 ```
 
 ### 目前不能做什么？
 
-- **不能输入 Shell 命令**，因为还没有键盘驱动与命令解释器。
+- **现在可在QEMU窗口输入Shell命令**；不提供用户进程或文件系统。
 - **已实现内核任务抢占调度，但没有用户进程隔离**、文件系统、用户态进程或应用程序执行环境。
 - 当前根页表仍由引导器准备，Phase 3 在其上提供受控虚拟内存管理；没有用户态隔离、APIC/SMP 或异常恢复机制。
 - 屏幕启动文字不是实时 tick 仪表。可在 GDB 中读取 `irq_state.ticks`；CPU 暂停时 tick 不会增长。
 
-因此，**Kernseed OS Phase 2 是具备基础中断机制的教学内核，不是完整的日用操作系统。**
+因此，**Kernseed OS Phase 5 是具备交互Shell的教学内核，不是完整的日用操作系统。**
 
 ## 测试、清理与重建
 
 ```bash
-make test           # Phase 1 回归 + Phase 2 描述符/IRQ0/五类隔离异常测试
+make test           # Phase 1–4回归 + Phase 5真实键盘/注册表/Shell验收
 make test-host      # 仅运行宿主上的 C 代码测试
 make check          # 检查 ELF 属性
 make reproducible   # 同工具链和目录下两次构建比较哈希
@@ -247,7 +249,7 @@ Phase 2 本次在 Debian 13 云环境的 QEMU TCG/SeaBIOS 单核配置实测；�
 | 窗口显示 `[Paused]`、黑屏 | 使用了 `make debug` 或 `-S`，等待 GDB 连接并执行 `continue`；普通运行使用 `make run`。 |
 | `Connection refused`（GDB） | 未运行 `make debug`，或调试端口不是 `127.0.0.1:1234`。 |
 | GDB 报 `i8086` 与 `x86-64` 不匹配 | 不要沿用 16 位引导扇区实验的 `set architecture i8086`；使用仓库的 `scripts/debug.gdb`。 |
-| 屏幕已显示 `BOOT READY` 却不能输入 | 正常：当前尚未实现键盘与 Shell。 |
+| 屏幕已显示 `BOOT READY` 却不能输入 | 请等待ks>，使用QEMU窗口键盘而非串口stdin；若只有BOOT READY且始终无提示符，需检查启动日志。 |
 | Limine 下载失败 | 检查 GitHub 网络连接、`git` 与 CA 证书；不要关闭哈希验证。 |
 
 若 ZIP 解压造成其他 `.sh` 文件权限问题，可执行 `ls -l scripts/` 查看，再对确实需要直接执行的脚本逐个 `chmod +x`；`sudo sh scripts/setup-host.sh` 本身不需要执行位。
@@ -286,7 +288,7 @@ Kernseed_OS/
 - [Phase 1 开发报告](docs/reports/phase-1.md)
 - [Phase 2 开发报告](docs/reports/phase-2.md)
 
-预定学习阶段：Phase 1 引导 → Phase 2 中断与定时器 → Phase 3 内存管理 → Phase 4 内核任务调度 → Phase 5 键盘与 Shell → Phase 6 系统调用接口 → Phase 7 集成测试和教学发布。**Phase 1–4 已实现；Phase 5–7 仍是后续计划。**
+预定学习阶段：Phase 1 引导 → Phase 2 中断与定时器 → Phase 3 内存管理 → Phase 4 内核任务调度 → Phase 5 键盘与 Shell → Phase 6 系统调用接口 → Phase 7 集成测试和教学发布。**Phase 1–5 已实现；Phase 6–7 仍是后续计划。**
 
 ## 许可证与免责声明
 
@@ -312,7 +314,7 @@ Phase 3 历史交付不含调度器；Phase 4 增加内核任务，仍无键盘�
 默认镜像启用真正的IRQ0抢占，每任务5 tick时间片，独立16 KiB NX栈与上下guard页。
 A/B无需yield持续增加真实计数，C每10 tick记录统计；退出由其他栈延迟回收。
 通过GDB读取 `tasks`、`sched_state`、`demo_a`、`demo_b`、`register_errors`；不并发刷新屏幕。
-普通运行持续演示；测试可设置demo_stop触发受控退出、复用与空队列验证。
+普通运行持续演示；CONSOLE_SHELL=0调度夹具用demo_stop验证完整回收，默认Shell模式只停止旧演示任务，Shell继续。
 
 `make test`先用SCHEDULER=0完整执行旧阶段夹具，再恢复默认SCHEDULER=1运行抢占测试；
 结束保留默认调度镜像。只测调度可运行 `make test-scheduler`。
@@ -320,3 +322,22 @@ A/B无需yield持续增加真实计数，C每10 tick记录统计；退出由其�
 
 [任务管理](docs/task-management.md) · [上下文切换](docs/context-switching.md) ·
 [调度原理](docs/scheduler.md) · [Phase 4 测试报告](docs/phase4-test-report.md)
+
+## Phase 5 模块化交互 Shell
+
+`make run`后在QEMU窗口键盘输入`help`。支持help、clear、about、meminfo、tasks、uptime、reboot、echo。
+每个命令在独立文件中注册，自动help，不用修改中央if-else；新增命令完整示例见
+[Shell开发指南](docs/shell-development.md)，实际结果见 [Phase 5报告](docs/phase5-test-report.md)。
+
+支持引号/转义、Backspace、左Ctrl-U、有限参数；行超长或环溢出拒绝截断执行。
+当前US键盘与有限字体，字母显示为大写但真实输入区分大小写；命令名使用小写。
+`make headless`仅串口输出，键盘交互使用GUI或QMP；UART RX尚未实现。
+
+```sh
+make test-shell
+make test-host
+make test
+```
+
+默认CONSOLE_SHELL=1；旧阶段精确回归使用CONSOLE_SHELL=0，完成后恢复默认。
+为HoofTTY保留终端/注册表/命令文件边界，不实现HoofTTY专属内容、动态插件或MLP主题。

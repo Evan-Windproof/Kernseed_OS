@@ -28,7 +28,11 @@ static const uint8_t font[128][7] = {
     ['[']={14,8,8,8,8,8,14}, [']']={14,2,2,2,2,2,14},
     ['=']={0,0,31,0,31,0,0}, ['?']={14,17,1,2,4,0,4},
     ['_']={0,0,0,0,0,0,31}, ['(']={2,4,8,8,8,4,2},
-    [')']={8,4,2,2,2,4,8}, ['!']={4,4,4,4,4,0,4}
+    [')']={8,4,2,2,2,4,8}, ['!']={4,4,4,4,4,0,4},
+    ['>']={16,8,4,2,4,8,16}, ['<']={1,2,4,8,4,2,1},
+    ['\'']={4,4,0,0,0,0,0}, ['\"']={10,10,0,0,0,0,0},
+    [',']={0,0,0,0,6,4,8}, [';']={0,6,6,0,6,4,8},
+    ['+']={0,4,4,31,4,4,0}, ['\\']={16,8,8,4,2,2,1}
 };
 static struct limine_framebuffer *screen;
 static uint64_t column, row;
@@ -77,6 +81,24 @@ void framebuffer_putc(char c) {
             }
         if (++column == screen->width / CELL_W) { column = 0; ++row; }
     }
-    /* Deliberately simple wrap-clear until the interactive terminal phase. */
-    if (row == screen->height / CELL_H) clear();
+    if (row == screen->height / CELL_H) {
+        uint64_t text_height=(screen->height/CELL_H)*CELL_H;
+        for(uint64_t y=0;y<text_height-CELL_H;y++)
+            for(uint64_t x=0;x<screen->width;x++){
+                volatile uint32_t *source=(volatile uint32_t *)((uint8_t *)screen->address+(y+CELL_H)*screen->pitch+x*4);
+                pixel(x,y,*source);
+            }
+        for(uint64_t y=text_height-CELL_H;y<screen->height;y++)
+            for(uint64_t x=0;x<screen->width;x++)pixel(x,y,0);
+        row--;
+    }
+}
+
+void framebuffer_clear(void){if(screen)clear();}
+void framebuffer_backspace(void){
+    if(!screen)return;
+    if(column)column--;
+    else if(row){row--;column=screen->width/CELL_W-1;}
+    else return;
+    for(unsigned y=0;y<CELL_H;y++)for(unsigned x=0;x<CELL_W;x++)pixel(column*CELL_W+x,row*CELL_H+y,0);
 }

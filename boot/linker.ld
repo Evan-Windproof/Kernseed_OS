@@ -18,7 +18,9 @@ SECTIONS {
     . = ALIGN(0x1000);
     .text : { *(.text .text.*) } :text
     . = ALIGN(0x1000);
-    .rodata : { *(.rodata .rodata.*) } :rodata
+    .rodata : { *(.rodata .rodata.*)
+        . = ALIGN(8); __start_shell_commands = .; KEEP(*(shell_commands)) __stop_shell_commands = .;
+    } :rodata
     . = ALIGN(0x1000);
     .data : { *(.data .data.*) } :data
     .bss (NOLOAD) : { *(.bss .bss.*) *(COMMON) } :data

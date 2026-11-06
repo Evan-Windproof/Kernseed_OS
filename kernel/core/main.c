@@ -5,6 +5,7 @@
 #include <kernseed/runtime.h>
 #include <kernseed/interrupts.h>
 #include <kernseed/memory.h>
+#include <kernseed/keyboard.h>
 
 __attribute__((used, section(".limine_requests_start")))
 static volatile LIMINE_REQUESTS_START_MARKER
@@ -27,7 +28,7 @@ static _Noreturn void panic(const char *reason) {
 }
 _Noreturn void kernel_main(void) {
     boot_state.serial_ok = serial_init();
-    console_write("Kernseed OS - Phase 4\n");
+    console_write("Kernseed OS - Phase 5\n");
     console_write("Independent x86-64 monolithic kernel\n");
     if (!LIMINE_BASE_REVISION_SUPPORTED) panic("Limine base revision 3 unsupported");
     boot_state.stage = 1;
@@ -58,14 +59,14 @@ _Noreturn void kernel_main(void) {
         panic("Unexpected CPU boot state");
 
     /* Repeat the title after framebuffer initialization, so both sinks show it. */
-    console_write("Kernseed OS - Phase 4\n");
+    console_write("Kernseed OS - Phase 5\n");
     console_write("Boot: Limine base revision 3\n");
     console_write("BSS: zero checked\nC runtime: selftest passed\n");
     console_write("CPU: long mode, paging, initial IF=0\n");
     console_write("CR3: "); console_hex(boot_state.cr3); console_write("\n");
     console_write("Framebuffer: "); console_dec(fb->width); console_write("x");
     console_dec(fb->height); console_write("x"); console_dec(fb->bpp); console_write("\n");
-    console_write("Preemptive tasks ready after boot; no shell\n");
+    console_write("Preemptive tasks and modular shell\n");
     interrupts_init();
     if (irq_state.gdtr.base != (uintptr_t)gdt || irq_state.gdtr.limit != sizeof(gdt) - 1 ||
         irq_state.idtr.base != (uintptr_t)idt || irq_state.idtr.limit != sizeof(idt) - 1 ||
@@ -80,6 +81,7 @@ _Noreturn void kernel_main(void) {
     console_write("MEMORY_READY free pages="); console_dec(memory_state.free); console_write(" tables=");console_dec(memory_state.tables);console_write("\n");
     memory_fault_test();
     timer_init();
+    if(KERNSEED_SHELL&&KERNSEED_SCHEDULER&&!keyboard_init())panic("PS2 keyboard initialization failed");
     console_write("PIT: IRQ0 only, divisor="); console_dec(irq_state.pit_divisor);
     console_write(" (about 100 Hz)\n");
     console_write("BOOT_READY: entering idle loop\n");

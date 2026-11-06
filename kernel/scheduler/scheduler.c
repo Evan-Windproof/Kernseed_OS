@@ -2,6 +2,7 @@
 #include <kernseed/scheduler.h>
 #include <kernseed/memory.h>
 #include <kernseed/runtime.h>
+#include <kernseed/shell.h>
 #define CANARY 0x6b65726e7374616bULL
 struct task tasks[TASK_LIMIT];
 volatile struct scheduler_stats sched_state;
@@ -68,6 +69,7 @@ static void recorder(void){
         sched_state.observed_tick=irq_state.ticks;sched_state.records++;
         task_sleep(10);
     }
+    if(KERNSEED_SHELL)return; /* Legacy lifecycle fixture runs without the shell task. */
     /* Explicit test stop is observed by all demo tasks; wait until A/B are reaped. */
     task_sleep(30);
     if(memory_state.allocated!=4||memory_state.mapped!=4)bad();
@@ -99,6 +101,7 @@ void scheduler_start(void){
     fail_after=-1;sched_state.rollback_passed=1;
     if(task_create("A",KERNSEED_TEST_FAULT>=9?guard_write:counter_task_a)!=1||task_create("B",counter_task_b)!=2||
        task_create("C",recorder)!=3||task_create("yield-exit",yielding)<0||task_create("return-exit",short_task)<0)bad();
+    if(KERNSEED_SHELL&&task_create("shell",shell_task)<0)bad();
     sched_state.slice=5;sched_state.active=1;
     irq_unlock(f);
 }

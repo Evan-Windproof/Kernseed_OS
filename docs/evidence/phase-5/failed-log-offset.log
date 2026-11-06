@@ -1,0 +1,23 @@
+HOST_CC="cc" ./scripts/fetch-limine.sh
+limine.h: OK
+limine.c: OK
+limine-bios-hdd.h: OK
+limine-bios.sys: OK
+limine-bios-cd.bin: OK
+limine-uefi-cd.bin: OK
+BOOTX64.EFI: OK
+LICENSE: OK
+make[1]: Entering directory '/workspace/Kernseed_OS/.cache/limine'
+make[1]: 'limine' is up to date.
+make[1]: Leaving directory '/workspace/Kernseed_OS/.cache/limine'
+python3 tests/phase5.py
+Phase 5 evidence: /workspace/Kernseed_OS/build/phase5-results/20261106T115735Z
+Traceback (most recent call last):
+  File "/workspace/Kernseed_OS/tests/phase5.py", line 93, in <module>
+    for memory in (128,256):run(memory);results.append({'memory':memory,'result':'passed'})
+                            ^^^^^^^^^^^
+  File "/workspace/Kernseed_OS/tests/phase5.py", line 38, in run
+    for name in ('help','clear','about','meminfo','tasks','uptime','reboot','echo'):assert re.search(r'\b'+name+r' - ',response),name
+                                                                                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: about
+make: *** [Makefile:107: test-shell] Error 1

@@ -12,4 +12,4 @@ case "$mode" in
 esac
 exec "${QEMU:-qemu-system-x86_64}" -machine pc,accel=tcg -cpu qemu64 \
     -m 128M -smp 1 -vga std -cdrom "${KERNSEED_BUILD:-build}/kernseed.iso" -boot d \
-    -nic none -serial stdio -monitor none -no-reboot -no-shutdown "$@"
+    -nic none -serial stdio -monitor none -no-shutdown "$@"

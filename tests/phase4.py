@@ -105,7 +105,7 @@ try:
     for kind in (9,10):
         d=OUT/f'guard-{kind}';d.mkdir()
         with (d/'build.log').open('w') as log:
-            subprocess.run(['make',f'BUILD=build/fault-{kind}',f'TEST_FAULT={kind}','SCHEDULER=1','-j2','iso'],stdout=log,stderr=subprocess.STDOUT,check=True,timeout=60)
+            subprocess.run(['make',f'BUILD=build/fault-{kind}',f'TEST_FAULT={kind}','SCHEDULER=1','CONSOLE_SHELL=0','-j2','iso'],stdout=log,stderr=subprocess.STDOUT,check=True,timeout=60)
         guard='tasks[1].low-4096' if kind==9 else 'tasks[1].high'
         body=f"""
 hbreak cpu_halt
