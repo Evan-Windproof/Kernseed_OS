@@ -23,7 +23,7 @@ flowchart TD
 framebuffer，早期 framebuffer 未初始化时只输出串口。`runtime.c` 不依赖其他内核模块。
 驱动不调用宿主系统服务；宿主进程只负责构建、模拟与检查。
 
-## 阶段依赖（1–5 已实现，6–7 尚未实现）
+## 阶段依赖（1–5 已实现，6部分交付，7尚未实现）
 
 | 阶段 | 前置依赖 | 预期交付与必须验收 |
 |---|---|---|
@@ -54,3 +54,6 @@ Phase 4：PMM/VMM任务栈 → TCB/READY环形扫描 → IRQ0时间片或INT 0x8
 
 Phase 5：i8042 IRQ1 → 有界字符环 → 独立Shell任务/行编辑 → parser → registry/dispatcher → commands → terminal后端。
 详细接口和扩展教程见shell-development.md。
+
+Phase 6核心：Kernel API → DPL3 INT 0x82 → 指针/权限检查 → 内核服务 → IRETQ；独立用户栈与逐任务TSS.RSP0。
+最小Ring3已实现，通用ELF加载明确未完成，详见phase6-test-report.md。

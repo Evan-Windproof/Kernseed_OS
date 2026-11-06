@@ -28,7 +28,7 @@ static _Noreturn void panic(const char *reason) {
 }
 _Noreturn void kernel_main(void) {
     boot_state.serial_ok = serial_init();
-    console_write("Kernseed OS - Phase 5\n");
+    console_write("Kernseed OS - Phase 6\n");
     console_write("Independent x86-64 monolithic kernel\n");
     if (!LIMINE_BASE_REVISION_SUPPORTED) panic("Limine base revision 3 unsupported");
     boot_state.stage = 1;
@@ -59,7 +59,7 @@ _Noreturn void kernel_main(void) {
         panic("Unexpected CPU boot state");
 
     /* Repeat the title after framebuffer initialization, so both sinks show it. */
-    console_write("Kernseed OS - Phase 5\n");
+    console_write("Kernseed OS - Phase 6\n");
     console_write("Boot: Limine base revision 3\n");
     console_write("BSS: zero checked\nC runtime: selftest passed\n");
     console_write("CPU: long mode, paging, initial IF=0\n");

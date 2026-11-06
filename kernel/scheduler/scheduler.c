@@ -3,6 +3,7 @@
 #include <kernseed/memory.h>
 #include <kernseed/runtime.h>
 #include <kernseed/shell.h>
+#include <kernseed/user.h>
 #define CANARY 0x6b65726e7374616bULL
 struct task tasks[TASK_LIMIT];
 volatile struct scheduler_stats sched_state;
@@ -50,6 +51,7 @@ static void reap(void){
     for(unsigned i=1;i<TASK_LIMIT;i++) {
         struct task *t=&tasks[i];
         if(i==sched_state.current||t->status!=TERMINATED||t->reclaimed)continue;
+        user_reap(i);
         for(unsigned j=0;j<STACK_PAGES;j++)if(!vmm_unmap(t->low+j*4096)||!pmm_free(t->physical+j*4096))bad();
         t->physical=0;t->context=0;t->reclaimed=1;sched_state.reaped++;
     }
@@ -106,11 +108,15 @@ void scheduler_start(void){
     irq_unlock(f);
 }
 struct interrupt_frame *scheduler_interrupt(struct interrupt_frame *frame){
+    if((frame->cs&3)==3){
+        frame->rflags=(frame->rflags&0xcd5)|0x202;
+        if(!user_rsp_valid(frame->rsp))user_fault(frame);
+    }
     if(!sched_state.active)return frame;
     if(frame->vector!=32&&frame->vector!=129)return frame;
     struct task *old=&tasks[sched_state.current];
     if((uintptr_t)frame<old->low||(uintptr_t)frame+sizeof(*frame)>old->high||
-       frame->rsp<old->low+16||frame->rsp>old->high)bad();
+       ((frame->cs&3)==3?!user_rsp_valid(frame->rsp):(frame->rsp<old->low+16||frame->rsp>old->high)))bad();
     if(sched_state.current&&*(uint64_t *)(uintptr_t)old->low!=CANARY)bad();
     old->context=frame;reap();
     for(unsigned i=1;i<TASK_LIMIT;i++)if(tasks[i].status==BLOCKED&&irq_state.ticks>=tasks[i].wake_tick)tasks[i].status=READY;
@@ -140,10 +146,11 @@ struct interrupt_frame *scheduler_interrupt(struct interrupt_frame *frame){
     }
     tasks[chosen].status=RUNNING;sched_state.slice=5;
     if(chosen!=sched_state.current){
-        if(frame->vector==32&&sched_state.current){old->preemptions++;sched_state.preemptions++;}
+        if(frame->vector==32&&sched_state.current){old->preemptions++;sched_state.preemptions++;if((frame->cs&3)==3)user_state.preemptions++;}
         sched_state.switches++;tasks[chosen].switches++;
         sched_state.current=chosen;
     }
+    kernel_tss.rsp[0]=tasks[chosen].high;
     if(!tasks[chosen].context)bad();
     return tasks[chosen].context;
 }

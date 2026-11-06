@@ -1,0 +1,30 @@
+[
+  {
+    "name": "memory-128M",
+    "result": "passed"
+  },
+  {
+    "name": "memory-256M",
+    "result": "passed"
+  },
+  {
+    "name": "memory-512M",
+    "result": "passed"
+  },
+  {
+    "name": "memory-1024M",
+    "result": "passed"
+  },
+  {
+    "name": "page-fault-6",
+    "result": "passed"
+  },
+  {
+    "name": "page-fault-7",
+    "result": "passed"
+  },
+  {
+    "name": "page-fault-8",
+    "result": "passed"
+  }
+]

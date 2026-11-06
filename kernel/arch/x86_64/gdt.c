@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: PolyForm-Noncommercial-1.0.0 */
 #include <kernseed/interrupts.h>
 
-uint64_t gdt[5] __attribute__((aligned(16)));
+uint64_t gdt[5+2*KERNSEED_USERMODE] __attribute__((aligned(16)));
 struct tss64 kernel_tss;
 unsigned char df_stack[16384] __attribute__((aligned(16)));
 extern unsigned char boot_stack_top[];
@@ -20,6 +20,7 @@ void gdt_init(void) {
     gdt[3] = (limit & 0xffff) | ((base & 0xffffff) << 16)
            | (0x89ULL << 40) | ((limit & 0xf0000) << 32) | ((base & 0xff000000) << 32);
     gdt[4] = base >> 32;
+    if(KERNSEED_USERMODE){gdt[5]=0x00affa000000ffff;gdt[6]=0x00cff2000000ffff;}
     struct table_pointer pointer = {sizeof(gdt) - 1, (uintptr_t)gdt};
     gdt_load(&pointer);
     __asm__ volatile ("sgdt %0" : "=m"(irq_state.gdtr));

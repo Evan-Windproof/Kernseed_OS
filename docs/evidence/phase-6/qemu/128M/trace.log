@@ -1,0 +1,24 @@
+counter_task_b () at kernel/arch/x86_64/counter-tasks.S:133
+133	    cmpq .Lcounter_expected_r11(%rip), %r11
+Warning: the current language does not match this frame.
+Hardware assisted breakpoint 1 at 0xffffc00001000000
+
+Breakpoint 1, 0xffffc00001000000 in ?? ()
+PASS actual CPU CPL3 execution
+cs             0x2b                43
+ss             0x33                51
+rsp            0xffffc00001100ff8  0xffffc00001100ff8
+cr3            0x7f55000           [ PDBR=32597 PCID=0 ]
+=> 0xffffc00001000000:	movabs $0xffffc00001000030,%rdi
+   0xffffc0000100000a:	xor    %esi,%esi
+   0xffffc0000100000c:	nopl   0x0(%rax)
+   0xffffc00001000010:	add    $0x1,%rsi
+Hardware assisted breakpoint 2 at 0xffffffff80004b70: file kernel/syscall/user.c, line 56.
+
+Breakpoint 2, syscall_dispatch (f=0xffffc0000021cf50) at kernel/syscall/user.c:56
+56	    if((f->cs&3)!=3||!user_state.active||sched_state.current!=user_state.slot){f->rax=(uint64_t)-1;return;}
+PASS actual CPL3 to CPL0 syscall and kernel stack
+cs             0x8                 8
+ss             0x0                 0
+rsp            0xffffc0000021cf48  0xffffc0000021cf48
+[Inferior 1 (process 1) detached]

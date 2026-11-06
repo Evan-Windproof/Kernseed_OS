@@ -1,0 +1,17 @@
+Phase 6 evidence: /workspace/Kernseed_OS/build/phase6-results/20261106T205525Z
+Traceback (most recent call last):
+  File "/workspace/Kernseed_OS/tests/phase6.py", line 130, in <module>
+    for memory in (128,256):run(memory);results.append({'memory':memory,'result':'passed'})
+                            ^^^^^^^^^^^
+  File "/workspace/Kernseed_OS/tests/phase6.py", line 111, in run
+    gdb_run(gd,gdbp,ROOT/'build/kernseed.elf',"""python
+  File "/workspace/Kernseed_OS/tests/phase2.py", line 51, in gdb_run
+    assert p.returncode == 0, p.stdout+p.stderr
+           ^^^^^^^^^^^^^^^^^
+AssertionError: counter_task_a () at kernel/arch/x86_64/counter-tasks.S:64
+64	    pushfq
+Warning: the current language does not match this frame.
+[Inferior 1 (process 1) detached]
+/workspace/Kernseed_OS/build/phase6-results/20261106T205525Z/128M/gdb/inspect.gdb:28: Error in sourced command file:
+ASSERT FAILED: user_state.preemptions > 0
+

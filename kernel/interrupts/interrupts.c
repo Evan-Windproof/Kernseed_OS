@@ -4,6 +4,7 @@
 #include <kernseed/io.h>
 #include <kernseed/runtime.h>
 #include <kernseed/keyboard.h>
+#include <kernseed/user.h>
 
 struct idt_gate idt[256] __attribute__((aligned(16)));
 volatile struct interrupt_diagnostics irq_state;
@@ -34,6 +35,7 @@ void interrupts_init(void) {
             .offset_high = address >> 32, .reserved = 0
         };
     }
+    if(KERNSEED_USERMODE)idt[130].attributes=0xee;
     struct table_pointer pointer = {sizeof(idt) - 1, (uintptr_t)idt};
     __asm__ volatile ("lidt %0" : : "m"(pointer) : "memory");
     __asm__ volatile ("sidt %0" : "=m"(irq_state.idtr));
@@ -103,6 +105,8 @@ void interrupt_dispatch(struct interrupt_frame *frame) {
     /* The compiler prologue may move RSP; exact ABI is verified by GDB at
      * the first instruction. IF/DF must nevertheless be clear throughout C. */
     if (flags & 0x600) irq_state.entry_if_errors++;
+    if(KERNSEED_USERMODE&&(frame->cs&3)==3&&frame->vector<32)user_fault(frame);
+    if(frame->vector==130&&KERNSEED_USERMODE){syscall_dispatch(frame);return;}
     if (frame->vector < 32) exception_halt(frame);
     if (frame->vector >= 32 && frame->vector < 48) {
         if (spurious_irq((unsigned)frame->vector)) { irq_state.spurious++; return; }

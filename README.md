@@ -4,7 +4,7 @@
 
 Kernseed OS 使用 **C11 + 少量 x86-64 汇编**编写内核，由 **Limine** 引导，借助 **QEMU** 启动、**GDB** 调试。项目由 Codex 主导实现，发起人进行构建、运行与审查。它不是 Linux 发行版，也不依赖 Linux 用户空间；与 Orfreon、Evavind 等其他项目无关。
 
-> **当前版本：Phase 5（键盘、文本终端与模块化 Shell）**
+> **当前版本：Phase 6（真实系统调用与最小 Ring 3）**
 > 已能从 ISO 启动，加载自有 GDT/TSS/IDT，处理 CPU 异常并通过 IRQ0 维护真实 tick；**已支持键盘、模块化Shell；尚无文件系统**。默认启动后应出现 `ks>` 提示符；BOOT READY仅是较早的内核初始化标记。
 >
 > 仅供学习与研究，不适用于生产环境；项目计划在教学目标完成后停止长期维护。
@@ -44,7 +44,7 @@ make -j2
 make run
 ```
 
-成功时，QEMU 内会显示 `KERNSEED OS - PHASE 5`、CPU 与 framebuffer 信息，以及 `BOOT READY - ENTERING IDLE LOOP`。**在QEMU窗口键盘输入help开始交互**。关闭 QEMU 窗口即可退出；若终端仍运行，按 `Ctrl+C`。
+成功时，QEMU 内会显示 `KERNSEED OS - PHASE 6`、CPU 与 framebuffer 信息，以及 `BOOT READY - ENTERING IDLE LOOP`。**在QEMU窗口键盘输入help开始交互**。关闭 QEMU 窗口即可退出；若终端仍运行，按 `Ctrl+C`。
 
 ## 首次安装与 WSL 2 准备
 
@@ -195,7 +195,7 @@ gdb -x scripts/debug.gdb
 启动画面示意（实际寄存器地址会因运行而变化）：
 
 ```text
-KERNSEED OS - PHASE 5
+KERNSEED OS - PHASE 6
 BOOT: LIMINE BASE REVISION 3
 BSS: ZERO CHECKED
 C RUNTIME: SELFTEST PASSED
@@ -288,7 +288,7 @@ Kernseed_OS/
 - [Phase 1 开发报告](docs/reports/phase-1.md)
 - [Phase 2 开发报告](docs/reports/phase-2.md)
 
-预定学习阶段：Phase 1 引导 → Phase 2 中断与定时器 → Phase 3 内存管理 → Phase 4 内核任务调度 → Phase 5 键盘与 Shell → Phase 6 系统调用接口 → Phase 7 集成测试和教学发布。**Phase 1–5 已实现；Phase 6–7 仍是后续计划。**
+预定学习阶段：Phase 1 引导 → Phase 2 中断与定时器 → Phase 3 内存管理 → Phase 4 内核任务调度 → Phase 5 键盘与 Shell → Phase 6 系统调用接口 → Phase 7 集成测试和教学发布。**Phase 1–5 已实现；Phase 6核心与最小用户态已实现，通用ELF加载未完成；Phase 7尚未开展。**
 
 ## 许可证与免责声明
 
@@ -341,3 +341,16 @@ make test
 
 默认CONSOLE_SHELL=1；旧阶段精确回归使用CONSOLE_SHELL=0，完成后恢复默认。
 为HoofTTY保留终端/注册表/命令文件边界，不实现HoofTTY专属内容、动态插件或MLP主题。
+
+## Phase 6 原生系统调用与最小用户态
+
+默认USERMODE=1，apps/run命令通过注册表接入。试用 `apps`、`run hello`、`run counter`。
+真正INT 0x82/IRETQ、CPL3代码/独立用户栈、TSS内核栈、用户指针/权限验证及安全退出。
+现有Shell接口和内核任务保持可用；只有一个活跃用户任务，run同步等待。
+
+**未实现通用ELF加载器**：应用独立编译成ELF后由构建转定址平坦映像嵌入，内核不解析ELF头或PT_LOAD。
+无Linux/POSIX兼容、可写全局/BSS加载、多用户地址空间或动态链接；不要直接运行Linux程序。
+
+[系统调用ABI](docs/syscalls.md) · [用户态](docs/user-mode.md) · [加载限制](docs/program-loader.md) ·
+[应用示例](docs/app-development.md) · [Phase 6报告](docs/phase6-test-report.md)
+旧阶段精确GDT/IDT夹具使用USERMODE=0，完整测试随后恢复默认USERMODE=1并验证真实CPL转换。

@@ -1,12 +1,9 @@
 /* SPDX-License-Identifier: PolyForm-Noncommercial-1.0.0 */
 #include <kernseed/shell.h>
 #include <kernseed/terminal.h>
-#include <kernseed/scheduler.h>
+#include <kernseed/api.h>
 static int list_tasks(int argc,char **argv){
-    (void)argc;(void)argv;struct task snapshot[TASK_LIMIT];uint64_t flags;
-    __asm__ volatile("pushfq; popq %0; cli":"=r"(flags)::"memory");
-    for(unsigned i=0;i<TASK_LIMIT;i++)snapshot[i]=tasks[i];
-    __asm__ volatile("pushq %0; popfq"::"r"(flags):"memory","cc");
+    (void)argc;(void)argv;struct task snapshot[TASK_LIMIT];api_tasks(snapshot);
     static const char *names[]={"UNUSED","RUNNING","READY","BLOCKED","TERMINATED"};
     terminal_write("id name state switches runtime_ticks\n");
     for(unsigned i=0;i<TASK_LIMIT;i++){

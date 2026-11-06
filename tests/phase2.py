@@ -231,7 +231,7 @@ def main():
             name=f'fault-{kind}-vector-{vector}'
             directory=OUT/name;directory.mkdir()
             with (directory/'build.log').open('w') as log:
-                subprocess.run(['make','--no-print-directory',f'BUILD=build/fault-{kind}',f'TEST_FAULT={kind}','-j2','iso'],
+                subprocess.run(['make','--no-print-directory',f'BUILD=build/fault-{kind}',f'TEST_FAULT={kind}','USERMODE=0','-j2','iso'],
                                stdout=log,stderr=subprocess.STDOUT,check=True,timeout=60)
             # boot() owns its directory; keep the build evidence beside it.
             boot(name+'-run',ROOT/f'build/fault-{kind}/kernseed.iso',ROOT/f'build/fault-{kind}/kernseed.elf',
