@@ -1,0 +1,20 @@
+Traceback (most recent call last):
+  File "/workspace/Kernseed_OS/tests/phase7.py", line 87, in <module>
+    for index in range(5):boot(f'bios-{index+1}')
+                          ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/Kernseed_OS/tests/phase7.py", line 34, in boot
+    gdb_run(directory,socket,ROOT/'build/kernseed.elf','''hbreak *scheduler_interrupt
+  File "/workspace/Kernseed_OS/tests/phase2.py", line 51, in gdb_run
+    assert p.returncode == 0, p.stdout+p.stderr
+           ^^^^^^^^^^^^^^^^^
+AssertionError: counter_task_a () at kernel/arch/x86_64/counter-tasks.S:38
+38	    cmpq .Lcounter_expected_rdx(%rip), %rdx
+Warning: the current language does not match this frame.
+Hardware assisted breakpoint 1 at 0xffffffff80004150: file kernel/scheduler/scheduler.c, line 117.
+
+Breakpoint 1, scheduler_interrupt (frame=0xffffc0000020aef0) at kernel/scheduler/scheduler.c:117
+117	    if((frame->cs&3)==3){
+[Inferior 1 (process 1) detached]
+/workspace/Kernseed_OS/build/phase7-results/20261106T213051Z/bios-1/inspect.gdb:45: Error in sourced command file:
+ASSERT FAILED: memory_state.tests == 1 && memory_state.allocated == 16 && memory_state.mapped == 16
+

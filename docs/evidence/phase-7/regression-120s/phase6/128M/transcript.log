@@ -1,0 +1,25 @@
+apps
+hello counter probe privileged kernelread kernelwrite badflags badstack
+ks> run missing
+error: unavailable application
+ks> run hello
+Hello from Kernseed userspace!
+ks> run counter
+Counter ticks: 201
+ks> run probe
+PROBE PASSED
+ks> run badflags
+FLAGS SANITIZED
+ks> run badstack
+User fault: task terminated
+ks> run privileged
+User fault: task terminated
+ks> run kernelread
+User fault: task terminated
+ks> run kernelwrite
+User fault: task terminated
+ks> run hello
+Hello from Kernseed userspace!
+ks> meminfo
+pages: usable=31531 free=31510 allocated=16 tables=5 mapped=16
+ks> 

@@ -1,0 +1,27 @@
+mkdir -p build/apps
+gcc -std=c11 -O2 -ffreestanding -fno-builtin -fno-stack-protector -fno-pie -no-pie -mno-red-zone -mgeneral-regs-only -mcmodel=large -nostdlib -static -Wl,--build-id=none -Wl,-T,apps/linker.ld apps/hello.c -o build/apps/hello.elf
+objcopy -O binary build/apps/hello.elf build/apps/hello.bin
+mkdir -p build/apps
+gcc -std=c11 -O2 -ffreestanding -fno-builtin -fno-stack-protector -fno-pie -no-pie -mno-red-zone -mgeneral-regs-only -mcmodel=large -nostdlib -static -Wl,--build-id=none -Wl,-T,apps/linker.ld apps/counter.c -o build/apps/counter.elf
+objcopy -O binary build/apps/counter.elf build/apps/counter.bin
+mkdir -p build/apps
+gcc -std=c11 -O2 -ffreestanding -fno-builtin -fno-stack-protector -fno-pie -no-pie -mno-red-zone -mgeneral-regs-only -mcmodel=large -nostdlib -static -Wl,--build-id=none -Wl,-T,apps/linker.ld apps/probe.c -o build/apps/probe.elf
+objcopy -O binary build/apps/probe.elf build/apps/probe.bin
+mkdir -p build/apps
+gcc -std=c11 -O2 -ffreestanding -fno-builtin -fno-stack-protector -fno-pie -no-pie -mno-red-zone -mgeneral-regs-only -mcmodel=large -nostdlib -static -Wl,--build-id=none -Wl,-T,apps/linker.ld apps/privileged.c -o build/apps/privileged.elf
+objcopy -O binary build/apps/privileged.elf build/apps/privileged.bin
+mkdir -p build/apps
+gcc -std=c11 -O2 -ffreestanding -fno-builtin -fno-stack-protector -fno-pie -no-pie -mno-red-zone -mgeneral-regs-only -mcmodel=large -nostdlib -static -Wl,--build-id=none -Wl,-T,apps/linker.ld apps/kernelread.c -o build/apps/kernelread.elf
+objcopy -O binary build/apps/kernelread.elf build/apps/kernelread.bin
+mkdir -p build/apps
+gcc -std=c11 -O2 -ffreestanding -fno-builtin -fno-stack-protector -fno-pie -no-pie -mno-red-zone -mgeneral-regs-only -mcmodel=large -nostdlib -static -Wl,--build-id=none -Wl,-T,apps/linker.ld apps/kernelwrite.c -o build/apps/kernelwrite.elf
+objcopy -O binary build/apps/kernelwrite.elf build/apps/kernelwrite.bin
+mkdir -p build/apps
+gcc -std=c11 -O2 -ffreestanding -fno-builtin -fno-stack-protector -fno-pie -no-pie -mno-red-zone -mgeneral-regs-only -mcmodel=large -nostdlib -static -Wl,--build-id=none -Wl,-T,apps/linker.ld apps/badflags.c -o build/apps/badflags.elf
+objcopy -O binary build/apps/badflags.elf build/apps/badflags.bin
+mkdir -p build/apps
+gcc -std=c11 -O2 -ffreestanding -fno-builtin -fno-stack-protector -fno-pie -no-pie -mno-red-zone -mgeneral-regs-only -mcmodel=large -nostdlib -static -Wl,--build-id=none -Wl,-T,apps/linker.ld apps/badstack.c -o build/apps/badstack.elf
+objcopy -O binary build/apps/badstack.elf build/apps/badstack.bin
+echo '.section .rodata' > build/apps.S
+for app in hello counter probe privileged kernelread kernelwrite badflags badstack; do echo ".global app_${app}_start, app_${app}_end" >> build/apps.S; echo "app_${app}_start:" >> build/apps.S; echo ".incbin \"build/apps/${app}.bin\"" >> build/apps.S; echo "app_${app}_end:" >> build/apps.S; done
+echo '.section .note.GNU-stack,"",@progbits' >> build/apps.S

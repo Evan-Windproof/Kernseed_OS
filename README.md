@@ -4,7 +4,7 @@
 
 Kernseed OS 使用 **C11 + 少量 x86-64 汇编**编写内核，由 **Limine** 引导，借助 **QEMU** 启动、**GDB** 调试。项目由 Codex 主导实现，发起人进行构建、运行与审查。它不是 Linux 发行版，也不依赖 Linux 用户空间；与 Orfreon、Evavind 等其他项目无关。
 
-> **当前版本：Phase 6（真实系统调用与最小 Ring 3）**
+> **当前版本：Phase 7（最终稳定化与功能冻结）**
 > 已能从 ISO 启动，加载自有 GDT/TSS/IDT，处理 CPU 异常并通过 IRQ0 维护真实 tick；**已支持键盘、模块化Shell；尚无文件系统**。默认启动后应出现 `ks>` 提示符；BOOT READY仅是较早的内核初始化标记。
 >
 > 仅供学习与研究，不适用于生产环境；项目计划在教学目标完成后停止长期维护。
@@ -44,7 +44,7 @@ make -j2
 make run
 ```
 
-成功时，QEMU 内会显示 `KERNSEED OS - PHASE 6`、CPU 与 framebuffer 信息，以及 `BOOT READY - ENTERING IDLE LOOP`。**在QEMU窗口键盘输入help开始交互**。关闭 QEMU 窗口即可退出；若终端仍运行，按 `Ctrl+C`。
+成功时，QEMU 内会显示 `KERNSEED OS - PHASE 7`、CPU 与 framebuffer 信息，以及 `BOOT READY - ENTERING IDLE LOOP`。**在QEMU窗口键盘输入help开始交互**。关闭 QEMU 窗口即可退出；若终端仍运行，按 `Ctrl+C`。
 
 ## 首次安装与 WSL 2 准备
 
@@ -188,14 +188,14 @@ gdb -x scripts/debug.gdb
 - 自有 64 位 GDT、TSS、256 项 IDT；Double Fault 使用独立 16 KiB IST 栈。
 - 汇编入口保存全部通用寄存器，规范化错误码，遵守 C 栈对齐并通过 `iretq` 返回。
 - CPU 异常输出向量、错误码、RIP、RSP；页故障额外输出 CR2。不可恢复异常受控停机。
-- 8259 PIC 重映射，只放行 PIT IRQ0；11932 分频（约 100 Hz），真实递增 tick 和 EOI。
+- 8259 PIC 重映射，放行 PIT IRQ0 与键盘 IRQ1；11932 分频（约 100 Hz），真实递增 tick 和 EOI。
 - CPL0 软件 `INT 0x80` 验证寄存器/DF 恢复，仅供内部自检，**不是系统调用接口**。
 - 五类真实故障使用独立测试镜像；正式启动不触发危险异常。
 
 启动画面示意（实际寄存器地址会因运行而变化）：
 
 ```text
-KERNSEED OS - PHASE 6
+KERNSEED OS - PHASE 7
 BOOT: LIMINE BASE REVISION 3
 BSS: ZERO CHECKED
 C RUNTIME: SELFTEST PASSED
@@ -205,7 +205,7 @@ FRAMEBUFFER: 800X600X32
 PREEMPTIVE TASKS AND MODULAR SHELL
 GDT TSS IDT: LOADED, DF IST READY
 SOFTWARE INT: REGISTER/IRET SELFTEST PASSED
-PIT: IRQ0 ONLY, DIVISOR=11932 (ABOUT 100 HZ)
+PIT: IRQ0 + KEYBOARD IRQ1, DIVISOR=11932 (ABOUT 100 HZ)
 BOOT READY - ENTERING IDLE LOOP
 KERNSEED SHELL: TYPE HELP
 KS>
@@ -213,20 +213,21 @@ KS>
 
 ### 目前不能做什么？
 
-- **现在可在QEMU窗口输入Shell命令**；不提供用户进程或文件系统。
-- **已实现内核任务抢占调度，但没有用户进程隔离**、文件系统、用户态进程或应用程序执行环境。
-- 当前根页表仍由引导器准备，Phase 3 在其上提供受控虚拟内存管理；没有用户态隔离、APIC/SMP 或异常恢复机制。
+- 可在 QEMU 窗口使用 Shell 和内置 Ring 3 应用；没有文件系统、通用 ELF 加载器或 Linux/POSIX 兼容。
+- 同时仅一个用户任务，共享 CR3；用户/内核页面权限有边界，但不提供多用户进程隔离。
+- 沿用引导器根页表上的受控映射；没有 APIC/SMP、FPU/SIMD 上下文或通用异常恢复。
 - 屏幕启动文字不是实时 tick 仪表。可在 GDB 中读取 `irq_state.ticks`；CPU 暂停时 tick 不会增长。
 
-因此，**Kernseed OS Phase 5 是具备交互Shell的教学内核，不是完整的日用操作系统。**
+因此，**Kernseed OS 是具备交互 Shell 和最小用户态的教学内核，不是完整的日用操作系统。**
 
 ## 测试、清理与重建
 
 ```bash
-make test           # Phase 1–4回归 + Phase 5真实键盘/注册表/Shell验收
+make test           # Phase 1–6完整回归，含默认120秒调度压力
+make test-integration # 重复BIOS启动、隔离panic和四RAM用户态测试
 make test-host      # 仅运行宿主上的 C 代码测试
 make check          # 检查 ELF 属性
-make reproducible   # 同工具链和目录下两次构建比较哈希
+make reproducible   # 专用固定输出路径两次clean构建比较ELF/ISO哈希
 make clean          # 删除 build/ 构建产物
 make -j2            # 再次构建
 ```
@@ -288,7 +289,7 @@ Kernseed_OS/
 - [Phase 1 开发报告](docs/reports/phase-1.md)
 - [Phase 2 开发报告](docs/reports/phase-2.md)
 
-预定学习阶段：Phase 1 引导 → Phase 2 中断与定时器 → Phase 3 内存管理 → Phase 4 内核任务调度 → Phase 5 键盘与 Shell → Phase 6 系统调用接口 → Phase 7 集成测试和教学发布。**Phase 1–5 已实现；Phase 6核心与最小用户态已实现，通用ELF加载未完成；Phase 7尚未开展。**
+预定学习阶段：Phase 1 引导 → Phase 2 中断与定时器 → Phase 3 内存管理 → Phase 4 内核任务调度 → Phase 5 键盘与 Shell → Phase 6 系统调用接口 → Phase 7 集成测试和教学发布。**Phase 1–5 已实现；Phase 6核心与最小用户态已实现，通用ELF加载未完成；Phase 7已完成稳定化与集成验证（见本阶段报告），进入功能冻结。**
 
 ## 许可证与免责声明
 
@@ -354,3 +355,10 @@ make test
 [系统调用ABI](docs/syscalls.md) · [用户态](docs/user-mode.md) · [加载限制](docs/program-loader.md) ·
 [应用示例](docs/app-development.md) · [Phase 6报告](docs/phase6-test-report.md)
 旧阶段精确GDT/IDT夹具使用USERMODE=0，完整测试随后恢复默认USERMODE=1并验证真实CPL转换。
+
+## Phase 7 稳定化
+
+修复用户映像创建临界区、链接符号边界计算、应用构建依赖，增强受控停机诊断。
+范围与实测记录见 [测试报告](docs/phase7-test-report.md)、[代码审查](docs/stability-review.md)、
+[已知限制](docs/known-limitations.md)、[人工验收事项](docs/release-readiness.md)。
+本阶段不发布 Release、不归档，不提前重构双语 README 或开发 HoofTTY。

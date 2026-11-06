@@ -1,0 +1,11 @@
+kernel_idle () at kernel/arch/x86_64/entry.S:26
+26	    jmp kernel_idle_halt
+Warning: the current language does not match this frame.
+Hardware assisted breakpoint 1 at 0xffffffff80005972: file kernel/arch/x86_64/entry.S, line 25.
+
+Breakpoint 1, kernel_idle () at kernel/arch/x86_64/entry.S:25
+25	    hlt                         /* IRQ0 wakes us; IRETQ restores IF=1. */
+PASS empty ready queue, real idle and complete data-stack reclamation
+$1 = {active = 0x1, current = 0x0, switches = 0xec, preemptions = 0x65, yields = 0x14, exits = 0x1b, reaped = 0x1b, errors = 0x0, slice = 0x5, create_failures = 0x2, rollback_passed = 0x1, records = 0x32, idle_ticks = 0x66, observed_a = 0x445f4d4, observed_b = 0x4595558, observed_tick = 0x1f5, capacity_passed = 0x1, recycle_passed = 0x10}
+$2 = {hhdm = 0xffff800000000000, cr3 = 0x7f55000, usable = 0x7b2b, free = 0x7b27, allocated = 0x0, tables = 0x4, mapped = 0x0, tests = 0x1}
+[Inferior 1 (process 1) detached]

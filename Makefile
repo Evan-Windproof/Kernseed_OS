@@ -26,7 +26,7 @@ LDFLAGS := -nostdlib -static -z max-page-size=0x1000 --build-id=none -T boot/lin
 C_SOURCES := $(sort $(wildcard kernel/core/*.c kernel/drivers/*.c kernel/arch/x86_64/*.c kernel/interrupts/*.c kernel/memory/*.c kernel/scheduler/*.c kernel/syscall/*.c shell/*.c shell/commands/*.c))
 S_SOURCES := $(sort $(wildcard kernel/arch/x86_64/*.S))
 OBJECTS := $(patsubst %.c,$(BUILD)/%.o,$(C_SOURCES)) $(patsubst %.S,$(BUILD)/%.o,$(S_SOURCES)) $(BUILD)/isr-stubs.o $(BUILD)/apps.o
-.PHONY: all deps iso run headless debug test test-host clean check reproducible test-phase2 test-scheduler test-shell
+.PHONY: all deps iso run headless debug test test-host clean check reproducible test-phase2 test-scheduler test-shell test-integration
 all: iso
 .PHONY: FORCE
 FORCE:
@@ -106,6 +106,8 @@ test-scheduler:
 	$(MAKE) SCHEDULER=1 CONSOLE_SHELL=0 USERMODE=0 iso
 	$(PYTHON) tests/phase4.py
 	$(MAKE) SCHEDULER=1 CONSOLE_SHELL=1 iso
+test-integration: iso
+	$(PYTHON) tests/phase7.py
 test-shell: iso
 	$(PYTHON) tests/phase5.py
 reproducible:
@@ -116,12 +118,12 @@ clean:
 -include $(OBJECTS:.o=.d)
 
 APPS := hello counter probe privileged kernelread kernelwrite badflags badstack
-$(BUILD)/apps/%.elf: apps/%.c apps/abi.h apps/linker.ld
+$(BUILD)/apps/%.elf: apps/%.c apps/abi.h apps/linker.ld Makefile
 	@mkdir -p $(@D)
 	$(CC) -std=c11 -O2 -ffreestanding -fno-builtin -fno-stack-protector -fno-pie -no-pie -mno-red-zone -mgeneral-regs-only -mcmodel=large -nostdlib -static -Wl,--build-id=none -Wl,-T,apps/linker.ld $< -o $@
 $(BUILD)/apps/%.bin: $(BUILD)/apps/%.elf
 	objcopy -O binary $< $@
-$(BUILD)/apps.S: $(addprefix $(BUILD)/apps/,$(addsuffix .bin,$(APPS)))
+$(BUILD)/apps.S: Makefile $(addprefix $(BUILD)/apps/,$(addsuffix .bin,$(APPS)))
 	@echo '.section .rodata' > $@
 	@for app in $(APPS); do echo ".global app_$${app}_start, app_$${app}_end" >> $@; echo "app_$${app}_start:" >> $@; echo ".incbin \"$(BUILD)/apps/$${app}.bin\"" >> $@; echo "app_$${app}_end:" >> $@; done
 	@echo '.section .note.GNU-stack,"",@progbits' >> $@

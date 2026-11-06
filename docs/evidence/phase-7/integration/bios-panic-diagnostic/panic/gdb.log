@@ -1,0 +1,9 @@
+counter_task_a () at kernel/arch/x86_64/counter-tasks.S:68
+68	    cmpq $0,demo_stop(%rip)
+Warning: the current language does not match this frame.
+Hardware assisted breakpoint 1 at 0xffffffff80005c95: file kernel/arch/x86_64/entry.S, line 32.
+
+Breakpoint 1, cpu_halt () at kernel/arch/x86_64/entry.S:32
+32	    cli
+PASS isolated corrupted-canary controlled scheduler panic
+[Inferior 1 (process 1) detached]

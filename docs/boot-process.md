@@ -1,6 +1,6 @@
 # 启动流程
 
-1. QEMU PC/SeaBIOS 从 ISO El Torito BIOS 启动项加载 Limine。
+1. QEMU PC/SeaBIOS 从 ISO BIOS 启动项加载 Limine；OVMF UEFI 从同一混合 ISO 的 EFI 启动项加载 BOOTX64.EFI。
 2. Limine 读取 `boot/limine.conf`，按 ELF64 PT_LOAD 装载内核，建立 x86-64 长模式环境
    和启动页表，填写 framebuffer 响应。请求固定为 base revision 3。
 3. ELF 入口 `_start` 执行 `cli; cld`，将 RSP 切到内核 `.bss` 中 64 KiB 栈顶。
@@ -13,10 +13,10 @@
 8. 输出真实 framebuffer 尺寸和 CR3，安装自有 GDT/TSS/IDT，验证 GDTR/IDTR/TR。
 9. 执行 CPL0 软件 INT 寄存器与 DF 恢复自检；只有隔离故障镜像才执行危险异常。
 10. 初始化 memmap/HHDM、PMM、受控 VMM，执行真实分配/映射/耗尽自检；独立 Phase 3 故障镜像此时触发页故障。
-11. 配置 PIC/PIT，仅放行 IRQ0，仍不执行 STI。输出 BOOT_READY，设置 `boot_state.stage=2`。
+11. 配置 PIC/PIT，默认放行 IRQ0/IRQ1，初始化 PS/2 首端口，仍不执行 STI。输出 BOOT_READY，设置 `boot_state.stage=2`。
 12. 进入 `kernel_idle`，默认模式先创建TCB和独立任务栈，此时才 STI，HLT 等待实际定时器中断，ISR 通过 IRETQ 返回。
 
-正常路径周期性被 IRQ0 唤醒，再回到 HLT；tick 由 PIT 中断递增而非空闲循环次数。
+没有 READY 普通任务时 Idle 在 IRQ0 唤醒后回到 HLT；默认 A/B 忙任务持续运行，IRQ0 会抢占并调度，不能把默认镜像称为持续 HLT。tick 来自 PIT 而非循环次数。
 Phase 4 在时间片结束时恢复其他任务的真实IRQ帧；SCHEDULER=0仅供旧阶段夹具。初始化中或不可恢复异常使用独立 `cpu_halt`，其 IF=0，不能误入启用中断的 idle。
 
 早期失败路径设置 `boot_state.stage=0xff`，输出 `PANIC` 原因并关闭中断停机。
@@ -27,7 +27,7 @@ CPU 异常保存 `last_exception` 和 `irq_state`，输出现场并受控停机�
 
 链接基址 `0xffffffff80000000`。请求、代码、只读数据、可写数据分别使用独立 PT_LOAD，
 无动态链接、无 libc、无可写可执行 ELF 段、无可执行 GNU 栈要求。实际页表来自 Limine，
-ELF 段标志不能代替未来的页表权限测试。
+ELF 段标志不能代替页表权限检查；Phase7 GDB 独立遍历真实 CR3，验证 text 的 supervisor/RX 与栈的 supervisor/RW/NX。
 
 编译禁用 red zone、栈保护器、PIE、浮点/SIMD 寄存器生成与宿主内建内存函数，
 以 `-ffreestanding -mcmodel=kernel` 生成 x86-64 代码。当前不依赖浮点状态初始化。

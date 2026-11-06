@@ -1,0 +1,105 @@
+limine: Loading executable `boot():/boot/kernseed.elf`...
+Kernseed OS - Phase 6
+Independent x86-64 monolithic kernel
+Kernseed OS - Phase 6
+Boot: Limine base revision 3
+BSS: zero checked
+C runtime: selftest passed
+CPU: long mode, paging, initial IF=0
+CR3: 0x0000000007f55000
+Framebuffer: 800x600x32
+Preemptive tasks and modular shell
+GDT TSS IDT: loaded, DF IST ready
+Software INT: register/IRET selftest passed
+MEMORY_READY free pages=31529 tables=3
+PIT: IRQ0 only, divisor=11932 (about 100 Hz)
+BOOT_READY: entering idle loop
+
+Kernseed Shell: type help
+ks> help
+about - Show system information
+apps - List embedded native applications
+clear - Clear the terminal
+echo - Echo parsed arguments
+help - List registered commands
+meminfo - Read physical memory statistics
+reboot - Reset the PC via i8042
+run - Run one Ring 3 native application
+tasks - Read kernel task states
+uptime - Read elapsed PIT time
+ks> help echo
+echo [text ...] - Echo parsed arguments
+ks> echo "alpha beta" tail
+alpha beta tail
+ks> echo '' tail
+ tail
+ks> echo Mixed_CASE
+Mixed_CASE
+ks> abouX t
+Kernseed OS Phase 5 Shell / Phase 6 kernel - x86-64 educational monolithic kernel
+PolyForm Noncommercial 1.0.0; no user processes
+ks>      
+ks> not-a-command
+error: unknown command: not-a-command
+ks> about extra
+usage: about
+ks> help missing
+error: no such command
+ks> echo a b c d e f g h
+error: too many arguments
+ks> echo "unclosed
+error: malformed quote or escape
+ks> aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+error: line too long; discarded
+ks> echo recovered
+recovered
+ks> echo mouse-safe
+mouse-safe
+ks> meminfo
+pages: usable=31532 free=31512 allocated=16 tables=4 mapped=16
+ks> tasks
+id name state switches runtime_ticks
+0 idle READY 0 1
+1 A READY 114 570
+2 B READY 114 570
+3 C BLOCKED 114 0
+4 yield-exit TERMINATED 4 0
+5 return-exit TERMINATED 1 0
+6 shell RUNNING 114 0
+ks> uptime
+uptime: ticks=1172 seconds=11
+ks> uptime
+uptime: ticks=1222 seconds=12
+ks> clear
+[2J[Hks> echo screencheck
+screencheck
+ks> 
+error: input overflow; press Enter to discard
+
+error: line too long; discarded
+ks> echo fifo-recovered
+fifo-recovered
+ks> reboot
+Rebooting via i8042
+limine: Loading executable `boot():/boot/kernseed.elf`...
+Kernseed OS - Phase 6
+Independent x86-64 monolithic kernel
+Kernseed OS - Phase 6
+Boot: Limine base revision 3
+BSS: zero checked
+C runtime: selftest passed
+CPU: long mode, paging, initial IF=0
+CR3: 0x0000000007f55000
+Framebuffer: 800x600x32
+Preemptive tasks and modular shell
+GDT TSS IDT: loaded, DF IST ready
+Software INT: register/IRET selftest passed
+MEMORY_READY free pages=31529 tables=3
+PIT: IRQ0 only, divisor=11932 (about 100 Hz)
+BOOT_READY: entering idle loop
+
+Kernseed Shell: type help
+ks> about
+Kernseed OS Phase 5 Shell / Phase 6 kernel - x86-64 educational monolithic kernel
+PolyForm Noncommercial 1.0.0; no user processes
+ks> 

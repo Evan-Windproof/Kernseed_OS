@@ -1,0 +1,13 @@
+counter_task_a () at kernel/arch/x86_64/counter-tasks.S:68
+68	    cmpq $0,demo_stop(%rip)
+Warning: the current language does not match this frame.
+Hardware assisted breakpoint 1 at 0xffffffff800040b0: file kernel/scheduler/scheduler.c, line 111.
+
+Breakpoint 1, scheduler_interrupt (frame=0xffffc0000020aef0) at kernel/scheduler/scheduler.c:111
+111	    if((frame->cs&3)==3){
+PASS real IRQ1 input, bounded shell, preemption, memory and registry
+$1 = {ready = 0x1, irqs = 0x30b, bytes = 0x30a, dropped = 0x0, errors = 0x0}
+$2 = {ready = 0x1, commands = 0x14, errors = 0x6, overlong = 0x1, last_status = 0x0}
+$3 = {hhdm = 0xffff800000000000, cr3 = 0xff55000, usable = 0xfb2c, free = 0xfb18, allocated = 0x10, tables = 0x4, mapped = 0x10, tests = 0x1}
+$4 = {active = 0x1, current = 0x1, switches = 0x216, preemptions = 0x108, yields = 0x3, exits = 0x2, reaped = 0x2, errors = 0x0, slice = 0x3, create_failures = 0x1, rollback_passed = 0x1, records = 0x84, idle_ticks = 0x1, observed_a = 0xb0604bd, observed_b = 0xb3c6181, observed_tick = 0x52a, capacity_passed = 0x0, recycle_passed = 0x0}
+[Inferior 1 (process 1) detached]

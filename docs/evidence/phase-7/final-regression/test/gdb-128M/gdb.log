@@ -1,0 +1,27 @@
+0x000000000000fff0 in ?? ()
+Hardware assisted breakpoint 1 at 0xffffffff80001400: file kernel/core/main.c, line 30.
+
+Breakpoint 1, kernel_main () at kernel/core/main.c:30
+30	    boot_state.serial_ok = serial_init();
+rsp            0xffffffff803202c8  0xffffffff803202c8
+eflags         0x46                [ IOPL=0 ZF PF ]
+PASS GDB entry: ABI stack, DF/IF, BSS
+Hardware assisted breakpoint 2 at 0xffffffff800055a4: file kernel/arch/x86_64/entry.S, line 19.
+
+Breakpoint 2, kernel_idle () at kernel/arch/x86_64/entry.S:19
+19	    sub $8, %rsp
+PASS GDB state: long mode, actual page table, runtime, framebuffer
+$1 = {stage = 0x2, cr0 = 0x80010011, cr3 = 0x7f55000, cr4 = 0x20, efer = 0xd00, rflags = 0x2, framebuffer_address = 0xffff8000fd000000, width = 0x320, height = 0x258, pitch = 0xc80, bpp = 0x20, runtime_result = 0x0, serial_ok = 0x1, bss_ok = 0x1}
+rip            0xffffffff800055a4  0xffffffff800055a4 <kernel_idle>
+rsp            0xffffffff803202b8  0xffffffff803202b8
+eflags         0x46                [ IOPL=0 ZF PF ]
+cr0            0x80010011          [ PG WP ET PE ]
+cr3            0x7f55000           [ PDBR=32597 PCID=0 ]
+cr4            0x20                [ PAE ]
+Hardware assisted breakpoint 3 at 0xffffffff800055b2: file kernel/arch/x86_64/entry.S, line 25.
+
+Breakpoint 3, kernel_idle () at kernel/arch/x86_64/entry.S:25
+25	    hlt                         /* IRQ0 wakes us; IRETQ restores IF=1. */
+=> 0xffffffff800055b2 <kernel_idle+14>:	hlt
+   0xffffffff800055b3 <kernel_idle+15>:	jmp    0xffffffff800055b2 <kernel_idle+14>
+[Inferior 1 (process 1) detached]

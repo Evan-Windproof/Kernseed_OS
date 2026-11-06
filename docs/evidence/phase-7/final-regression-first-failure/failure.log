@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "/workspace/Kernseed_OS/tests/phase6.py", line 191, in <module>
+    for memory in map(int,os.environ.get("KERNSEED_TEST_MEMORY","128,256").split(",")):run(memory);results.append({'memory':memory,'result':'passed'})
+                                                                                       ^^^^^^^^^^^
+  File "/workspace/Kernseed_OS/tests/phase6.py", line 89, in run
+    assert debugger.wait(timeout=20)==0
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError

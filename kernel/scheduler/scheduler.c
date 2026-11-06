@@ -4,6 +4,7 @@
 #include <kernseed/runtime.h>
 #include <kernseed/shell.h>
 #include <kernseed/user.h>
+#include <kernseed/console.h>
 #define CANARY 0x6b65726e7374616bULL
 struct task tasks[TASK_LIMIT];
 volatile struct scheduler_stats sched_state;
@@ -14,7 +15,12 @@ extern unsigned char boot_stack_bottom[],boot_stack_top[];
 extern void counter_task_a(void),counter_task_b(void);
 static uint64_t irq_lock(void) {uint64_t f;__asm__ volatile("pushfq; popq %0; cli":"=r"(f)::"memory");return f;}
 static void irq_unlock(uint64_t f){__asm__ volatile("pushq %0; popfq"::"r"(f):"memory","cc");}
-static _Noreturn void bad(void){sched_state.errors++;cpu_halt();}
+static _Noreturn void bad(void){
+    __asm__ volatile("cli":::"memory");sched_state.errors++;
+    const char *s="PANIC: scheduler invariant failed; inspect sched_state/tasks with GDB\n";
+    while(*s)serial_putc(*s++);
+    cpu_halt();
+}
 static _Noreturn void trampoline(void){
     tasks[sched_state.current].entry();
     task_exit();

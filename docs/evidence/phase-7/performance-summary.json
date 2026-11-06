@@ -1,0 +1,32 @@
+{
+  "boot-to-prompt": {
+    "count": 1,
+    "min_seconds": 0.9064536419973592,
+    "mean_seconds": 0.9064536419973592,
+    "max_seconds": 0.9064536419973592
+  },
+  "run hello": {
+    "count": 30,
+    "min_seconds": 0.5057106809981633,
+    "mean_seconds": 0.5635370613660294,
+    "max_seconds": 0.6076619180021225
+  },
+  "run counter": {
+    "count": 30,
+    "min_seconds": 1.2698628539947094,
+    "mean_seconds": 1.2965542736657274,
+    "max_seconds": 1.3248208450022503
+  },
+  "echo \"repeat ok\"": {
+    "count": 30,
+    "min_seconds": 0.5183248940011254,
+    "mean_seconds": 0.6035056456668826,
+    "max_seconds": 0.6249372679958469
+  },
+  "whole-scenario": {
+    "count": 1,
+    "min_seconds": 82.84112307199393,
+    "mean_seconds": 82.84112307199393,
+    "max_seconds": 82.84112307199393
+  }
+}

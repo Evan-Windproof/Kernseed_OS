@@ -1,0 +1,14 @@
+0x000000000000fff0 in ?? ()
+Hardware assisted breakpoint 1 at 0xffffffff80005597: file kernel/arch/x86_64/counter-tasks.S, line 6.
+
+Breakpoint 1, counter_task_a () at kernel/arch/x86_64/counter-tasks.S:6
+6	    push %rbp
+Warning: the current language does not match this frame.
+PASS first real IRQ0 stack switch
+Hardware assisted breakpoint 2 at 0xffffffff80005733: file kernel/arch/x86_64/counter-tasks.S, line 87.
+
+Breakpoint 2, counter_task_b () at kernel/arch/x86_64/counter-tasks.S:87
+87	    push %rbp
+PASS preempted A without yield; all GPRs and independent stack saved
+$1 = {active = 0x1, current = 0x2, switches = 0x2, preemptions = 0x1, yields = 0x0, exits = 0x0, reaped = 0x0, errors = 0x0, slice = 0x5, create_failures = 0x1, rollback_passed = 0x1, records = 0x0, idle_ticks = 0x1, observed_a = 0x0, observed_b = 0x0, observed_tick = 0x0, capacity_passed = 0x0, recycle_passed = 0x0}
+[Inferior 1 (process 1) detached]

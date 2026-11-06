@@ -1,0 +1,20 @@
+limine: Loading executable `boot():/boot/kernseed.elf`...
+Kernseed OS - Phase 7
+Independent x86-64 monolithic kernel
+Kernseed OS - Phase 7
+Boot: Limine base revision 3
+BSS: zero checked
+C runtime: selftest passed
+CPU: long mode, paging, initial IF=0
+CR3: 0x0000000007f55000
+Framebuffer: 800x600x32
+Preemptive tasks and modular shell
+GDT TSS IDT: loaded, DF IST ready
+Software INT: register/IRET selftest passed
+MEMORY_READY free pages=31528 tables=3
+EXCEPTION vector=14 error=0x0000000000000011
+RIP=0xffffc00000000000 RSP=0xffffffff803202b8
+CS=0x0000000000000008 RFLAGS=0x0000000000010086
+PF: protection violation read instruction
+CR2=0xffffc00000000000
+EXCEPTION_HALTED

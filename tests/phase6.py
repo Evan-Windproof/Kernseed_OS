@@ -10,6 +10,7 @@ OUT.mkdir(parents=True,exist_ok=False)
 KEYS={' ':'spc','\n':'ret','\t':'tab','\b':'backspace',"'":'apostrophe','-':'minus','=':'equal','/':'slash','.':'dot',',':'comma',';':'semicolon','[':'bracket_left',']':'bracket_right','\\':'backslash','`':'grave_accent'}
 SHIFT={'"':'apostrophe','!':'1','@':'2','#':'3','$':'4','%':'5','^':'6','&':'7','*':'8','(':'9',')':'0','_':'minus','+':'equal','?':'slash',':':'semicolon','<':'comma','>':'dot','{':'bracket_left','}':'bracket_right','|':'backslash','~':'grave_accent'}
 results=[]
+measurements=[]
 def check_screen(path):
     with path.open('rb') as stream:
         assert stream.readline().strip()==b'P6'
@@ -31,10 +32,12 @@ def run(memory):
         args=[os.environ.get('QEMU','qemu-system-x86_64'),'-machine','pc,accel=tcg','-cpu','qemu64','-m',str(memory),'-smp','1','-vga','std','-display','none','-nic','none','-cdrom',str(ROOT/'build/kernseed.iso'),'-boot','d','-serial',f'file:{serial}','-monitor','none','-qmp',f'unix:{qmpp},server=on,wait=off','-gdb',f'unix:{gdbp},server=on,wait=off','-no-shutdown']
         (d/'command.json').write_text(json.dumps(args,indent=2))
         with (d/'qemu.stderr').open('w') as err:
+            boot_started=started=time.monotonic()
             p=subprocess.Popen(args,stderr=err,stdout=subprocess.DEVNULL);q=None
             try:
                 wait_for(qmpp.exists,p,'QMP socket');q=QMP(qmpp)
                 wait_for(lambda:serial.exists() and 'ks> ' in serial.read_text(),p,'interactive shell')
+                measurements.append({'memory':memory,'operation':'boot-to-prompt','seconds':time.monotonic()-started})
                 def text(s):
                     for c in s:
                         shift=c.isupper() or c in SHIFT
@@ -42,13 +45,49 @@ def run(memory):
                         keys=([{'type':'qcode','data':'shift'}] if shift else [])+[{'type':'qcode','data':code}]
                         q.command('send-key',{'keys':keys,'hold-time':10});time.sleep(.03)
                 def command(s,expected=None):
+                    started=time.monotonic()
                     at=len(serial.read_text());text(s+'\n')
                     wait_for(lambda:'ks> ' in serial.read_text()[at:],p,'prompt after '+s[:24])
                     response=serial.read_text()[at:]
                     (d/'transcript.log').open('a').write(response)
                     if expected is not None:assert expected in response,(s,response)
+                    measurements.append({'memory':memory,'operation':s,'seconds':time.monotonic()-started})
                     return response
                 command('apps','hello counter probe privileged kernelread')
+                command('run missing','error: unavailable application')
+                # Existing allocator fault-injection seam: fail task-stack mapping
+                # after user pages have been mapped. Verify both nested rollbacks.
+                rollback=d/'rollback';rollback.mkdir()
+                script=rollback/'inspect.gdb'
+                script.write_text(f"""set pagination off
+set confirm off
+set language c
+file {ROOT/'build/kernseed.elf'}
+target remote {gdbp}
+python
+{GDB_HELPERS}
+end
+hbreak *user_run
+continue
+set variable fail_after=2
+finish
+python
+check('(int)$eax == -1 && user_state.active == 0')
+check('memory_state.allocated == 16 && memory_state.mapped == 16')
+check('memory_state.free + memory_state.tables + memory_state.allocated == memory_state.usable')
+print('PASS user creation failure restores user pages and partial kernel stack')
+end
+set variable fail_after=-1
+delete breakpoints
+detach
+quit
+""")
+                with (rollback/'gdb.log').open('w') as log:
+                    debugger=subprocess.Popen([os.environ.get('GDB','gdb'),'-nx','-batch','-x',str(script)],stdout=log,stderr=subprocess.STDOUT)
+                    time.sleep(.3)
+                    command('run hello','error: unavailable application')
+                    assert debugger.wait(timeout=20)==0
+                assert 'PASS user creation failure' in (rollback/'gdb.log').read_text()
                 # Attach before launching, so both CPL3 execution and CPL0
                 # syscall entry are observed on the actual CPU, not just text.
                 trace=d/'trace.gdb'
@@ -123,15 +162,36 @@ p/x user_state
 p/x memory_state
 """,['PASS actual Ring3'])
                 q.command('cont')
+                repeats=int(os.environ.get('KERNSEED_APP_REPEATS','0'))
+                assert 0<=repeats<=1000
+                for cycle in range(repeats):
+                    command('run hello','Hello from Kernseed userspace!')
+                    command('run counter','Counter ticks: ')
+                    command('echo "repeat ok"','repeat ok')
+                if repeats:
+                    q.command('stop');rd=d/'repeated';rd.mkdir()
+                    gdb_run(rd,gdbp,ROOT/'build/kernseed.elf',f"""python
+check('user_state.exits == {9+2*repeats} && user_state.active == 0 && user_state.faults == 4')
+check('memory_state.allocated == 16 && memory_state.mapped == 16')
+check('sched_state.errors == 0 && irq_state.fatal == 0 && register_errors == 0')
+print('PASS repeated application lifecycle and resource consistency')
+end
+p/x user_state
+p/x sched_state
+p/x memory_state
+""",['PASS repeated'])
+                    q.command('cont')
+                measurements.append({'memory':memory,'operation':'whole-scenario','seconds':time.monotonic()-boot_started})
                 q.command('quit');p.wait(timeout=5);assert p.returncode==0
             finally:
                 if q:q.close()
                 if p.poll() is None:p.terminate();p.wait(timeout=5)
     print('PASS userspace apps/syscalls/faults',memory,flush=True)
 try:
-    for memory in (128,256):run(memory);results.append({'memory':memory,'result':'passed'})
+    for memory in map(int,os.environ.get("KERNSEED_TEST_MEMORY","128,256").split(",")):run(memory);results.append({'memory':memory,'result':'passed'})
 except Exception:
     (OUT/'failure.log').write_text(traceback.format_exc());raise
 finally:
+    (OUT/'measurements.json').write_text(json.dumps(measurements,indent=2))
     (OUT/'results.json').write_text(json.dumps(results,indent=2))
     print('Phase 6 evidence:',OUT,flush=True)

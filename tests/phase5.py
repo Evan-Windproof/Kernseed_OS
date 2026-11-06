@@ -54,7 +54,7 @@ def run(memory):
                 command('echo "alpha beta" tail','alpha beta tail\n')
                 command("echo '' tail",'\n tail\n')
                 command('echo Mixed_CASE','\nMixed_CASE\n')
-                command('abouX\bt','Kernseed OS Phase 5')
+                command('abouX\bt','Kernseed OS Phase 7')
                 command('  \t  ')
                 command('not-a-command','error: unknown command')
                 command('about extra','usage: about')
@@ -125,7 +125,7 @@ set variable tasks[6].wake_tick=0
                 before=serial.read_text().count('Kernseed Shell: type help')
                 text('reboot\n')
                 wait_for(lambda:serial.read_text().count('Kernseed Shell: type help')>before,p,'hardware reboot and new shell',seconds=40)
-                command('about','Kernseed OS Phase 5')
+                command('about','Kernseed OS Phase 7')
                 q.command('quit');p.wait(timeout=5);assert p.returncode==0
             finally:
                 if q:q.close()

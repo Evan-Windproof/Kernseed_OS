@@ -1,0 +1,10 @@
+[
+  {
+    "memory": 128,
+    "result": "passed"
+  },
+  {
+    "memory": 256,
+    "result": "passed"
+  }
+]

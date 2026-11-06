@@ -15,7 +15,7 @@ Phase 3的空中间页表保守保留并计数，不能把一次性增加的页�
 
 Idle独立使用64 KiB启动栈；其他任务均使用自己的PMM/VMM栈，不共享调用栈。
 保存的context指针只在任务离开CPU后或初次启动前有意义；运行期间栈可能覆盖上一次旧帧，
-直到下一次中断重新保存。TSS.RSP0仍指启动栈，因为当前没有CPL3切换；DF继续使用独立IST。
+直到下一次中断重新保存。Phase6 起 TSS.RSP0 随调度更新为当前任务内核栈顶，供CPL3入口使用；DF继续使用独立IST。
 
 退出不在当前栈释放页。调度器先把它标记TERMINATED并切走，下一次运行于其他任务/Idle栈的
 调度入口才reap；解除映射、INVLPG后再释放PMM页，清空context/physical并标记reclaimed。

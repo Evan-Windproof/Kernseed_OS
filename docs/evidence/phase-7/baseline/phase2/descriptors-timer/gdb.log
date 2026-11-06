@@ -1,0 +1,24 @@
+0x000000000000fff0 in ?? ()
+Hardware assisted breakpoint 1 at 0xffffffff80002a10: file kernel/interrupts/interrupts.c, line 103.
+
+Breakpoint 1, interrupt_dispatch (frame=0xffffffff803201d0) at kernel/interrupts/interrupts.c:103
+103	    __asm__ volatile ("mov %%rsp, %0; pushfq; popq %1" : "=r"(stack), "=r"(flags));
+PASS software INT: normalized frame and aligned C ABI, DF cleared
+Hardware assisted breakpoint 2 at 0xffffffff80005524: file kernel/arch/x86_64/entry.S, line 19.
+
+Breakpoint 2, kernel_idle () at kernel/arch/x86_64/entry.S:19
+19	    sub $8, %rsp
+Warning: the current language does not match this frame.
+PASS all 256 IDT gates, GDTR/IDTR/TR, GDT and DF IST
+$1 = {initialized = 0x1, ticks = 0x0, timer_eoi = 0x0, software_count = 0x1, other_irq = 0x0, spurious = 0x0, entry_if_errors = 0x0, register_probe_result = 0x0, pit_divisor = 0x2e9c, pic_master_mask = 0xfe, pic_slave_mask = 0xff, dispatch_rsp = 0xffffffff803201c8, exception_stack = 0x0, exception_cr2 = 0x0, fatal = 0x0, nested = 0x0, gdtr = {limit = 0x27, base = 0xffffffff8000d090}, idtr = {limit = 0xfff, base = 0xffffffff8000d540}, tr = 0x18}
+Hardware assisted breakpoint 3 at 0xffffffff80002a10: file kernel/interrupts/interrupts.c, line 103.
+
+Breakpoint 3, interrupt_dispatch (frame=0xffffffff80320200) at kernel/interrupts/interrupts.c:103
+103	    __asm__ volatile ("mov %%rsp, %0; pushfq; popq %1" : "=r"(stack), "=r"(flags));
+PASS hardware IRQ0 entry and saved IF
+Hardware assisted breakpoint 4 at 0xffffffff80005532: file kernel/arch/x86_64/entry.S, line 25.
+
+Breakpoint 4, kernel_idle () at kernel/arch/x86_64/entry.S:25
+25	    hlt                         /* IRQ0 wakes us; IRETQ restores IF=1. */
+PASS IRQ0 IRETQ and EOI
+[Inferior 1 (process 1) detached]

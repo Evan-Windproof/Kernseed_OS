@@ -14,3 +14,5 @@ user_enter清空通用寄存器，构建IF=1/IOPL=0的IRETQ帧，进入独立用
 数据页在其他任务栈上reap时解除映射/释放；中间空表延续Phase 3保留策略。
 无TLS/FPU/SIMD、信号、SMEP/SMAP/UMIP完整防护、用户缺页恢复、外部kill或多CPU。
 共享内核仍是教学实现，不声称生产安全边界或抗侧信道能力。
+
+Phase 7：user_run 在单核 CLI 临界区完成空闲检查、分配、映射和 TCB 发布；所有返回恢复原 IF。拒绝 NULL 名称、调度未启动和 Idle 调用。当前同步 Shell 不提供并发 run。

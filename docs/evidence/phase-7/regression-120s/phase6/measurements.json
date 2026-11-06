@@ -1,0 +1,142 @@
+[
+  {
+    "memory": 128,
+    "operation": "boot-to-prompt",
+    "seconds": 0.9098659010051051
+  },
+  {
+    "memory": 128,
+    "operation": "apps",
+    "seconds": 0.20382820099621313
+  },
+  {
+    "memory": 128,
+    "operation": "run missing",
+    "seconds": 0.3674892560011358
+  },
+  {
+    "memory": 128,
+    "operation": "run hello",
+    "seconds": 0.5119216439998127
+  },
+  {
+    "memory": 128,
+    "operation": "run counter",
+    "seconds": 1.3260460210003657
+  },
+  {
+    "memory": 128,
+    "operation": "run probe",
+    "seconds": 0.5562708639990888
+  },
+  {
+    "memory": 128,
+    "operation": "run badflags",
+    "seconds": 0.6018172709955252
+  },
+  {
+    "memory": 128,
+    "operation": "run badstack",
+    "seconds": 0.6023075729972334
+  },
+  {
+    "memory": 128,
+    "operation": "run privileged",
+    "seconds": 0.7126824079969083
+  },
+  {
+    "memory": 128,
+    "operation": "run kernelread",
+    "seconds": 0.7107984280009987
+  },
+  {
+    "memory": 128,
+    "operation": "run kernelwrite",
+    "seconds": 0.7893516420008382
+  },
+  {
+    "memory": 128,
+    "operation": "run hello",
+    "seconds": 0.6062431719983579
+  },
+  {
+    "memory": 128,
+    "operation": "meminfo",
+    "seconds": 0.29479122799966717
+  },
+  {
+    "memory": 128,
+    "operation": "whole-scenario",
+    "seconds": 8.74908759000391
+  },
+  {
+    "memory": 256,
+    "operation": "boot-to-prompt",
+    "seconds": 0.8559560880021309
+  },
+  {
+    "memory": 256,
+    "operation": "apps",
+    "seconds": 0.20313526500103762
+  },
+  {
+    "memory": 256,
+    "operation": "run missing",
+    "seconds": 0.41650116000528214
+  },
+  {
+    "memory": 256,
+    "operation": "run hello",
+    "seconds": 0.6077435409970349
+  },
+  {
+    "memory": 256,
+    "operation": "run counter",
+    "seconds": 1.2714026940011536
+  },
+  {
+    "memory": 256,
+    "operation": "run probe",
+    "seconds": 0.5064189449985861
+  },
+  {
+    "memory": 256,
+    "operation": "run badflags",
+    "seconds": 0.5979379729978973
+  },
+  {
+    "memory": 256,
+    "operation": "run badstack",
+    "seconds": 0.5970502900017891
+  },
+  {
+    "memory": 256,
+    "operation": "run privileged",
+    "seconds": 0.7081831629984663
+  },
+  {
+    "memory": 256,
+    "operation": "run kernelread",
+    "seconds": 0.7083145400029025
+  },
+  {
+    "memory": 256,
+    "operation": "run kernelwrite",
+    "seconds": 0.7893692290017498
+  },
+  {
+    "memory": 256,
+    "operation": "run hello",
+    "seconds": 0.5566731830040226
+  },
+  {
+    "memory": 256,
+    "operation": "meminfo",
+    "seconds": 0.294401213999663
+  },
+  {
+    "memory": 256,
+    "operation": "whole-scenario",
+    "seconds": 8.662594681001792
+  }
+]

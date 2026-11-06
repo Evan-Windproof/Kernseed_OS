@@ -1,0 +1,223 @@
+limine: Loading executable `boot():/boot/kernseed.elf`...
+Kernseed OS - Phase 7
+Independent x86-64 monolithic kernel
+Kernseed OS - Phase 7
+Boot: Limine base revision 3
+BSS: zero checked
+C runtime: selftest passed
+CPU: long mode, paging, initial IF=0
+CR3: 0x000000000ff55000
+Framebuffer: 800x600x32
+Preemptive tasks and modular shell
+GDT TSS IDT: loaded, DF IST ready
+Software INT: register/IRET selftest passed
+MEMORY_READY free pages=64296 tables=3
+PIT: IRQ0 + keyboard IRQ1, divisor=11932 (about 100 Hz)
+BOOT_READY: entering idle loop
+
+Kernseed Shell: type help
+ks> apps
+hello counter probe privileged kernelread kernelwrite badflags badstack
+ks> run missing
+error: unavailable application
+ks> run hello
+Hello from Kernseed userspace!
+ks> run counter
+Counter ticks: 201
+ks> run probe
+PROBE PASSED
+ks> run badflags
+FLAGS SANITIZED
+ks> run badstack
+User fault: task terminated
+ks> run privileged
+User fault: task terminated
+ks> run kernelread
+User fault: task terminated
+ks> run kernelwrite
+User fault: task terminated
+ks> run hello
+Hello from Kernseed userspace!
+ks> meminfo
+pages: usable=64299 free=64278 allocated=16 tables=5 mapped=16
+ks> run hello
+Hello from Kernseed userspace!
+ks> run counter
+Counter ticks: 891
+ks> echo "repeat ok"
+repeat ok
+ks> run hello
+Hello from Kernseed userspace!
+ks> run counter
+Counter ticks: 1141
+ks> echo "repeat ok"
+repeat ok
+ks> run hello
+Hello from Kernseed userspace!
+ks> run counter
+Counter ticks: 1391
+ks> echo "repeat ok"
+repeat ok
+ks> run hello
+Hello from Kernseed userspace!
+ks> run counter
+Counter ticks: 1641
+ks> echo "repeat ok"
+repeat ok
+ks> run hello
+Hello from Kernseed userspace!
+ks> run counter
+Counter ticks: 1891
+ks> echo "repeat ok"
+repeat ok
+ks> run hello
+Hello from Kernseed userspace!
+ks> run counter
+Counter ticks: 2141
+ks> echo "repeat ok"
+repeat ok
+ks> run hello
+Hello from Kernseed userspace!
+ks> run counter
+Counter ticks: 2391
+ks> echo "repeat ok"
+repeat ok
+ks> run hello
+Hello from Kernseed userspace!
+ks> run counter
+Counter ticks: 2641
+ks> echo "repeat ok"
+repeat ok
+ks> run hello
+Hello from Kernseed userspace!
+ks> run counter
+Counter ticks: 2891
+ks> echo "repeat ok"
+repeat ok
+ks> run hello
+Hello from Kernseed userspace!
+ks> run counter
+Counter ticks: 3141
+ks> echo "repeat ok"
+repeat ok
+ks> run hello
+Hello from Kernseed userspace!
+ks> run counter
+Counter ticks: 3381
+ks> echo "repeat ok"
+repeat ok
+ks> run hello
+Hello from Kernseed userspace!
+ks> run counter
+Counter ticks: 3611
+ks> echo "repeat ok"
+repeat ok
+ks> run hello
+Hello from Kernseed userspace!
+ks> run counter
+Counter ticks: 3851
+ks> echo "repeat ok"
+repeat ok
+ks> run hello
+Hello from Kernseed userspace!
+ks> run counter
+Counter ticks: 4091
+ks> echo "repeat ok"
+repeat ok
+ks> run hello
+Hello from Kernseed userspace!
+ks> run counter
+Counter ticks: 4331
+ks> echo "repeat ok"
+repeat ok
+ks> run hello
+Hello from Kernseed userspace!
+ks> run counter
+Counter ticks: 4571
+ks> echo "repeat ok"
+repeat ok
+ks> run hello
+Hello from Kernseed userspace!
+ks> run counter
+Counter ticks: 4811
+ks> echo "repeat ok"
+repeat ok
+ks> run hello
+Hello from Kernseed userspace!
+ks> run counter
+Counter ticks: 5051
+ks> echo "repeat ok"
+repeat ok
+ks> run hello
+Hello from Kernseed userspace!
+ks> run counter
+Counter ticks: 5291
+ks> echo "repeat ok"
+repeat ok
+ks> run hello
+Hello from Kernseed userspace!
+ks> run counter
+Counter ticks: 5531
+ks> echo "repeat ok"
+repeat ok
+ks> run hello
+Hello from Kernseed userspace!
+ks> run counter
+Counter ticks: 5781
+ks> echo "repeat ok"
+repeat ok
+ks> run hello
+Hello from Kernseed userspace!
+ks> run counter
+Counter ticks: 6031
+ks> echo "repeat ok"
+repeat ok
+ks> run hello
+Hello from Kernseed userspace!
+ks> run counter
+Counter ticks: 6281
+ks> echo "repeat ok"
+repeat ok
+ks> run hello
+Hello from Kernseed userspace!
+ks> run counter
+Counter ticks: 6531
+ks> echo "repeat ok"
+repeat ok
+ks> run hello
+Hello from Kernseed userspace!
+ks> run counter
+Counter ticks: 6781
+ks> echo "repeat ok"
+repeat ok
+ks> run hello
+Hello from Kernseed userspace!
+ks> run counter
+Counter ticks: 7031
+ks> echo "repeat ok"
+repeat ok
+ks> run hello
+Hello from Kernseed userspace!
+ks> run counter
+Counter ticks: 7281
+ks> echo "repeat ok"
+repeat ok
+ks> run hello
+Hello from Kernseed userspace!
+ks> run counter
+Counter ticks: 7531
+ks> echo "repeat ok"
+repeat ok
+ks> run hello
+Hello from Kernseed userspace!
+ks> run counter
+Counter ticks: 7781
+ks> echo "repeat ok"
+repeat ok
+ks> run hello
+Hello from Kernseed userspace!
+ks> run counter
+Counter ticks: 8031
+ks> echo "repeat ok"
+repeat ok
+ks> 

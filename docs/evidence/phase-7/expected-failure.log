@@ -1,0 +1,14 @@
+HOST_CC="cc" ./scripts/fetch-limine.sh
+limine.h: OK
+limine.c: OK
+limine-bios-hdd.h: OK
+limine-bios.sys: OK
+limine-bios-cd.bin: OK
+limine-uefi-cd.bin: OK
+BOOTX64.EFI: OK
+LICENSE: OK
+make[1]: Entering directory '/workspace/Kernseed_OS/.cache/limine'
+make[1]: 'limine' is up to date.
+make[1]: Leaving directory '/workspace/Kernseed_OS/.cache/limine'
+false -std=c11 -O2 -g3 -Wall -Wextra -Werror -ffreestanding -fno-builtin -fno-stack-protector -fno-stack-check -fno-pic -fno-pie -fno-asynchronous-unwind-tables -fno-unwind-tables -m64 -march=x86-64 -mno-red-zone -mgeneral-regs-only -mcmodel=kernel -Iinclude -Ithird_party/limine -MMD -MP -DKERNSEED_TEST_FAULT=0 -DKERNSEED_SCHEDULER=1 -DKERNSEED_SHELL=1 -DKERNSEED_USERMODE=1 -c kernel/arch/x86_64/gdt.c -o build/expected-failure/kernel/arch/x86_64/gdt.o
+make: *** [Makefile:46: build/expected-failure/kernel/arch/x86_64/gdt.o] Error 1

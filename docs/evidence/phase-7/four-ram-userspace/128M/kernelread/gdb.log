@@ -1,0 +1,6 @@
+counter_task_a () at kernel/arch/x86_64/counter-tasks.S:34
+34	    cmpq .Lcounter_expected_rbx(%rip), %rbx
+Warning: the current language does not match this frame.
+PASS user fault kernelread: actual vector/error and safe cleanup
+$1 = {slot = 0x4, active = 0x0, calls = 0x2a6, last_cs = 0x2b, last_rsp = 0xffffc00001100ff8, last_number = 0x3, exits = 0x7, faults = 0x3, vector = 0xe, error = 0x5, cr2 = 0xffffffff80000000, invalid = 0x4, preemptions = 0x4, fault_rip = 0xffffc00001000000}
+[Inferior 1 (process 1) detached]

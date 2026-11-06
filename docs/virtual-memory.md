@@ -17,4 +17,6 @@ OWNERSHIP、CONFLICT、HUGE、OOM 或 OK，可由 GDB 检查。query/unmap 使�
 
 保守策略：空中间页表当前不回收；分配中途失败时已建立的空表仍被标为 TABLE、计入统计，
 绝不错误返回空闲池。1 GiB 控制区最多需要 514 张中间表；这是明确的空间限制，不是完整通用 VMM。
-没有用户态地址空间、COW、换页、TLB shootdown、页表共享或大页拆分。
+没有独立用户CR3地址空间、COW、换页、TLB shootdown、页表共享或大页拆分。
+
+Phase6 在同一受控窗口给白名单用户页设置User及各级祖先权限，不改变其他Supervisor叶子；详见user-mode.md。

@@ -1,0 +1,8 @@
+counter_task_a () at kernel/arch/x86_64/counter-tasks.S:62
+62	    cmpq $0x55112233,(%rsp)
+Warning: the current language does not match this frame.
+PASS repeated application lifecycle and resource consistency
+$1 = {slot = 0x4, active = 0x0, calls = 0x51c5, last_cs = 0x2b, last_rsp = 0xffffc00001100fc8, last_number = 0x3, exits = 0x45, faults = 0x4, vector = 0xe, error = 0x7, cr2 = 0xffffffff80000000, invalid = 0x4, preemptions = 0x7c, fault_rip = 0xffffc00001000000}
+$2 = {active = 0x1, current = 0x1, switches = 0xcb2, preemptions = 0x662, yields = 0x22, exits = 0x47, reaped = 0x47, errors = 0x0, slice = 0x1, create_failures = 0x1, rollback_passed = 0x1, records = 0x2f3, idle_ticks = 0x1, observed_a = 0x41689d4a, observed_b = 0x424fbfc0, observed_tick = 0x1feb, capacity_passed = 0x0, recycle_passed = 0x0}
+$3 = {hhdm = 0xffff800000000000, cr3 = 0xff55000, usable = 0xfb2b, free = 0xfb16, allocated = 0x10, tables = 0x5, mapped = 0x10, tests = 0x1}
+[Inferior 1 (process 1) detached]

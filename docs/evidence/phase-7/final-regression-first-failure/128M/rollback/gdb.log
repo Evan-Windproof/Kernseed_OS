@@ -1,0 +1,13 @@
+counter_task_b () at kernel/arch/x86_64/counter-tasks.S:133
+133	    cmpq .Lcounter_expected_r11(%rip), %r11
+Warning: the current language does not match this frame.
+Hardware assisted breakpoint 1 at 0xffffffff80004800: file kernel/syscall/user.c, line 25.
+
+Breakpoint 1, user_run (name=0xffffc00000228f44 "hello") at kernel/syscall/user.c:25
+25	    uint64_t flags;__asm__ volatile("pushfq; popq %0; cli":"=r"(flags)::"memory");
+0xffffffff800050ed in run (argc=<optimized out>, argv=<optimized out>) at shell/commands/run.c:5
+5	static int run(int argc,char **argv){(void)argc;if(user_run(argv[1])){terminal_write("error: unavailable application\n");return 1;}return 0;}
+Value returned is $1 = -1
+/workspace/Kernseed_OS/build/phase6-results/20261106T213650Z/128M/rollback/inspect.gdb:28: Error in sourced command file:
+ASSERT FAILED: (long)$rax == -1 && user_state.active == 0
+[Inferior 1 (process 1) detached]
