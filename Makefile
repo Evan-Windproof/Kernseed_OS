@@ -6,8 +6,8 @@ PYTHON ?= python3
 XORRISO ?= xorriso
 BUILD ?= build
 TEST_FAULT ?= 0
-ifeq ($(filter $(TEST_FAULT),0 1 2 3 4 5),)
-$(error TEST_FAULT must be 0 (normal), 1 (DE), 2 (UD), 3 (GP), 4 (PF), or 5 (DF))
+ifeq ($(filter $(TEST_FAULT),0 1 2 3 4 5 6 7 8),)
+$(error TEST_FAULT must be 0 (normal), 1 (DE), 2 (UD), 3 (GP), 4 (PF), or 5 (DF), 6 (unmapped), 7 (write), 8 (NX))
 endif
 ifneq ($(TEST_FAULT),0)
 ifeq ($(BUILD),build)
@@ -20,7 +20,7 @@ CFLAGS := -std=c11 -O2 -g3 -Wall -Wextra -Werror -ffreestanding \
           -march=x86-64 -mno-red-zone -mgeneral-regs-only -mcmodel=kernel \
           -Iinclude -Ithird_party/limine -MMD -MP -DKERNSEED_TEST_FAULT=$(TEST_FAULT)
 LDFLAGS := -nostdlib -static -z max-page-size=0x1000 --build-id=none -T boot/linker.ld
-C_SOURCES := $(sort $(wildcard kernel/core/*.c kernel/drivers/*.c kernel/arch/x86_64/*.c kernel/interrupts/*.c))
+C_SOURCES := $(sort $(wildcard kernel/core/*.c kernel/drivers/*.c kernel/arch/x86_64/*.c kernel/interrupts/*.c kernel/memory/*.c))
 S_SOURCES := $(sort $(wildcard kernel/arch/x86_64/*.S))
 OBJECTS := $(patsubst %.c,$(BUILD)/%.o,$(C_SOURCES)) $(patsubst %.S,$(BUILD)/%.o,$(S_SOURCES)) $(BUILD)/isr-stubs.o
 .PHONY: all deps iso run headless debug test test-host clean check reproducible test-phase2
@@ -71,7 +71,11 @@ $(BUILD)/runtime-test: tests/runtime.c kernel/core/runtime.c include/kernseed/ru
 $(BUILD)/framebuffer-test: tests/framebuffer.c kernel/drivers/framebuffer.c include/kernseed/console.h third_party/limine/limine.h
 	@mkdir -p $(@D)
 	$(HOST_CC) -std=c11 -O2 -Wall -Wextra -Werror -Iinclude -Ithird_party/limine tests/framebuffer.c kernel/drivers/framebuffer.c -o $@
-test-host: $(BUILD)/runtime-test $(BUILD)/framebuffer-test
+$(BUILD)/memory-span-test: tests/memory-span.c kernel/memory/span.c include/kernseed/memory.h
+	@mkdir -p $(@D)
+	$(HOST_CC) -std=c11 -O2 -Wall -Wextra -Werror -Iinclude tests/memory-span.c kernel/memory/span.c -o $@
+test-host: $(BUILD)/runtime-test $(BUILD)/framebuffer-test $(BUILD)/memory-span-test
+	./$(BUILD)/memory-span-test
 	./$(BUILD)/runtime-test
 	./$(BUILD)/framebuffer-test
 check: $(BUILD)/kernseed.elf
@@ -79,6 +83,7 @@ check: $(BUILD)/kernseed.elf
 test: iso test-host check
 	$(PYTHON) tests/boot.py
 	$(PYTHON) tests/phase2.py
+	$(PYTHON) tests/phase3.py
 test-phase2: iso
 	$(PYTHON) tests/phase2.py
 reproducible:

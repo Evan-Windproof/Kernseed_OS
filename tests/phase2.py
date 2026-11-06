@@ -15,7 +15,8 @@ import traceback
 from boot import QMP, wait_for, ROOT
 
 OUT = ROOT / 'build' / 'phase2-results' / time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())
-OUT.mkdir(parents=True, exist_ok=False)
+if __name__ == "__main__":
+    OUT.mkdir(parents=True, exist_ok=False)
 
 GDB_HELPERS = r'''
 import gdb, re, struct
@@ -145,12 +146,12 @@ p/x irq_state
 delete breakpoints
 '''
 
-def boot(name, image, elf, body, markers, normal=False):
+def boot(name, image, elf, body, markers, normal=False, memory=128):
     directory=OUT/name; directory.mkdir()
     with tempfile.TemporaryDirectory(prefix='ks2-') as temp:
         qmp_path=Path(temp)/'qmp'; gdb_path=Path(temp)/'gdb'
         args=[os.environ.get('QEMU','qemu-system-x86_64'),'-machine','pc,accel=tcg','-cpu','qemu64',
-              '-m','128','-smp','1','-vga','std','-display','none','-nic','none',
+              '-m',str(memory),'-smp','1','-vga','std','-display','none','-nic','none',
               '-cdrom',str(image),'-boot','d','-serial',f'file:{directory/"serial.log"}',
               '-monitor','none','-qmp',f'unix:{qmp_path},server=on,wait=off',
               '-gdb',f'unix:{gdb_path},server=on,wait=off','-S','-no-reboot','-no-shutdown',
@@ -211,31 +212,35 @@ delete breakpoints'''
                     except subprocess.TimeoutExpired:p.kill();p.wait()
     print('PASS',name,flush=True)
 
-results=[]
-normal_image=ROOT/'build/kernseed.iso'
-original_hash=hashlib.sha256(normal_image.read_bytes()).hexdigest()
-try:
-    symbols = subprocess.check_output(['nm',str(ROOT/'build/kernseed.elf')],text=True)
-    assert not re.search(r'\bfault_(de|ud|gp|pf)(_|\b)',symbols),'Normal ELF contains fault injection instructions'
-    boot('descriptors-timer',normal_image,ROOT/'build/kernseed.elf',NORMAL,
-         ['PASS software INT','PASS all 256','PASS hardware IRQ0','PASS IRQ0 IRETQ'],normal=True)
-    results.append({'name':'descriptors-timer','result':'passed'})
-    for kind,vector,error,rip in [(1,0,0,'fault_de_rip'),(2,6,0,'fault_ud_rip'),
-                                  (3,13,40,'fault_gp_rip'),(4,14,0,'fault_pf_rip'),(5,8,0,'fault_gp_rip')]:
-        name=f'fault-{kind}-vector-{vector}'
-        directory=OUT/name;directory.mkdir()
-        with (directory/'build.log').open('w') as log:
-            subprocess.run(['make','--no-print-directory',f'BUILD=build/fault-{kind}',f'TEST_FAULT={kind}','-j2','iso'],
-                           stdout=log,stderr=subprocess.STDOUT,check=True,timeout=60)
-        # boot() owns its directory; keep the build evidence beside it.
-        boot(name+'-run',ROOT/f'build/fault-{kind}/kernseed.iso',ROOT/f'build/fault-{kind}/kernseed.elf',
-             fault_body(vector,error,rip,kind==5),[f'PASS real fault vector {vector}'])
-        results.append({'name':name,'result':'passed'})
-    assert hashlib.sha256(normal_image.read_bytes()).hexdigest()==original_hash,'Fault builds replaced normal ISO'
-except Exception:
-    (OUT/'failure.log').write_text(traceback.format_exc())
-    results.append({'name':locals().get('name','descriptors-timer'),'result':'failed'})
-    raise
-finally:
-    (OUT/'results.json').write_text(json.dumps(results,indent=2)+'\n')
-    print('Phase 2 evidence:',OUT.relative_to(ROOT),flush=True)
+def main():
+    results=[]
+    normal_image=ROOT/'build/kernseed.iso'
+    original_hash=hashlib.sha256(normal_image.read_bytes()).hexdigest()
+    try:
+        symbols = subprocess.check_output(['nm',str(ROOT/'build/kernseed.elf')],text=True)
+        assert not re.search(r'\bfault_(de|ud|gp|pf)(_|\b)',symbols),'Normal ELF contains fault injection instructions'
+        boot('descriptors-timer',normal_image,ROOT/'build/kernseed.elf',NORMAL,
+             ['PASS software INT','PASS all 256','PASS hardware IRQ0','PASS IRQ0 IRETQ'],normal=True)
+        results.append({'name':'descriptors-timer','result':'passed'})
+        for kind,vector,error,rip in [(1,0,0,'fault_de_rip'),(2,6,0,'fault_ud_rip'),
+                                      (3,13,40,'fault_gp_rip'),(4,14,0,'fault_pf_rip'),(5,8,0,'fault_gp_rip')]:
+            name=f'fault-{kind}-vector-{vector}'
+            directory=OUT/name;directory.mkdir()
+            with (directory/'build.log').open('w') as log:
+                subprocess.run(['make','--no-print-directory',f'BUILD=build/fault-{kind}',f'TEST_FAULT={kind}','-j2','iso'],
+                               stdout=log,stderr=subprocess.STDOUT,check=True,timeout=60)
+            # boot() owns its directory; keep the build evidence beside it.
+            boot(name+'-run',ROOT/f'build/fault-{kind}/kernseed.iso',ROOT/f'build/fault-{kind}/kernseed.elf',
+                 fault_body(vector,error,rip,kind==5),[f'PASS real fault vector {vector}'])
+            results.append({'name':name,'result':'passed'})
+        assert hashlib.sha256(normal_image.read_bytes()).hexdigest()==original_hash,'Fault builds replaced normal ISO'
+    except Exception:
+        (OUT/'failure.log').write_text(traceback.format_exc())
+        results.append({'name':locals().get('name','descriptors-timer'),'result':'failed'})
+        raise
+    finally:
+        (OUT/'results.json').write_text(json.dumps(results,indent=2)+'\n')
+        print('Phase 2 evidence:',OUT.relative_to(ROOT),flush=True)
+
+if __name__ == "__main__":
+    main()
