@@ -1,0 +1,22 @@
+[
+  {
+    "memory": 128,
+    "operation": "boot-to-prompt",
+    "seconds": 0.8556621270035976
+  },
+  {
+    "memory": 128,
+    "operation": "apps",
+    "seconds": 0.20371520499611506
+  },
+  {
+    "memory": 128,
+    "operation": "run missing",
+    "seconds": 0.41750614500051597
+  },
+  {
+    "memory": 128,
+    "operation": "run hello",
+    "seconds": 0.40722996200202033
+  }
+]

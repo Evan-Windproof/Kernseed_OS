@@ -1,0 +1,9 @@
+0x000000000000fff0 in ?? ()
+Hardware assisted breakpoint 1 at 0xffffffff80005524: file kernel/arch/x86_64/entry.S, line 19.
+
+Breakpoint 1, kernel_idle () at kernel/arch/x86_64/entry.S:19
+19	    sub $8, %rsp
+Warning: the current language does not match this frame.
+PASS physical allocator counters and actual CR3/HHDM page tables
+$1 = {hhdm = 0xffff800000000000, cr3 = 0x7f65000, usable = 0x7b3c, free = 0x7b39, allocated = 0x0, tables = 0x3, mapped = 0x0, tests = 0x1}
+[Inferior 1 (process 1) detached]

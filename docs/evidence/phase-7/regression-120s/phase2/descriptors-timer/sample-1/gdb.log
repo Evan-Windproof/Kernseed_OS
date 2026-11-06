@@ -1,0 +1,9 @@
+kernel_idle () at kernel/arch/x86_64/entry.S:26
+26	    jmp kernel_idle_halt
+Warning: the current language does not match this frame.
+Hardware assisted breakpoint 1 at 0xffffffff800055b2: file kernel/arch/x86_64/entry.S, line 25.
+
+Breakpoint 1, kernel_idle () at kernel/arch/x86_64/entry.S:25
+25	    hlt                         /* IRQ0 wakes us; IRETQ restores IF=1. */
+SAMPLE 223 223 0 0
+[Inferior 1 (process 1) detached]

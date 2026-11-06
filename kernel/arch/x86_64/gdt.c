@@ -9,7 +9,7 @@ extern void gdt_load(const struct table_pointer *pointer);
 
 void gdt_init(void) {
     /* CPL0 code: present, executable, L=1 D=0. Data: present, L=0.
-     * TSS descriptor occupies TWO slots; no user segments in this phase. */
+     * TSS descriptor occupies TWO slots; optional user code/data follow it. */
     gdt[0] = 0;
     gdt[1] = 0x00af9a000000ffff;
     gdt[2] = 0x00cf92000000ffff;

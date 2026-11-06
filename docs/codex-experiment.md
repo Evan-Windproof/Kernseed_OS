@@ -35,3 +35,5 @@ Phase 3 的内存实现、实际回归与技术限制见 [报告](phase3-test-re
 Phase 4新增真正的IRQ0抢占与任务回收，实际运行证据和边界见 [报告](phase4-test-report.md)。
 
 Phase 5通过真实QMP键盘与硬件复位验证模块化Shell；结果见 [报告](phase5-test-report.md)。
+
+Phase 6 已提供真实 Ring3/系统调用但没有通用ELF加载器；Phase 7 的有限审查、稳定性测试与未验证范围见 [报告](phase7-test-report.md) 和 [审查](stability-review.md)。不得将静态推断记录为已复现缺陷。

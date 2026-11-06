@@ -1,0 +1,2 @@
+PASS userspace apps/syscalls/faults 256
+Phase 6 evidence: /workspace/Kernseed_OS/build/phase6-results/20261106T213227Z

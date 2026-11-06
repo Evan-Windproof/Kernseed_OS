@@ -1,0 +1,13 @@
+counter_task_a () at kernel/arch/x86_64/counter-tasks.S:54
+54	    cmpq .Lcounter_expected_r12(%rip), %r12
+Warning: the current language does not match this frame.
+Hardware assisted breakpoint 1 at 0xffffffff80004150: file kernel/scheduler/scheduler.c, line 117.
+
+Breakpoint 1, scheduler_interrupt (frame=0xffffc0000020aef0) at kernel/scheduler/scheduler.c:117
+117	    if((frame->cs&3)==3){
+PASS actual kernel RX supervisor text, RW NX supervisor stack, CPU and resource invariants
+$1 = {stage = 0x2, cr0 = 0x80010011, cr3 = 0xff55000, cr4 = 0x20, efer = 0xd00, rflags = 0x2, framebuffer_address = 0xffff8000fd000000, width = 0x320, height = 0x258, pitch = 0xc80, bpp = 0x20, runtime_result = 0x0, serial_ok = 0x1, bss_ok = 0x1}
+$2 = {initialized = 0x1, ticks = 0x2a, timer_eoi = 0x2a, software_count = 0x1, other_irq = 0x1, spurious = 0x0, entry_if_errors = 0x0, register_probe_result = 0x0, pit_divisor = 0x2e9c, pic_master_mask = 0xfc, pic_slave_mask = 0xff, dispatch_rsp = 0xffffc0000020aed0, exception_stack = 0x0, exception_cr2 = 0x0, fatal = 0x0, nested = 0x0, gdtr = {limit = 0x37, base = 0xffffffff8000d090}, idtr = {limit = 0xfff, base = 0xffffffff8000d560}, tr = 0x18}
+$3 = {active = 0x1, current = 0x1, switches = 0x16, preemptions = 0x8, yields = 0x3, exits = 0x2, reaped = 0x2, errors = 0x0, slice = 0x5, create_failures = 0x1, rollback_passed = 0x1, records = 0x4, idle_ticks = 0x1, observed_a = 0x547fc6, observed_b = 0x59503c, observed_tick = 0x29, capacity_passed = 0x0, recycle_passed = 0x0}
+$4 = {hhdm = 0xffff800000000000, cr3 = 0xff55000, usable = 0xfb2b, free = 0xfb17, allocated = 0x10, tables = 0x4, mapped = 0x10, tests = 0x1}
+[Inferior 1 (process 1) detached]

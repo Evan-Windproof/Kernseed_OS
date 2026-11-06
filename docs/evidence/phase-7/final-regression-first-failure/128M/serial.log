@@ -1,0 +1,25 @@
+limine: Loading executable `boot():/boot/kernseed.elf`...
+Kernseed OS - Phase 7
+Independent x86-64 monolithic kernel
+Kernseed OS - Phase 7
+Boot: Limine base revision 3
+BSS: zero checked
+C runtime: selftest passed
+CPU: long mode, paging, initial IF=0
+CR3: 0x0000000007f65000
+Framebuffer: 800x600x32
+Preemptive tasks and modular shell
+GDT TSS IDT: loaded, DF IST ready
+Software INT: register/IRET selftest passed
+MEMORY_READY free pages=31544 tables=3
+PIT: IRQ0 + keyboard IRQ1, divisor=11932 (about 100 Hz)
+BOOT_READY: entering idle loop
+
+Kernseed Shell: type help
+ks> apps
+hello counter probe privileged kernelread kernelwrite badflags badstack
+ks> run missing
+error: unavailable application
+ks> run hello
+error: unavailable application
+ks> 

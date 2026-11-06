@@ -1,0 +1,4 @@
+limine: Loading executable `boot():/boot/kernseed.elf`...
+Kernseed OS - Phase 7
+Independent x86-64 monolithic kernel
+PANIC: No framebuffer response

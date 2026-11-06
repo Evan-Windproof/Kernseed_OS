@@ -1,0 +1,7 @@
+apps
+hello counter probe privileged kernelread kernelwrite badflags badstack
+ks> run missing
+error: unavailable application
+ks> run hello
+error: unavailable application
+ks> 

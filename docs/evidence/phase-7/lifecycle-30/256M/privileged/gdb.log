@@ -1,0 +1,6 @@
+counter_task_a () at kernel/arch/x86_64/counter-tasks.S:50
+50	    cmpq .Lcounter_expected_r10(%rip), %r10
+Warning: the current language does not match this frame.
+PASS user fault privileged: actual vector/error and safe cleanup
+$1 = {slot = 0x4, active = 0x0, calls = 0x2be, last_cs = 0x2b, last_rsp = 0xffffc00001100ff8, last_number = 0x3, exits = 0x6, faults = 0x2, vector = 0xd, error = 0x0, cr2 = 0x0, invalid = 0x4, preemptions = 0x4, fault_rip = 0xffffc00001000000}
+[Inferior 1 (process 1) detached]

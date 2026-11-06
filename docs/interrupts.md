@@ -1,37 +1,39 @@
-# x86-64 异常、中断与 PIT（Phase 2）
+# x86-64 异常、中断与 PIT（Phase 2–7）
 
 ## 硬件范围与初始化顺序
 
 当前支持 QEMU PC/SeaBIOS、单核 x86-64、传统双 8259 PIC 和 8254 兼容 PIT。
 选择 PIT 是因为它成熟、容易观察，并不需要提前引入 ACPI/APIC 校准机制。
-不声称支持任意实机、APIC/SMP 或用户态进程。沿用 Limine base revision 3 与启动页表。
+不声称支持任意实机或 APIC/SMP；Phase6 增加最小用户任务。沿用 Limine base revision 3 与启动页表。
 
 入口保持 CLI/CLD → Phase 1 串口/屏幕与 CPU 自检 → GDT/TSS → IDT → PIC 全屏蔽 →
-软件 INT 返回自检 → PIT 配置并仅解除 IRQ0 屏蔽 → BOOT_READY → idle 中 STI/HLT。
+软件 INT 返回自检 → PIT 配置，默认解除 IRQ0/IRQ1 屏蔽 → BOOT_READY → idle 中 STI/HLT。
 初始化、故障和正常 idle 分别处理；`cpu_halt` 永不启用 IRQ。
 
 ## GDT、TSS、IST
 
-`gdt.c` 使用 5 个 8 字节槽：null、CPL0 64 位代码（selector 8）、数据（0x10）、
-占两个槽的 64 位 TSS（0x18）。代码描述符 L=1/D=0，数据段 L=0；TSS 描述符不是普通数据段。
+`gdt.c` 在 USERMODE=0 的旧夹具使用 5 个 8 字节槽：null、CPL0 64 位代码（selector 8）、数据（0x10）、
+占两个槽的 64 位 TSS（0x18）；默认 USERMODE=1 再加用户代码 0x2b 和数据 0x33，共7槽。代码描述符 L=1/D=0，数据段 L=0；TSS 描述符不是普通数据段。
 加载 GDTR 后使用 `lretq` 重载 CS，重载数据选择子并执行 `ltr`。LTR 会把 TSS 标记为 busy。
 `sgdt/sidt/str` 的实际结果记录在 `irq_state`，不只记录软件希望加载的地址。
 
-TSS 为 104 字节，RSP0 指向启动栈顶，I/O bitmap offset 超出 limit（无权限位图）。
+TSS 为 104 字节，RSP0 初始指向启动栈顶，调度切换时更新为目标任务内核栈顶，I/O bitmap offset 超出 limit（无权限位图）。
 IST1 指向独立的 16 KiB `df_stack`。IDT 向量 8 的 gate 设置 IST=1，所以 #DF 即使无法沿用
 普通栈，也会先切到已映射的专用栈。其他向量当前 IST=0。
-尚无页保护栈哨兵；本设计不保证在任意页表、GDT/IDT 或 IST 自身损坏时仍能可靠输出。
+Phase4 任务栈已有上下 guard/canary，DF 与启动栈不具备同样边界；本设计不保证在任意页表、GDT/IDT 或 IST 自身损坏时仍能可靠输出。
 
 ## IDT 与中断分类
 
 256 项、每项 16 字节；正确拼接 handler 的 64 位地址，selector=8，reserved=0。
-所有 gate 都是 present、DPL0、64 位 interrupt gate（0x8e），进入时 CPU 清 IF。
+所有 gate 均为 present 的 64 位 interrupt gate；默认 DPL0/0x8e，唯 USERMODE=1 的向量130 为 DPL3/0xee。CPU 进入时清 IF。
 
 | 向量 | 来源与处理 |
 |---|---|
-| 0–31 | CPU 异常；保存真实现场并受控停机 |
-| 32–47 | 重映射的 PIC IRQ；处理与 EOI，正常仅允许 32/IRQ0 |
+| 0–31 | CPU 异常；内核故障受控停机，用户故障终止任务 |
+| 32–47 | 重映射的 PIC IRQ；处理与 EOI，默认允许 32/IRQ0 与33/IRQ1 |
 | 128 | CPL0 `INT 0x80` 寄存器恢复自检；不是 syscall，不对 CPL3 开放 |
+| 129 | CPL0 调度 trap，yield/sleep/exit |
+| 130 | CPL3 `INT 0x82` 自有系统调用 |
 | 其他 | 非预期中断；报告并停机，不猜测恢复 |
 
 CPU 自动压错误码的向量为 8、10、11、12、13、14、17、21、29、30。
@@ -53,8 +55,8 @@ CPU 自动压错误码的向量为 8、10、11、12、13、14、17、21、29、3
 
 CLD 确保 C ABI 的 DF=0；原始 DF 已保存在硬件帧内。把 frame 传给 RDI，
 保存真实帧指针到已备份的 RBX，向下对齐 RSP 至 16 后 call C（C 入口模 16=8）。
-C 返回后恢复原帧位置，恢复所有通用寄存器，只跳过 vector/error，最后 `iretq`。
-无需手动弹 RIP 或修改栈切换字段。当前只有 CPL0，无 `swapgs` 或用户地址空间切换。
+dispatch 返回后由 scheduler_interrupt 返回目标帧指针，更换 RSP，恢复所有通用寄存器，只跳过 vector/error，最后 `iretq`。
+无需手动弹 RIP 或修改栈切换字段。CPL3 使用 TSS.RSP0 切换内核栈；没有 `swapgs` 或用户 CR3 切换。
 
 编译继续使用 `-mno-red-zone -mgeneral-regs-only`；当前 ISR 不使用浮点/SIMD，也不擅自开启
 嵌套硬件 IRQ。自检刻意令被中断 RSP 非 16 对齐、DF=1，并为全部通用寄存器设置哨兵，
@@ -67,7 +69,7 @@ C 返回后恢复原帧位置，恢复所有通用寄存器，只跳过 vector/e
 异常输出不分配内存、不获取锁、不等待 tick，不进行调度。首次致命异常标记 fatal；
 诊断中再次进入异常只尝试有界串口输出，然后 CLI/HLT，避免递归 framebuffer 输出。
 #DF 使用 IST 独立栈。不能把此保护描述为在硬件状态全面损坏时“绝不会 triple fault”。
-所有当前异常均不可恢复，没有异常跳过、缺页按需分配或用户进程终止机制。
+内核异常不可恢复，无缺页按需分配；用户态异常会记录现场并终止当前用户任务，由其他栈回收。
 
 隔离测试使用真实指令：`div` 除零、`ud2`、超出 GDT limit 的段选择子加载、
 读取未映射的 canonical 地址 `0x400000000000`。#DF 测试故意撤销 #GP gate 的 present 位，
@@ -77,7 +79,7 @@ C 返回后恢复原帧位置，恢复所有通用寄存器，只跳过 vector/e
 ## PIC、PIT 与 EOI
 
 PIC 使用 ICW1–4 重映射到 32/40、8086 模式、关闭自动 EOI。先屏蔽所有 IRQ，
-最终 master mask=0xfe、slave mask=0xff，仅允许 IRQ0，键盘、RTC 与级联均不放行。
+默认 master mask=0xfc、slave mask=0xff，允许 IRQ0 和键盘 IRQ1；旧无 Shell 夹具为0xfe，RTC 与级联不放行。
 为 IRQ7/IRQ15 实现 spurious 检测：读取 ISR，spurious IRQ7 不发 EOI，spurious IRQ15
 只向 master 级联发 EOI。真实 slave IRQ 才按 slave → master 顺序 EOI。
 spurious 分支已实现，但当前自动验收没有注入这些时序，应与已测 IRQ0 区分。
@@ -86,7 +88,7 @@ PIT channel 0，control=0x34（低/高字节、mode 2、binary），输入时钟
 divisor=11,932，因此约 99.9985 Hz。tick 只在 IRQ0 handler 中递增，发送非特定 master EOI
 后递增 timer_eoi 诊断计数。ISR 不打印，不把普通循环次数当时间。
 64 位计数器对齐、单 CPU、interrupt gate 不允许嵌套 maskable IRQ；读取是当前配置下的快照，
-不是将来 SMP 的完整同步方案。PIT 不是校准高精度时钟；没有提供完整 uptime/Shell。
+不是将来 SMP 的完整同步方案。PIT 不是校准高精度时钟；Phase5 的 uptime 按真实 tick 换算，不能视为高精度墙钟。
 
 ## 验收边界
 

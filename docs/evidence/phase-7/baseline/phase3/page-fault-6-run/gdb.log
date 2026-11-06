@@ -1,0 +1,10 @@
+0x000000000000fff0 in ?? ()
+Hardware assisted breakpoint 1 at 0xffffffff80005855: file kernel/arch/x86_64/entry.S, line 32.
+
+Breakpoint 1, cpu_halt () at kernel/arch/x86_64/entry.S:32
+32	    cli
+Warning: the current language does not match this frame.
+PASS hardware page permission fault 6
+$1 = {r15 = 0x0, r14 = 0x0, r13 = 0x0, r12 = 0x0, r11 = 0xffffc00000000000, r10 = 0xc, r9 = 0x5000, r8 = 0xe, rsi = 0x4b000, rdi = 0x58000, rbp = 0x0, rdx = 0xffffc00000000000, rcx = 0x1, rbx = 0xffff800007f7a000, rax = 0x1, vector = 0xe, error = 0x0, rip = 0xffffffff80003aac, cs = 0x8, rflags = 0x10002, rsp = 0xffffffff803202b0, ss = 0x10}
+$2 = {hhdm = 0xffff800000000000, cr3 = 0x7f65000, usable = 0x7b3b, free = 0x7b37, allocated = 0x1, tables = 0x3, mapped = 0x0, tests = 0x1}
+[Inferior 1 (process 1) detached]

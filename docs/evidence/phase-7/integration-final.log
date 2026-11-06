@@ -1,0 +1,21 @@
+HOST_CC="cc" ./scripts/fetch-limine.sh
+limine.h: OK
+limine.c: OK
+limine-bios-hdd.h: OK
+limine-bios.sys: OK
+limine-bios-cd.bin: OK
+limine-uefi-cd.bin: OK
+BOOTX64.EFI: OK
+LICENSE: OK
+make[1]: Entering directory '/workspace/Kernseed_OS/.cache/limine'
+make[1]: 'limine' is up to date.
+make[1]: Leaving directory '/workspace/Kernseed_OS/.cache/limine'
+python3 tests/phase7.py
+PASS cold boot bios-1
+PASS cold boot bios-2
+PASS cold boot bios-3
+PASS cold boot bios-4
+PASS cold boot bios-5
+PASS cold boot bios-panic-diagnostic
+PASS cold boot uefi-ovmf
+Phase 7 evidence: /workspace/Kernseed_OS/build/phase7-results/20261106T213111Z

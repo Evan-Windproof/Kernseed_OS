@@ -1,0 +1,5 @@
+counter_task_b () at kernel/arch/x86_64/counter-tasks.S:145
+145	    pushfq
+Warning: the current language does not match this frame.
+PASS actual keyboard FIFO overflow detected
+[Inferior 1 (process 1) detached]

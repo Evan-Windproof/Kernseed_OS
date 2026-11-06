@@ -1,0 +1,522 @@
+[
+  {
+    "memory": 256,
+    "operation": "boot-to-prompt",
+    "seconds": 0.9064536419973592
+  },
+  {
+    "memory": 256,
+    "operation": "apps",
+    "seconds": 0.20364028400217649
+  },
+  {
+    "memory": 256,
+    "operation": "run missing",
+    "seconds": 0.37055458599934354
+  },
+  {
+    "memory": 256,
+    "operation": "run hello",
+    "seconds": 0.5076805130011053
+  },
+  {
+    "memory": 256,
+    "operation": "run counter",
+    "seconds": 1.3214390849971096
+  },
+  {
+    "memory": 256,
+    "operation": "run probe",
+    "seconds": 0.6087634010036709
+  },
+  {
+    "memory": 256,
+    "operation": "run badflags",
+    "seconds": 0.6993022610040498
+  },
+  {
+    "memory": 256,
+    "operation": "run badstack",
+    "seconds": 0.6982286620041123
+  },
+  {
+    "memory": 256,
+    "operation": "run privileged",
+    "seconds": 0.6597756230039522
+  },
+  {
+    "memory": 256,
+    "operation": "run kernelread",
+    "seconds": 0.71006940100051
+  },
+  {
+    "memory": 256,
+    "operation": "run kernelwrite",
+    "seconds": 0.6908590489983908
+  },
+  {
+    "memory": 256,
+    "operation": "run hello",
+    "seconds": 0.6112139850010863
+  },
+  {
+    "memory": 256,
+    "operation": "meminfo",
+    "seconds": 0.29456233200471615
+  },
+  {
+    "memory": 256,
+    "operation": "run hello",
+    "seconds": 0.6076619180021225
+  },
+  {
+    "memory": 256,
+    "operation": "run counter",
+    "seconds": 1.2715346429977217
+  },
+  {
+    "memory": 256,
+    "operation": "echo \"repeat ok\"",
+    "seconds": 0.6206633939946187
+  },
+  {
+    "memory": 256,
+    "operation": "run hello",
+    "seconds": 0.60711812399677
+  },
+  {
+    "memory": 256,
+    "operation": "run counter",
+    "seconds": 1.2713559009935125
+  },
+  {
+    "memory": 256,
+    "operation": "echo \"repeat ok\"",
+    "seconds": 0.6187874600000214
+  },
+  {
+    "memory": 256,
+    "operation": "run hello",
+    "seconds": 0.6065215439957683
+  },
+  {
+    "memory": 256,
+    "operation": "run counter",
+    "seconds": 1.2701049489987781
+  },
+  {
+    "memory": 256,
+    "operation": "echo \"repeat ok\"",
+    "seconds": 0.6187216760008596
+  },
+  {
+    "memory": 256,
+    "operation": "run hello",
+    "seconds": 0.6071631349987001
+  },
+  {
+    "memory": 256,
+    "operation": "run counter",
+    "seconds": 1.2719396489992505
+  },
+  {
+    "memory": 256,
+    "operation": "echo \"repeat ok\"",
+    "seconds": 0.6204447109994362
+  },
+  {
+    "memory": 256,
+    "operation": "run hello",
+    "seconds": 0.6071560940035852
+  },
+  {
+    "memory": 256,
+    "operation": "run counter",
+    "seconds": 1.2713109140022425
+  },
+  {
+    "memory": 256,
+    "operation": "echo \"repeat ok\"",
+    "seconds": 0.6209644460031996
+  },
+  {
+    "memory": 256,
+    "operation": "run hello",
+    "seconds": 0.6068543979999959
+  },
+  {
+    "memory": 256,
+    "operation": "run counter",
+    "seconds": 1.2717893219960388
+  },
+  {
+    "memory": 256,
+    "operation": "echo \"repeat ok\"",
+    "seconds": 0.6244519719984964
+  },
+  {
+    "memory": 256,
+    "operation": "run hello",
+    "seconds": 0.6068778589979047
+  },
+  {
+    "memory": 256,
+    "operation": "run counter",
+    "seconds": 1.270583812998666
+  },
+  {
+    "memory": 256,
+    "operation": "echo \"repeat ok\"",
+    "seconds": 0.6207687450005324
+  },
+  {
+    "memory": 256,
+    "operation": "run hello",
+    "seconds": 0.6072535970015451
+  },
+  {
+    "memory": 256,
+    "operation": "run counter",
+    "seconds": 1.2732985859984183
+  },
+  {
+    "memory": 256,
+    "operation": "echo \"repeat ok\"",
+    "seconds": 0.6200975399988238
+  },
+  {
+    "memory": 256,
+    "operation": "run hello",
+    "seconds": 0.6071687990042847
+  },
+  {
+    "memory": 256,
+    "operation": "run counter",
+    "seconds": 1.2698628539947094
+  },
+  {
+    "memory": 256,
+    "operation": "echo \"repeat ok\"",
+    "seconds": 0.6184596649982268
+  },
+  {
+    "memory": 256,
+    "operation": "run hello",
+    "seconds": 0.6070160649978789
+  },
+  {
+    "memory": 256,
+    "operation": "run counter",
+    "seconds": 1.2704191829980118
+  },
+  {
+    "memory": 256,
+    "operation": "echo \"repeat ok\"",
+    "seconds": 0.6198266420033178
+  },
+  {
+    "memory": 256,
+    "operation": "run hello",
+    "seconds": 0.5061637990002055
+  },
+  {
+    "memory": 256,
+    "operation": "run counter",
+    "seconds": 1.2704097700043349
+  },
+  {
+    "memory": 256,
+    "operation": "echo \"repeat ok\"",
+    "seconds": 0.5183248940011254
+  },
+  {
+    "memory": 256,
+    "operation": "run hello",
+    "seconds": 0.5066693749977276
+  },
+  {
+    "memory": 256,
+    "operation": "run counter",
+    "seconds": 1.3216459570030565
+  },
+  {
+    "memory": 256,
+    "operation": "echo \"repeat ok\"",
+    "seconds": 0.5709460840007523
+  },
+  {
+    "memory": 256,
+    "operation": "run hello",
+    "seconds": 0.5076928290000069
+  },
+  {
+    "memory": 256,
+    "operation": "run counter",
+    "seconds": 1.3226359320033225
+  },
+  {
+    "memory": 256,
+    "operation": "echo \"repeat ok\"",
+    "seconds": 0.5697880439984147
+  },
+  {
+    "memory": 256,
+    "operation": "run hello",
+    "seconds": 0.5065743170052883
+  },
+  {
+    "memory": 256,
+    "operation": "run counter",
+    "seconds": 1.3211529039981542
+  },
+  {
+    "memory": 256,
+    "operation": "echo \"repeat ok\"",
+    "seconds": 0.5708365690006758
+  },
+  {
+    "memory": 256,
+    "operation": "run hello",
+    "seconds": 0.5070831269986229
+  },
+  {
+    "memory": 256,
+    "operation": "run counter",
+    "seconds": 1.3209967579969089
+  },
+  {
+    "memory": 256,
+    "operation": "echo \"repeat ok\"",
+    "seconds": 0.5687363429969992
+  },
+  {
+    "memory": 256,
+    "operation": "run hello",
+    "seconds": 0.5057106809981633
+  },
+  {
+    "memory": 256,
+    "operation": "run counter",
+    "seconds": 1.32227741600218
+  },
+  {
+    "memory": 256,
+    "operation": "echo \"repeat ok\"",
+    "seconds": 0.5698084550022031
+  },
+  {
+    "memory": 256,
+    "operation": "run hello",
+    "seconds": 0.5070156179936021
+  },
+  {
+    "memory": 256,
+    "operation": "run counter",
+    "seconds": 1.321066509000957
+  },
+  {
+    "memory": 256,
+    "operation": "echo \"repeat ok\"",
+    "seconds": 0.5685922920019948
+  },
+  {
+    "memory": 256,
+    "operation": "run hello",
+    "seconds": 0.5060725289949914
+  },
+  {
+    "memory": 256,
+    "operation": "run counter",
+    "seconds": 1.321277488998021
+  },
+  {
+    "memory": 256,
+    "operation": "echo \"repeat ok\"",
+    "seconds": 0.5699781160001294
+  },
+  {
+    "memory": 256,
+    "operation": "run hello",
+    "seconds": 0.5069497560034506
+  },
+  {
+    "memory": 256,
+    "operation": "run counter",
+    "seconds": 1.3219882639969
+  },
+  {
+    "memory": 256,
+    "operation": "echo \"repeat ok\"",
+    "seconds": 0.570710155996494
+  },
+  {
+    "memory": 256,
+    "operation": "run hello",
+    "seconds": 0.5065127550042234
+  },
+  {
+    "memory": 256,
+    "operation": "run counter",
+    "seconds": 1.3209729439986404
+  },
+  {
+    "memory": 256,
+    "operation": "echo \"repeat ok\"",
+    "seconds": 0.6195865140034584
+  },
+  {
+    "memory": 256,
+    "operation": "run hello",
+    "seconds": 0.5562218810009654
+  },
+  {
+    "memory": 256,
+    "operation": "run counter",
+    "seconds": 1.320095028000651
+  },
+  {
+    "memory": 256,
+    "operation": "echo \"repeat ok\"",
+    "seconds": 0.6190293870022288
+  },
+  {
+    "memory": 256,
+    "operation": "run hello",
+    "seconds": 0.5569513839946012
+  },
+  {
+    "memory": 256,
+    "operation": "run counter",
+    "seconds": 1.321375753999746
+  },
+  {
+    "memory": 256,
+    "operation": "echo \"repeat ok\"",
+    "seconds": 0.6215812020018348
+  },
+  {
+    "memory": 256,
+    "operation": "run hello",
+    "seconds": 0.5569707350005046
+  },
+  {
+    "memory": 256,
+    "operation": "run counter",
+    "seconds": 1.320839785003045
+  },
+  {
+    "memory": 256,
+    "operation": "echo \"repeat ok\"",
+    "seconds": 0.6186831399973016
+  },
+  {
+    "memory": 256,
+    "operation": "run hello",
+    "seconds": 0.6061811299950932
+  },
+  {
+    "memory": 256,
+    "operation": "run counter",
+    "seconds": 1.2702118149973103
+  },
+  {
+    "memory": 256,
+    "operation": "echo \"repeat ok\"",
+    "seconds": 0.6249372679958469
+  },
+  {
+    "memory": 256,
+    "operation": "run hello",
+    "seconds": 0.5574616140002036
+  },
+  {
+    "memory": 256,
+    "operation": "run counter",
+    "seconds": 1.3248208450022503
+  },
+  {
+    "memory": 256,
+    "operation": "echo \"repeat ok\"",
+    "seconds": 0.6186399450016324
+  },
+  {
+    "memory": 256,
+    "operation": "run hello",
+    "seconds": 0.5558813829993596
+  },
+  {
+    "memory": 256,
+    "operation": "run counter",
+    "seconds": 1.3200296929935575
+  },
+  {
+    "memory": 256,
+    "operation": "echo \"repeat ok\"",
+    "seconds": 0.6197599959996296
+  },
+  {
+    "memory": 256,
+    "operation": "run hello",
+    "seconds": 0.6067401759937638
+  },
+  {
+    "memory": 256,
+    "operation": "run counter",
+    "seconds": 1.2727444670017576
+  },
+  {
+    "memory": 256,
+    "operation": "echo \"repeat ok\"",
+    "seconds": 0.6185533030002262
+  },
+  {
+    "memory": 256,
+    "operation": "run hello",
+    "seconds": 0.6073071970022283
+  },
+  {
+    "memory": 256,
+    "operation": "run counter",
+    "seconds": 1.2731140620016959
+  },
+  {
+    "memory": 256,
+    "operation": "echo \"repeat ok\"",
+    "seconds": 0.6226454080024268
+  },
+  {
+    "memory": 256,
+    "operation": "run hello",
+    "seconds": 0.6076259890032816
+  },
+  {
+    "memory": 256,
+    "operation": "run counter",
+    "seconds": 1.2737756989954505
+  },
+  {
+    "memory": 256,
+    "operation": "echo \"repeat ok\"",
+    "seconds": 0.6205129750014748
+  },
+  {
+    "memory": 256,
+    "operation": "run hello",
+    "seconds": 0.5575340329960454
+  },
+  {
+    "memory": 256,
+    "operation": "run counter",
+    "seconds": 1.3229973049965338
+  },
+  {
+    "memory": 256,
+    "operation": "echo \"repeat ok\"",
+    "seconds": 0.6203330280040973
+  },
+  {
+    "memory": 256,
+    "operation": "whole-scenario",
+    "seconds": 82.84112307199393
+  }
+]

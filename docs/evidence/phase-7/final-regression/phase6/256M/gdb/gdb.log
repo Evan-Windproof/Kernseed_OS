@@ -1,0 +1,7 @@
+counter_task_a () at kernel/arch/x86_64/counter-tasks.S:34
+34	    cmpq .Lcounter_expected_rbx(%rip), %rbx
+Warning: the current language does not match this frame.
+PASS actual Ring3 calls, invalid pointers/numbers, faults and reclamation
+$1 = {slot = 0x4, active = 0x0, calls = 0x2c9, last_cs = 0x2b, last_rsp = 0xffffc00001100ff8, last_number = 0x3, exits = 0x9, faults = 0x4, vector = 0xe, error = 0x7, cr2 = 0xffffffff80000000, invalid = 0x4, preemptions = 0x4, fault_rip = 0xffffc00001000000}
+$2 = {hhdm = 0xffff800000000000, cr3 = 0xff55000, usable = 0xfb2b, free = 0xfb16, allocated = 0x10, tables = 0x5, mapped = 0x10, tests = 0x1}
+[Inferior 1 (process 1) detached]

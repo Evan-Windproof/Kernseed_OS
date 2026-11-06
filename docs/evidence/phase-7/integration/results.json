@@ -1,0 +1,41 @@
+[
+  {
+    "name": "bios-1",
+    "result": "passed",
+    "boot_to_prompt_seconds": 0.9063141370061203
+  },
+  {
+    "name": "bios-2",
+    "result": "passed",
+    "boot_to_prompt_seconds": 0.8619906690000789
+  },
+  {
+    "name": "bios-3",
+    "result": "passed",
+    "boot_to_prompt_seconds": 0.9581121819937835
+  },
+  {
+    "name": "bios-4",
+    "result": "passed",
+    "boot_to_prompt_seconds": 0.9077553300012369
+  },
+  {
+    "name": "bios-5",
+    "result": "passed",
+    "boot_to_prompt_seconds": 0.8573750949944952
+  },
+  {
+    "name": "bios-panic-diagnostic",
+    "result": "passed",
+    "boot_to_prompt_seconds": 0.8573256060044514
+  },
+  {
+    "name": "uefi-ovmf",
+    "result": "passed",
+    "boot_to_prompt_seconds": 2.316684922996501
+  },
+  {
+    "name": "Ring3 four-memory matrix",
+    "result": "passed"
+  }
+]

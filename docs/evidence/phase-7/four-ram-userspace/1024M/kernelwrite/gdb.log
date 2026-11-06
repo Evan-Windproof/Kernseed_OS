@@ -1,0 +1,5 @@
+interrupt_dispatch (frame=0xffffc0000020aef0) at kernel/interrupts/interrupts.c:117
+117	        if (frame->vector == 32) irq_state.timer_eoi++;
+PASS user fault kernelwrite: actual vector/error and safe cleanup
+$1 = {slot = 0x4, active = 0x0, calls = 0x292, last_cs = 0x2b, last_rsp = 0xffffc00001100ff8, last_number = 0x3, exits = 0x8, faults = 0x4, vector = 0xe, error = 0x7, cr2 = 0xffffffff80000000, invalid = 0x4, preemptions = 0x4, fault_rip = 0xffffc00001000000}
+[Inferior 1 (process 1) detached]

@@ -1,0 +1,5 @@
+PASS: all final source/build/test/boot/license inputs unchanged by the final complete regression (SHA256 comparison).
+PASS: scripts/*.sh retain executable modes.
+PASS: LICENSE, THIRD_PARTY_LICENSES.md and third_party are identical to origin/main.
+PASS: Makefile-dependent application rebuild dry run.
+PASS: CC=false build returned 2.

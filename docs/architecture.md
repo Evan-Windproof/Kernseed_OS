@@ -1,10 +1,10 @@
 # 宏内核架构与开发计划
 
-## 当前实现（Phase 1–5）
+## 当前实现（Phase 1–7）
 
 ```mermaid
 flowchart TD
-    BIOS[SeaBIOS] --> Limine
+    BIOS[SeaBIOS / OVMF UEFI] --> Limine
     Limine --> Entry[entry.S: CLI / CLD / 独立栈]
     Entry --> Main[kernel_main]
     Main --> Runtime[BSS 与 C 内存函数自检]
@@ -14,16 +14,16 @@ flowchart TD
     Runtime --> Tables[GDT / TSS / IDT]
     CPU --> Tables
     Tables --> Probe[软件 INT 寄存器恢复自检]
-    Probe --> Timer[PIC 重映射 / PIT / 只放行 IRQ0]
+    Probe --> Timer[PIC 重映射 / PIT / IRQ0 与键盘 IRQ1]
     Timer --> Idle[STI + HLT / IRQ0 后 IRETQ 返回]
     Tables --> Exception[异常诊断 / DF 独立 IST / 受控停机]
 ```
 
-所有当前代码运行于 CPL0，共享 Limine 建立的地址空间。`console_write` 同时调用串口和
+内核与 Shell 运行于 CPL0，内置应用运行于 CPL3；共享 Limine CR3，通过每级 User 页权限区分内核与用户窗口。`console_write` 同时调用串口和
 framebuffer，早期 framebuffer 未初始化时只输出串口。`runtime.c` 不依赖其他内核模块。
 驱动不调用宿主系统服务；宿主进程只负责构建、模拟与检查。
 
-## 阶段依赖（1–5 已实现，6部分交付，7尚未实现）
+## 阶段依赖（1–5 已实现，6最小用户态交付，7稳定化）
 
 | 阶段 | 前置依赖 | 预期交付与必须验收 |
 |---|---|---|
@@ -32,11 +32,11 @@ framebuffer，早期 framebuffer 未初始化时只输出串口。`runtime.c` �
 | 3 内存 | boot memmap/HHDM、中断异常 | 保留内核/引导区的页帧分配器，分配/释放检测，自有页表 API；映射写读及解除映射后的预期页故障 |
 | 4 调度 | 内存、定时器、架构上下文 | TCB、独立栈、上下文保存/恢复；两个任务独立栈与进度证明 |
 | 5 设备/Shell | IRQ、终端、任务接口 | PS/2 键盘、输入环形缓冲；真实输入及 help/clear/about/meminfo/tasks/uptime/reboot |
-| 6 系统调用 | IDT、明确 ABI | 编号/参数/返回/错误边界；内核态调用测试，明确 CPL0 适用范围 |
+| 6 系统调用 | IDT、明确 ABI | 编号/参数/返回/错误边界；INT82 真 CPL3/CPL0、独立用户栈、指针验证；无通用 ELF 加载 |
 | 7 集成 | 前述模块 | 完整回归、GDB、故障注入、重复启动、文档与许可复核 |
 
 不为满足输出而伪造设备、任务和内存状态。每阶段先完成可测实现，再运行构建与 QEMU，
-保留失败证据，修复后提交阶段报告。完整用户态隔离不是当前阶段成果。
+保留失败证据，修复后提交阶段报告。多用户进程地址空间隔离不是当前成果。
 
 ## 约束
 
@@ -57,3 +57,7 @@ Phase 5：i8042 IRQ1 → 有界字符环 → 独立Shell任务/行编辑 → par
 
 Phase 6核心：Kernel API → DPL3 INT 0x82 → 指针/权限检查 → 内核服务 → IRETQ；独立用户栈与逐任务TSS.RSP0。
 最小Ring3已实现，通用ELF加载明确未完成，详见phase6-test-report.md。
+
+Phase 7 保留上述依赖，统一用户映像从预留到发布/失败回滚的 IF 临界区，补齐应用构建依赖和
+串口 panic 诊断；不添加新调度/内存架构。审查/覆盖清单见 stability-review.md，
+测试结果见 phase7-test-report.md，发布范围见 release-readiness.md。

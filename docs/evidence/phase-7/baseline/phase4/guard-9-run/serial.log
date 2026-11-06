@@ -1,0 +1,22 @@
+limine: Loading executable `boot():/boot/kernseed.elf`...
+Kernseed OS - Phase 6
+Independent x86-64 monolithic kernel
+Kernseed OS - Phase 6
+Boot: Limine base revision 3
+BSS: zero checked
+C runtime: selftest passed
+CPU: long mode, paging, initial IF=0
+CR3: 0x0000000007f55000
+Framebuffer: 800x600x32
+Preemptive tasks and modular shell
+GDT TSS IDT: loaded, DF IST ready
+Software INT: register/IRET selftest passed
+MEMORY_READY free pages=31528 tables=3
+PIT: IRQ0 only, divisor=11932 (about 100 Hz)
+BOOT_READY: entering idle loop
+EXCEPTION vector=14 error=0x0000000000000002
+RIP=0xffffffff80003a9d RSP=0xffffc0000020afe8
+CS=0x0000000000000008 RFLAGS=0x0000000000010202
+PF: not present write data
+CR2=0xffffc00000206000
+EXCEPTION_HALTED
