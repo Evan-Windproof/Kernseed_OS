@@ -76,3 +76,9 @@ A/B持续运行时Idle不必获得CPU，不能期待默认模式总能命中kern
 runtime_ticks统计IRQ采样时的CPU归属，不是纳秒级CPU时间；短C任务可能runtime_ticks=0，
 同时其switches/records持续增长。暂停整个vCPU时计数不会增长。
 Phase 4测试在目标栈与寄存器上做断言，原始脚本见报告证据目录。
+
+## Phase 5补充
+
+默认Shell模式设置demo_stop后仅退出旧演示任务，不运行Phase4容量fixture，Shell继续。
+可读keyboard_state、shell_state、注册表__start_shell_commands/__stop_shell_commands；
+任务slot6为Shell。旧Phase4完整生命周期测试以CONSOLE_SHELL=0运行。

@@ -94,3 +94,8 @@ divisor=11,932，因此约 99.9985 Hz。tick 只在 IRQ0 handler 中递增，发
 每类异常 C 入口 ABI、错误码/RIP/RSP/CR2、DF IST。真实 IRQ0 帧、IRETQ 恢复 IF、
 两次 tick/EOI 采样和 QEMU PIC 配置都要符合预期。单纯出现诊断文字不能通过测试。
 具体命令、证据和未验证项目见 [Phase 2 报告](reports/phase-2.md)。
+
+## Phase 5默认配置补充
+
+CONSOLE_SHELL=1且调度启用时，PIC master mask=fc，同时允许IRQ0和IRQ1；
+IRQ1仅调用键盘解码/字符环，然后发送EOI。原Phase2的fe配置保留为CONSOLE_SHELL=0回归夹具。

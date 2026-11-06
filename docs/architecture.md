@@ -1,6 +1,6 @@
 # 宏内核架构与开发计划
 
-## 当前实现（Phase 1–4）
+## 当前实现（Phase 1–5）
 
 ```mermaid
 flowchart TD
@@ -23,7 +23,7 @@ flowchart TD
 framebuffer，早期 framebuffer 未初始化时只输出串口。`runtime.c` 不依赖其他内核模块。
 驱动不调用宿主系统服务；宿主进程只负责构建、模拟与检查。
 
-## 阶段依赖（1–4 已实现，5–7 尚未实现）
+## 阶段依赖（1–5 已实现，6–7 尚未实现）
 
 | 阶段 | 前置依赖 | 预期交付与必须验收 |
 |---|---|---|
@@ -51,3 +51,6 @@ Phase 3 在描述符/异常初始化后、PIT开启前初始化 memmap/HHDM → 
 
 Phase 4：PMM/VMM任务栈 → TCB/READY环形扫描 → IRQ0时间片或INT 0x81 → 返回目标硬件帧/IRETQ。
 详情见task-management.md、context-switching.md、scheduler.md。
+
+Phase 5：i8042 IRQ1 → 有界字符环 → 独立Shell任务/行编辑 → parser → registry/dispatcher → commands → terminal后端。
+详细接口和扩展教程见shell-development.md。

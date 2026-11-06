@@ -3,6 +3,7 @@
 #include <kernseed/console.h>
 #include <kernseed/io.h>
 #include <kernseed/runtime.h>
+#include <kernseed/keyboard.h>
 
 struct idt_gate idt[256] __attribute__((aligned(16)));
 volatile struct interrupt_diagnostics irq_state;
@@ -13,8 +14,8 @@ extern void fault_de(void), fault_ud(void), fault_gp(void), fault_pf(void);
 static void io_wait(void) { outb(0x80, 0); }
 static void pic_write(uint16_t port, uint8_t value) { outb(port, value); io_wait(); }
 static void pic_init(void) {
-    /* PC/AT 8259 pair, vectors 32..47, 8086 mode. Only PIT IRQ0 allowed.
-     * Slave and cascade remain masked; keyboard/RTC/NIC cannot interrupt. */
+    /* PC/AT 8259 pair, vectors 32..47, 8086 mode. IRQ0 initially; shell builds also enable keyboard IRQ1.
+     * Slave and cascade remain masked; RTC/NIC cannot interrupt. */
     pic_write(0x21, 0xff); pic_write(0xa1, 0xff);
     pic_write(0x20, 0x11); pic_write(0xa0, 0x11);
     pic_write(0x21, 32); pic_write(0xa1, 40);
@@ -46,7 +47,7 @@ void timer_init(void) {
     outb(0x43, 0x34);
     outb(0x40, divisor & 255); outb(0x40, divisor >> 8);
     irq_state.pit_divisor = divisor;
-    outb(0x21, 0xfe);
+    outb(0x21, KERNSEED_SHELL&&KERNSEED_SCHEDULER ? 0xfc : 0xfe);
     irq_state.pic_master_mask = inb(0x21);
     irq_state.pic_slave_mask = inb(0xa1);
     /* Do NOT STI here. kernel_idle enables IRQs after BOOT_READY. */
@@ -106,7 +107,7 @@ void interrupt_dispatch(struct interrupt_frame *frame) {
     if (frame->vector >= 32 && frame->vector < 48) {
         if (spurious_irq((unsigned)frame->vector)) { irq_state.spurious++; return; }
         if (frame->vector == 32) irq_state.ticks++;
-        else irq_state.other_irq++;
+        else {if(frame->vector==33&&KERNSEED_SHELL)keyboard_irq();irq_state.other_irq++;}
         if (frame->vector >= 40) outb(0xa0, 0x20);
         outb(0x20, 0x20);
         if (frame->vector == 32) irq_state.timer_eoi++;

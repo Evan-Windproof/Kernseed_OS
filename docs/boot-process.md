@@ -34,3 +34,6 @@ ELF 段标志不能代替未来的页表权限测试。
 `memcpy/memmove/memset/memcmp` 自行实现，不依赖宿主 C 库。
 
 测试会实际断在 C 入口检查栈、DF/IF、BSS，再在 idle 前检查诊断数据；不是仅检查日志文字。
+
+Phase 5默认在PIT配置后、STI前初始化i8042首端口并屏蔽AUX，PIC仅放行IRQ0/IRQ1。
+调度初始化再创建Shell任务；实际提示符由该任务运行后输出，而非BOOT_READY固定文字模拟。

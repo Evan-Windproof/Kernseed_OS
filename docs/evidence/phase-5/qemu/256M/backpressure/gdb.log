@@ -1,0 +1,9 @@
+counter_task_b () at kernel/arch/x86_64/counter-tasks.S:145
+145	    pushfq
+Warning: the current language does not match this frame.
+Hardware assisted breakpoint 1 at 0xffffffff80003f30: file kernel/scheduler/scheduler.c, line 109.
+
+Breakpoint 1, scheduler_interrupt (frame=0xffffc00000228e70) at kernel/scheduler/scheduler.c:109
+109	    if(!sched_state.active)return frame;
+PASS shell sleeping for FIFO backpressure test
+[Inferior 1 (process 1) detached]

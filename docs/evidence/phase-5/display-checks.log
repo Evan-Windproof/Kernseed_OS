@@ -1,0 +1,26 @@
+cc -std=c11 -O2 -Wall -Wextra -Werror -Iinclude -Ithird_party/limine tests/framebuffer.c kernel/drivers/framebuffer.c -o build/framebuffer-test
+./build/shell-test
+PASS parser/registry: quotes, escapes, empty args, bounds, independent registration, automatic help and dispatch
+./build/memory-span-test
+PASS memory span: unaligned usable/reserved, zero, boundaries, overflow
+./build/runtime-test
+PASS runtime: overlap matrix, copy/fill canaries, comparison selftest
+memmove cases: 12464
+./build/framebuffer-test
+PASS framebuffer: RGB order, glyph pixels, pitch/edge canaries, wrapping, 11 invalid layouts
+HOST_CC="cc" ./scripts/fetch-limine.sh
+limine.h: OK
+limine.c: OK
+limine-bios-hdd.h: OK
+limine-bios.sys: OK
+limine-bios-cd.bin: OK
+limine-uefi-cd.bin: OK
+BOOTX64.EFI: OK
+LICENSE: OK
+make[1]: Entering directory '/workspace/Kernseed_OS/.cache/limine'
+make[1]: 'limine' is up to date.
+make[1]: Leaving directory '/workspace/Kernseed_OS/.cache/limine'
+python3 tests/phase5.py
+PASS shell keyboard/commands/reboot 128
+PASS shell keyboard/commands/reboot 256
+Phase 5 evidence: /workspace/Kernseed_OS/build/phase5-results/20261106T120456Z

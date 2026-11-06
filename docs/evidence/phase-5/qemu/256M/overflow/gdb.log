@@ -1,0 +1,5 @@
+counter_task_a () at kernel/arch/x86_64/counter-tasks.S:31
+31	    incq demo_a(%rip)
+Warning: the current language does not match this frame.
+PASS actual keyboard FIFO overflow detected
+[Inferior 1 (process 1) detached]

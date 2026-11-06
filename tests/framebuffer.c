@@ -20,7 +20,20 @@ int main(void) {
             int lit = x < 10 && y < 14 && (rows[y / 2] & (1U << (4 - x / 2)));
             if (memory[GUARD + y * STRIDE + x] != (lit ? 0xffeeddU : 0)) return 2;
         }
-    /* Exercise glyph fallback, row wrap, clear on overflow, CR and LF. */
+    framebuffer_backspace();
+    for(unsigned y=0;y<H;y++)for(unsigned x=0;x<W;x++)
+        if(memory[GUARD+y*STRIDE+x])return 7;
+    framebuffer_putc('A');framebuffer_putc('\n');
+    framebuffer_putc('B');framebuffer_putc('\n');
+    const unsigned brow[7]={30,17,17,30,17,17,30};
+    for(unsigned y=0;y<H;y++)for(unsigned x=0;x<W;x++){
+        int lit=x<10&&y<14&&(brow[y/2]&(1U<<(4-x/2)));
+        if(memory[GUARD+y*STRIDE+x]!=(lit?0xffeeddU:0))return 8;
+    }
+    framebuffer_clear();
+    for(unsigned y=0;y<H;y++)for(unsigned x=0;x<W;x++)
+        if(memory[GUARD+y*STRIDE+x])return 9;
+    /* Exercise glyph fallback, row wrap, scrolling, CR and LF. */
     for (unsigned i = 0; i < 1000; ++i) framebuffer_putc((char)(i & 255));
     framebuffer_putc('\r'); framebuffer_putc('\n');
     for (unsigned i = 0; i < GUARD; ++i)
