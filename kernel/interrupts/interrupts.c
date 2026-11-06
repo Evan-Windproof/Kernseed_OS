@@ -86,6 +86,9 @@ static _Noreturn void exception_halt(struct interrupt_frame *frame) {
     console_write("\nCS="); console_hex(frame->cs);
     console_write(" RFLAGS="); console_hex(frame->rflags);
     if (frame->vector == 14) {
+        console_write(frame->error & 1 ? "\nPF: protection violation" : "\nPF: not present");
+        console_write(frame->error & 2 ? " write" : " read");
+        console_write(frame->error & 16 ? " instruction" : " data");
         console_write("\nCR2="); console_hex(irq_state.exception_cr2);
     }
     console_write("\nEXCEPTION_HALTED\n");

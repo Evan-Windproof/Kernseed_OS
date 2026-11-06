@@ -1,6 +1,6 @@
 # 宏内核架构与开发计划
 
-## 当前实现（Phase 1 + Phase 2）
+## 当前实现（Phase 1–3）
 
 ```mermaid
 flowchart TD
@@ -23,7 +23,7 @@ flowchart TD
 framebuffer，早期 framebuffer 未初始化时只输出串口。`runtime.c` 不依赖其他内核模块。
 驱动不调用宿主系统服务；宿主进程只负责构建、模拟与检查。
 
-## 阶段依赖（1–2 已实现，3–7 尚未实现）
+## 阶段依赖（1–3 已实现，4–7 尚未实现）
 
 | 阶段 | 前置依赖 | 预期交付与必须验收 |
 |---|---|---|
@@ -45,3 +45,6 @@ framebuffer，早期 framebuffer 未初始化时只输出串口。`runtime.c` �
 - 只在硬件入口、寄存器操作和上下文切换处使用必要汇编。
 - 未初始化内核 IDT 前不能 `sti`。不能回收 Limine 所用内存后继续依赖它的页表或响应。
 - 当前不是安全边界完善的系统，不用于生产部署。
+
+Phase 3 在描述符/异常初始化后、PIT开启前初始化 memmap/HHDM → PMM → VMM → 一次性内存自检。
+详情见 memory-map.md、physical-memory.md、virtual-memory.md。

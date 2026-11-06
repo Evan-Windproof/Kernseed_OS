@@ -1,0 +1,4 @@
+./scripts/check-reproducible.sh
+PASS reproducibility: identical ELF and ISO across two forced rebuilds in this checkout/toolchain
+4bbf44478dd099733eb82fac60c5540ac65524fb2fcdab3883875af234fcc11c  build/kernseed.elf
+63b95f6ed114a8eee24375f364ac630b29d034b537757982e8f1e490e5054800  build/kernseed.iso
