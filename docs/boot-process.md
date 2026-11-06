@@ -14,10 +14,10 @@
 9. 执行 CPL0 软件 INT 寄存器与 DF 恢复自检；只有隔离故障镜像才执行危险异常。
 10. 初始化 memmap/HHDM、PMM、受控 VMM，执行真实分配/映射/耗尽自检；独立 Phase 3 故障镜像此时触发页故障。
 11. 配置 PIC/PIT，仅放行 IRQ0，仍不执行 STI。输出 BOOT_READY，设置 `boot_state.stage=2`。
-12. 进入 `kernel_idle`，此时才 STI，HLT 等待实际定时器中断，ISR 通过 IRETQ 返回。
+12. 进入 `kernel_idle`，默认模式先创建TCB和独立任务栈，此时才 STI，HLT 等待实际定时器中断，ISR 通过 IRETQ 返回。
 
 正常路径周期性被 IRQ0 唤醒，再回到 HLT；tick 由 PIT 中断递增而非空闲循环次数。
-尚无任务调度。初始化中或不可恢复异常使用独立 `cpu_halt`，其 IF=0，不能误入启用中断的 idle。
+Phase 4 在时间片结束时恢复其他任务的真实IRQ帧；SCHEDULER=0仅供旧阶段夹具。初始化中或不可恢复异常使用独立 `cpu_halt`，其 IF=0，不能误入启用中断的 idle。
 
 早期失败路径设置 `boot_state.stage=0xff`，输出 `PANIC` 原因并关闭中断停机。
 CPU 异常保存 `last_exception` 和 `irq_state`，输出现场并受控停机，详见 [interrupts.md](interrupts.md)。

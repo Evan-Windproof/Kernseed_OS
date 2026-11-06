@@ -113,6 +113,7 @@ void interrupt_dispatch(struct interrupt_frame *frame) {
         return;
     }
     /* CPL0 software interrupt demonstration, NOT a syscall ABI. */
+    if (frame->vector == 129) return; /* Scheduler trap, handled after dispatch. */
     if (frame->vector == 128) { irq_state.software_count++; return; }
     exception_halt(frame); /* Unexpected vector: fail closed, never guess a return. */
 }

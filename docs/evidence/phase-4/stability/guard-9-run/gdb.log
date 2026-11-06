@@ -1,0 +1,10 @@
+0x000000000000fff0 in ?? ()
+Hardware assisted breakpoint 1 at 0xffffffff80004031: file kernel/arch/x86_64/entry.S, line 32.
+
+Breakpoint 1, cpu_halt () at kernel/arch/x86_64/entry.S:32
+32	    cli
+Warning: the current language does not match this frame.
+PASS actual task stack guard fault 9
+$1 = {r15 = 0x0, r14 = 0x0, r13 = 0x0, r12 = 0x0, r11 = 0x0, r10 = 0x0, r9 = 0x0, r8 = 0x0, rsi = 0x0, rdi = 0x0, rbp = 0x0, rdx = 0x1, rcx = 0x0, rbx = 0x0, rax = 0xffffc00000207000, vector = 0xe, error = 0x2, rip = 0xffffffff800030dd, cs = 0x8, rflags = 0x10202, rsp = 0xffffc0000020afe8, ss = 0x10}
+$2 = {active = 0x1, current = 0x1, switches = 0x1, preemptions = 0x0, yields = 0x0, exits = 0x0, reaped = 0x0, errors = 0x0, slice = 0x5, create_failures = 0x1, rollback_passed = 0x1, records = 0x0, idle_ticks = 0x1, observed_a = 0x0, observed_b = 0x0, observed_tick = 0x0, capacity_passed = 0x0, recycle_passed = 0x0}
+[Inferior 1 (process 1) detached]

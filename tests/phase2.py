@@ -146,7 +146,7 @@ p/x irq_state
 delete breakpoints
 '''
 
-def boot(name, image, elf, body, markers, normal=False, memory=128):
+def boot(name, image, elf, body, markers, normal=False, memory=128, fault_after_timer=False):
     directory=OUT/name; directory.mkdir()
     with tempfile.TemporaryDirectory(prefix='ks2-') as temp:
         qmp_path=Path(temp)/'qmp'; gdb_path=Path(temp)/'gdb'
@@ -187,8 +187,12 @@ delete breakpoints'''
                     for ticks,eoi,other,fatal in samples: assert ticks==eoi and other==0 and fatal==0,samples
                     assert 'EXCEPTION' not in log.read_text()
                 else:
-                    assert 'BOOT_READY' not in log.read_text()
-                    assert samples==[(0,0,0,1),(0,0,0,1)],samples
+                    if fault_after_timer:
+                        assert 'BOOT_READY' in log.read_text()
+                        assert samples[0]==samples[1] and samples[0][0]>0 and samples[0][0]==samples[0][1] and samples[0][2:]==(0,1),samples
+                    else:
+                        assert 'BOOT_READY' not in log.read_text()
+                        assert samples==[(0,0,0,1),(0,0,0,1)],samples
                 registers=qmp.command('human-monitor-command',{'command-line':'info registers'})
                 (directory/'registers.log').write_text(registers)
                 if not normal:

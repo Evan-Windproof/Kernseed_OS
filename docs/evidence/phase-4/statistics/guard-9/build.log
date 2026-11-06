@@ -1,0 +1,14 @@
+make[1]: Entering directory '/workspace/Kernseed_OS'
+HOST_CC="cc" ./scripts/fetch-limine.sh
+limine.h: OK
+limine.c: OK
+limine-bios-hdd.h: OK
+limine-bios.sys: OK
+limine-bios-cd.bin: OK
+limine-uefi-cd.bin: OK
+BOOTX64.EFI: OK
+LICENSE: OK
+make[2]: Entering directory '/workspace/Kernseed_OS/.cache/limine'
+make[2]: 'limine' is up to date.
+make[2]: Leaving directory '/workspace/Kernseed_OS/.cache/limine'
+make[1]: Leaving directory '/workspace/Kernseed_OS'

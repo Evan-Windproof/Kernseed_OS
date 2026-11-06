@@ -6,8 +6,9 @@ PYTHON ?= python3
 XORRISO ?= xorriso
 BUILD ?= build
 TEST_FAULT ?= 0
-ifeq ($(filter $(TEST_FAULT),0 1 2 3 4 5 6 7 8),)
-$(error TEST_FAULT must be 0 (normal), 1 (DE), 2 (UD), 3 (GP), 4 (PF), or 5 (DF), 6 (unmapped), 7 (write), 8 (NX))
+SCHEDULER ?= 1
+ifeq ($(filter $(TEST_FAULT),0 1 2 3 4 5 6 7 8 9 10),)
+$(error TEST_FAULT must be 0 (normal), 1 (DE), 2 (UD), 3 (GP), 4 (PF), or 5 (DF), 6 (unmapped), 7 (write), 8 (NX), 9/10 (task guards))
 endif
 ifneq ($(TEST_FAULT),0)
 ifeq ($(BUILD),build)
@@ -18,18 +19,18 @@ CFLAGS := -std=c11 -O2 -g3 -Wall -Wextra -Werror -ffreestanding \
           -fno-builtin -fno-stack-protector -fno-stack-check -fno-pic -fno-pie \
           -fno-asynchronous-unwind-tables -fno-unwind-tables -m64 \
           -march=x86-64 -mno-red-zone -mgeneral-regs-only -mcmodel=kernel \
-          -Iinclude -Ithird_party/limine -MMD -MP -DKERNSEED_TEST_FAULT=$(TEST_FAULT)
+          -Iinclude -Ithird_party/limine -MMD -MP -DKERNSEED_TEST_FAULT=$(TEST_FAULT) -DKERNSEED_SCHEDULER=$(SCHEDULER)
 LDFLAGS := -nostdlib -static -z max-page-size=0x1000 --build-id=none -T boot/linker.ld
-C_SOURCES := $(sort $(wildcard kernel/core/*.c kernel/drivers/*.c kernel/arch/x86_64/*.c kernel/interrupts/*.c kernel/memory/*.c))
+C_SOURCES := $(sort $(wildcard kernel/core/*.c kernel/drivers/*.c kernel/arch/x86_64/*.c kernel/interrupts/*.c kernel/memory/*.c kernel/scheduler/*.c))
 S_SOURCES := $(sort $(wildcard kernel/arch/x86_64/*.S))
 OBJECTS := $(patsubst %.c,$(BUILD)/%.o,$(C_SOURCES)) $(patsubst %.S,$(BUILD)/%.o,$(S_SOURCES)) $(BUILD)/isr-stubs.o
-.PHONY: all deps iso run headless debug test test-host clean check reproducible test-phase2
+.PHONY: all deps iso run headless debug test test-host clean check reproducible test-phase2 test-scheduler
 all: iso
 .PHONY: FORCE
 FORCE:
 $(BUILD)/build-config: FORCE
 	@mkdir -p $(@D)
-	@printf 'test_fault=%s\n' '$(TEST_FAULT)' > $@.tmp
+	@printf 'test_fault=%s scheduler=%s\n' '$(TEST_FAULT)' '$(SCHEDULER)' > $@.tmp
 	@cmp -s $@.tmp $@ && rm $@.tmp || mv $@.tmp $@
 $(BUILD)/isr-stubs.S: scripts/gen-isr.py
 	@mkdir -p $(@D)
@@ -80,12 +81,19 @@ test-host: $(BUILD)/runtime-test $(BUILD)/framebuffer-test $(BUILD)/memory-span-
 	./$(BUILD)/framebuffer-test
 check: $(BUILD)/kernseed.elf
 	$(PYTHON) tests/check_elf.py $(BUILD)/kernseed.elf
-test: iso test-host check
+test: test-host
+	$(MAKE) SCHEDULER=0 iso check
 	$(PYTHON) tests/boot.py
 	$(PYTHON) tests/phase2.py
 	$(PYTHON) tests/phase3.py
-test-phase2: iso
+	$(MAKE) SCHEDULER=1 iso check
+	$(PYTHON) tests/phase4.py
+test-phase2:
+	$(MAKE) SCHEDULER=0 iso
 	$(PYTHON) tests/phase2.py
+	$(MAKE) SCHEDULER=1 iso
+test-scheduler: iso
+	$(PYTHON) tests/phase4.py
 reproducible:
 	./scripts/check-reproducible.sh
 clean:
