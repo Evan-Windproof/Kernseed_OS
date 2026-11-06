@@ -10,13 +10,17 @@
 6. 验证 framebuffer 格式并清屏，自有 5×7 字体按 2× 像素显示；小写显示为大写。
    支持 32bpp RGB、互不重叠且字节对齐的 8 位色彩通道。其他格式明确 panic。
 7. 读取 CR0/CR3/CR4、EFER 和 RFLAGS，检查 paging/PAE/long mode 与 IF=0。
-8. 输出真实 framebuffer 尺寸和 CR3，设置 `boot_state.stage=2`，进入 `kernel_idle`。
+8. 输出真实 framebuffer 尺寸和 CR3，安装自有 GDT/TSS/IDT，验证 GDTR/IDTR/TR。
+9. 执行 CPL0 软件 INT 寄存器与 DF 恢复自检；只有隔离故障镜像才执行危险异常。
+10. 配置 PIC/PIT，仅放行 IRQ0，仍不执行 STI。输出 BOOT_READY，设置 `boot_state.stage=2`。
+11. 进入 `kernel_idle`，此时才 STI，HLT 等待实际定时器中断，ISR 通过 IRETQ 返回。
 
-正常路径以 `cli; hlt; jmp` 等待，未启用中断、定时器或任务。`hlt` 后可能因 NMI/debug
-恢复，循环会再次暂停。尚无自有异常处理，意外异常可能导致 triple fault；Phase 2 解决此限制。
+正常路径周期性被 IRQ0 唤醒，再回到 HLT；tick 由 PIT 中断递增而非空闲循环次数。
+尚无任务调度。初始化中或不可恢复异常使用独立 `cpu_halt`，其 IF=0，不能误入启用中断的 idle。
 
-失败路径设置 `stage=0xff`，输出 `PANIC` 原因并停机。无 framebuffer 时串口仍可诊断；
-没有串口且没有屏幕时无法显示诊断。串口等待有上限，缺失设备不会无限阻塞屏幕输出。
+早期失败路径设置 `boot_state.stage=0xff`，输出 `PANIC` 原因并关闭中断停机。
+CPU 异常保存 `last_exception` 和 `irq_state`，输出现场并受控停机，详见 [interrupts.md](interrupts.md)。
+无 framebuffer 时串口仍可诊断；串口等待有上限。GDT/IDT 初始化之前发生的早期异常仍无法保证捕获。
 
 ## C 与 ELF
 

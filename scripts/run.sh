@@ -11,5 +11,5 @@ case "$mode" in
     *) echo 'Usage: scripts/run.sh [run|headless|debug] [QEMU options]' >&2; exit 2 ;;
 esac
 exec "${QEMU:-qemu-system-x86_64}" -machine pc,accel=tcg -cpu qemu64 \
-    -m 128M -smp 1 -vga std -cdrom build/kernseed.iso -boot d \
+    -m 128M -smp 1 -vga std -cdrom "${KERNSEED_BUILD:-build}/kernseed.iso" -boot d \
     -nic none -serial stdio -monitor none -no-reboot -no-shutdown "$@"

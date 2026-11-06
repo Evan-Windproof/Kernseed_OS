@@ -1,7 +1,8 @@
 # 内存管理：当前边界与 Phase 3 设计
 
 **当前无物理分配器、无虚拟页映射 API、无堆。**
-Phase 1 仅使用 ELF 静态存储、64 KiB 启动栈和 Limine 提供的 framebuffer 虚拟地址。
+当前 Phase 1/2 使用 ELF 静态存储、64 KiB 启动栈和 Limine 提供的 framebuffer 虚拟地址；
+Phase 2 新增的 GDT/IDT/TSS 与 DF IST 栈也都是静态存储，并非动态页分配。
 CR3 读取值用于观察启动页表，不能称为已实现虚拟内存管理。
 
 Limine 完成长模式和启动映射；不能假定所有物理地址可直接解引用，也不能假定固定 HHDM 偏移。

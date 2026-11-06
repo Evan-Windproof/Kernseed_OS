@@ -10,7 +10,7 @@ make debug                # -S 暂停，GDB 127.0.0.1:1234
 
 默认配置：`pc,accel=tcg`、`qemu64`、128 MiB、1 CPU、std VGA、无网卡、ISO CD 启动。
 `-no-reboot -no-shutdown` 有助于保留故障现场，但进程仍在不能证明启动正确。
-当前内核关闭中断且不读取键盘，启动后没有 Shell。
+Phase 2 启用 PIT IRQ0，但尚不读取键盘，启动后没有 Shell。
 
 GUI 需要相应 QEMU 图形包，例如 Ubuntu 的 `qemu-system-gui`，以及可用 DISPLAY/Wayland。
 WSL 2 推荐 WSLg；没有图形服务时使用 headless，不能把无图形环境误诊为内核启动失败。
@@ -36,3 +36,21 @@ Limine 的路径和软件包 firmware；宿主 QEMU 找不到 BIOS 是环境问�
 `make clean && make -j2 && make test` 可从零重建；不会删除 `.cache/`。
 
 当前验收覆盖 SeaBIOS，镜像中的 UEFI 文件尚未使用 OVMF 验证；没有实机启动保证。
+
+## Phase 2 隔离故障构建
+
+```sh
+make test-phase2
+# 需要手动观察 #PF 时：
+make BUILD=build/fault-4 TEST_FAULT=4 headless
+# 回到正常镜像：
+make headless
+```
+
+`TEST_FAULT=1/2/3/4/5` 分别为 #DE/#UD/#GP/#PF/#DF，0 为正常构建。
+非零参数必须指定独立 BUILD，直接 `make TEST_FAULT=1` 会报错，避免污染默认镜像。
+构建参数 stamp 防止同一目录的不同测试选择复用错误对象。异常镜像会打印真实现场并停机，
+这在测试中是预期结果，不应当作为普通可交互系统发布。默认启动没有这些故障指令。
+
+自动测试使用 QEMU `guest_errors` 诊断日志、GDB 和两次真实计数器采样；文件在
+`build/phase2-results/<UTC时间>/`。Phase 2 测试前后检查正常 ISO 的哈希没有被故障构建修改。

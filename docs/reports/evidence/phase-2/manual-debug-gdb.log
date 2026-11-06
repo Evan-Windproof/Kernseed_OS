@@ -1,0 +1,11 @@
+0x000000000000fff0 in ?? ()
+Hardware assisted breakpoint 1 at 0xffffffff800012c0: file kernel/core/main.c, line 28.
+
+Breakpoint 1, kernel_main () at kernel/core/main.c:28
+28	    boot_state.serial_ok = serial_init();
+Hardware assisted breakpoint 2 at 0xffffffff80002146: file kernel/arch/x86_64/entry.S, line 19.
+
+Breakpoint 2, kernel_idle () at kernel/arch/x86_64/entry.S:19
+19	    sti                         /* Called only after GDT/IDT/PIC/PIT are ready. */
+$1 = {initialized = 0x1, ticks = 0x0, timer_eoi = 0x0, software_count = 0x1, other_irq = 0x0, spurious = 0x0, entry_if_errors = 0x0, register_probe_result = 0x0, pit_divisor = 0x2e9c, pic_master_mask = 0xfe, pic_slave_mask = 0xff, dispatch_rsp = 0xffffffff800192b8, exception_stack = 0x0, exception_cr2 = 0x0, fatal = 0x0, nested = 0x0, gdtr = {limit = 0x27, base = 0xffffffff80008070}, idtr = {limit = 0xfff, base = 0xffffffff800083c0}, tr = 0x18}
+[Inferior 1 (process 1) detached]

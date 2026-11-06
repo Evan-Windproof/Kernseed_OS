@@ -1,0 +1,5 @@
+cpu_halt () at kernel/arch/x86_64/entry.S:31
+31	    jmp 1b
+Warning: the current language does not match this frame.
+SAMPLE 0 0 0 1
+[Inferior 1 (process 1) detached]

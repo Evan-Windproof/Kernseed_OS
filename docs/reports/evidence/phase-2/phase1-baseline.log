@@ -1,0 +1,26 @@
+HOST_CC="cc" ./scripts/fetch-limine.sh
+limine.h: OK
+limine.c: OK
+limine-bios-hdd.h: OK
+limine-bios.sys: OK
+limine-bios-cd.bin: OK
+limine-uefi-cd.bin: OK
+BOOTX64.EFI: OK
+LICENSE: OK
+make[1]: Entering directory '/workspace/Kernseed_OS/.cache/limine'
+make[1]: 'limine' is up to date.
+make[1]: Leaving directory '/workspace/Kernseed_OS/.cache/limine'
+./build/runtime-test
+PASS runtime: overlap matrix, copy/fill canaries, comparison selftest
+memmove cases: 12464
+./build/framebuffer-test
+PASS framebuffer: RGB order, glyph pixels, pitch/edge canaries, wrapping, 11 invalid layouts
+python3 tests/check_elf.py build/kernseed.elf
+PASS ELF: static x86-64, no unresolved symbols, no RWX segment
+python3 tests/boot.py
+PASS cold-64M
+PASS cold-128M
+PASS cold-256M
+PASS gdb-128M
+PASS missing-framebuffer
+Evidence: build/test-results/20261106T051339Z

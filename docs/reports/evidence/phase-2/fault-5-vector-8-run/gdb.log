@@ -1,0 +1,15 @@
+0x000000000000fff0 in ?? ()
+Hardware assisted breakpoint 1 at 0xffffffff80001ff0: file kernel/interrupts/interrupts.c, line 97.
+
+Breakpoint 1, interrupt_dispatch (frame=0xffffffff80007f50 <df_stack+16208>) at kernel/interrupts/interrupts.c:97
+97	    __asm__ volatile ("mov %%rsp, %0; pushfq; popq %1" : "=r"(stack), "=r"(flags));
+PASS fault C entry ABI vector 8
+Hardware assisted breakpoint 2 at 0xffffffff80002155: file kernel/arch/x86_64/entry.S, line 29.
+
+Breakpoint 2, cpu_halt () at kernel/arch/x86_64/entry.S:29
+29	    cli
+Warning: the current language does not match this frame.
+PASS real fault vector 8: error, RIP, interrupted RSP, CR2, DF IST
+$1 = {r15 = 0x0, r14 = 0x0, r13 = 0x0, r12 = 0x0, r11 = 0x12, r10 = 0xddeeff, r9 = 0x4, r8 = 0xa, rsi = 0xffff800007f6a000, rdi = 0x0, rbp = 0x0, rdx = 0x21, rcx = 0x186a0, rbx = 0xffff800007f6a000, rax = 0x28, vector = 0x8, error = 0x0, rip = 0xffffffff800022b6, cs = 0x8, rflags = 0x2, rsp = 0xffffffff800193a8, ss = 0x10}
+$2 = {initialized = 0x1, ticks = 0x0, timer_eoi = 0x0, software_count = 0x1, other_irq = 0x0, spurious = 0x0, entry_if_errors = 0x0, register_probe_result = 0x0, pit_divisor = 0x0, pic_master_mask = 0x0, pic_slave_mask = 0x0, dispatch_rsp = 0xffffffff80007f48, exception_stack = 0xffffffff80007f50, exception_cr2 = 0x0, fatal = 0x1, nested = 0x0, gdtr = {limit = 0x27, base = 0xffffffff80008070}, idtr = {limit = 0xfff, base = 0xffffffff800083c0}, tr = 0x18}
+[Inferior 1 (process 1) detached]

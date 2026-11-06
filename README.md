@@ -4,8 +4,8 @@
 
 Kernseed OS 使用 **C11 + 少量 x86-64 汇编**编写内核，由 **Limine** 引导，借助 **QEMU** 启动、**GDB** 调试。项目由 Codex 主导实现，发起人进行构建、运行与审查。它不是 Linux 发行版，也不依赖 Linux 用户空间；与 Orfreon、Evavind 等其他项目无关。
 
-> **当前版本：Phase 1（内核引导）**  
-> 已能从 ISO 启动、显示启动自检和进入稳定空闲循环；**尚无键盘输入、Shell、调度器、内存分配器或文件系统**。屏幕停留在 `BOOT READY - ENTERING IDLE LOOP` 属于预期结果，而非死机。
+> **当前版本：Phase 2（CPU 异常、中断与 PIT 定时器）**
+> 已能从 ISO 启动，加载自有 GDT/TSS/IDT，处理 CPU 异常并通过 IRQ0 维护真实 tick；**尚无键盘输入、Shell、调度器、内存分配器或文件系统**。屏幕停留在 `BOOT READY - ENTERING IDLE LOOP` 属于预期结果，而非死机。
 >
 > 仅供学习与研究，不适用于生产环境；项目计划在教学目标完成后停止长期维护。
 
@@ -44,7 +44,7 @@ make -j2
 make run
 ```
 
-成功时，QEMU 内会显示 `KERNSEED OS - PHASE 1`、CPU 与 framebuffer 信息，以及 `BOOT READY - ENTERING IDLE LOOP`。**此阶段不能输入命令**。关闭 QEMU 窗口即可退出；若终端仍运行，按 `Ctrl+C`。
+成功时，QEMU 内会显示 `KERNSEED OS - PHASE 2`、CPU 与 framebuffer 信息，以及 `BOOT READY - ENTERING IDLE LOOP`。**此阶段不能输入命令**。关闭 QEMU 窗口即可退出；若终端仍运行，按 `Ctrl+C`。
 
 ## 首次安装与 WSL 2 准备
 
@@ -121,7 +121,7 @@ make run
 make headless
 ```
 
-当前阶段的内核同时向 COM1 输出启动日志，无窗口模式也能够验证启动。按 **`Ctrl+C`** 结束。
+当前内核同时向 COM1 输出启动日志，无窗口模式也能够验证启动。按 **`Ctrl+C`** 结束。
 
 ### 方式 C：直接加载生成的 ISO
 
@@ -181,19 +181,31 @@ gdb -x scripts/debug.gdb
 - 自有启动栈（64 KiB）、基本 C 内存例程、BSS 与 C 运行环境自检。
 - COM1 轮询串口输出，以及 framebuffer 字符绘制。
 - 读取部分真实 CPU 状态（如 `CR3`）并显示启动信息。
-- 无中断的 HLT 空闲循环，及 GDB 调试基础设施。
+- HLT 空闲循环及 GDB 调试基础设施。
+
+### Phase 2 新增
+
+- 自有 64 位 GDT、TSS、256 项 IDT；Double Fault 使用独立 16 KiB IST 栈。
+- 汇编入口保存全部通用寄存器，规范化错误码，遵守 C 栈对齐并通过 `iretq` 返回。
+- CPU 异常输出向量、错误码、RIP、RSP；页故障额外输出 CR2。不可恢复异常受控停机。
+- 8259 PIC 重映射，只放行 PIT IRQ0；11932 分频（约 100 Hz），真实递增 tick 和 EOI。
+- CPL0 软件 `INT 0x80` 验证寄存器/DF 恢复，仅供内部自检，**不是系统调用接口**。
+- 五类真实故障使用独立测试镜像；正式启动不触发危险异常。
 
 启动画面示意（实际寄存器地址会因运行而变化）：
 
 ```text
-KERNSEED OS - PHASE 1
+KERNSEED OS - PHASE 2
 BOOT: LIMINE BASE REVISION 3
 BSS: ZERO CHECKED
 C RUNTIME: SELFTEST PASSED
-CPU: LONG MODE  PAGING  IRQS DISABLED
+CPU: LONG MODE  PAGING  INITIAL IF=0
 CR3: 0X...
 FRAMEBUFFER: 800X600X32
 NO SCHEDULER, KEYBOARD OR SHELL YET
+GDT TSS IDT: LOADED, DF IST READY
+SOFTWARE INT: REGISTER/IRET SELFTEST PASSED
+PIT: IRQ0 ONLY, DIVISOR=11932 (ABOUT 100 HZ)
 BOOT READY - ENTERING IDLE LOOP
 ```
 
@@ -201,14 +213,15 @@ BOOT READY - ENTERING IDLE LOOP
 
 - **不能输入 Shell 命令**，因为还没有键盘驱动与命令解释器。
 - **没有任务调度**、内核页框分配器、文件系统、用户态进程或应用程序执行环境。
-- **尚未实现自有 GDT/IDT 和硬件 IRQ 处理**。启动时虽然已经启用分页，但当前页表由引导器准备，不能等同于已实现自己的虚拟内存管理器。
+- 当前页表仍由引导器准备，尚无自有虚拟内存管理器；没有用户态隔离、APIC/SMP 或异常恢复机制。
+- 屏幕启动文字不是实时 tick 仪表。可在 GDB 中读取 `irq_state.ticks`；CPU 暂停时 tick 不会增长。
 
-因此，**Kernseed OS Phase 1 是可启动的教学内核雏形，不是完整的日用操作系统。**
+因此，**Kernseed OS Phase 2 是具备基础中断机制的教学内核，不是完整的日用操作系统。**
 
 ## 测试、清理与重建
 
 ```bash
-make test           # 宿主测试、ELF 检查、QEMU/QMP/GDB 启动测试
+make test           # Phase 1 回归 + Phase 2 描述符/IRQ0/五类隔离异常测试
 make test-host      # 仅运行宿主上的 C 代码测试
 make check          # 检查 ELF 属性
 make reproducible   # 同工具链和目录下两次构建比较哈希
@@ -216,9 +229,12 @@ make clean          # 删除 build/ 构建产物
 make -j2            # 再次构建
 ```
 
-自动测试将测试日志和截图等数据保存在 `build/test-results/`。如失败，应阅读具体错误日志，而不是把编译成功当作全部测试通过。`make clean` 不删除 `.cache/` 下载依赖。
+Phase 1 回归日志与截图保存在 `build/test-results/`，Phase 2 日志保存在 `build/phase2-results/`。
+异常镜像位于 `build/fault-1/` 到 `build/fault-5/`，不会替换正常 ISO。
+只运行 Phase 2 测试：先 `make iso`，再 `make test-phase2`。如失败，应阅读具体错误日志，而不是把编译成功当作全部测试通过。`make clean` 不删除 `.cache/` 下载依赖。
 
-当前项目曾在 Debian 13 云环境进行 Phase 1 测试；发起人随后已在 WSL 2 Ubuntu **本地成功编译 ISO，并通过 QEMU 图形窗口看到与云端一致的 Phase 1 启动画面**。这证明该配置下的基本启动流程可复现，但不代表所有自动测试均已在 WSL 2 上执行。
+当前项目曾在 Debian 13 云环境进行 Phase 1 测试；发起人随后已在 WSL 2 Ubuntu **本地成功编译 ISO，并通过 QEMU 图形窗口看到与云端一致的 Phase 1 启动画面**。这证明该配置下的 Phase 1 基本启动流程可复现，但不代表所有自动测试均已在 WSL 2 上执行。
+Phase 2 本次在 Debian 13 云环境的 QEMU TCG/SeaBIOS 单核配置实测；尚未在 WSL 2、UEFI、实机或 SMP 上验收。
 
 ## 常见问题排查
 
@@ -231,7 +247,7 @@ make -j2            # 再次构建
 | 窗口显示 `[Paused]`、黑屏 | 使用了 `make debug` 或 `-S`，等待 GDB 连接并执行 `continue`；普通运行使用 `make run`。 |
 | `Connection refused`（GDB） | 未运行 `make debug`，或调试端口不是 `127.0.0.1:1234`。 |
 | GDB 报 `i8086` 与 `x86-64` 不匹配 | 不要沿用 16 位引导扇区实验的 `set architecture i8086`；使用仓库的 `scripts/debug.gdb`。 |
-| 屏幕已显示 `BOOT READY` 却不能输入 | 正常：Phase 1 尚未实现键盘与 Shell。 |
+| 屏幕已显示 `BOOT READY` 却不能输入 | 正常：当前尚未实现键盘与 Shell。 |
 | Limine 下载失败 | 检查 GitHub 网络连接、`git` 与 CA 证书；不要关闭哈希验证。 |
 
 若 ZIP 解压造成其他 `.sh` 文件权限问题，可执行 `ls -l scripts/` 查看，再对确实需要直接执行的脚本逐个 `chmod +x`；`sudo sh scripts/setup-host.sh` 本身不需要执行位。
@@ -244,7 +260,8 @@ Kernseed_OS/
 ├── kernel/
 │   ├── arch/x86_64/     # 汇编入口与底层 CPU 操作
 │   ├── core/            # 内核启动、基础 C 运行函数
-│   └── drivers/         # framebuffer、串口
+│   ├── drivers/         # framebuffer、串口
+│   └── interrupts/      # IDT、异常诊断、PIC/PIT
 ├── include/kernseed/    # 内核头文件
 ├── third_party/limine/  # Limine 协议头和第三方许可
 ├── scripts/             # 下载依赖、运行、调试与构建辅助
@@ -267,8 +284,9 @@ Kernseed_OS/
 - [调度器设计计划](docs/scheduler.md)
 - [Codex 开发实验记录](docs/codex-experiment.md)
 - [Phase 1 开发报告](docs/reports/phase-1.md)
+- [Phase 2 开发报告](docs/reports/phase-2.md)
 
-预定学习阶段：Phase 1 引导 → Phase 2 中断与定时器 → Phase 3 内存管理 → Phase 4 内核任务调度 → Phase 5 键盘与 Shell → Phase 6 系统调用接口 → Phase 7 集成测试和教学发布。**目前只有 Phase 1 已实现；其他内容只是计划。**
+预定学习阶段：Phase 1 引导 → Phase 2 中断与定时器 → Phase 3 内存管理 → Phase 4 内核任务调度 → Phase 5 键盘与 Shell → Phase 6 系统调用接口 → Phase 7 集成测试和教学发布。**Phase 1 与 Phase 2 已实现；Phase 3–7 仍是后续计划。**
 
 ## 许可证与免责声明
 
