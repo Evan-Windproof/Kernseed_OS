@@ -63,15 +63,15 @@ bool pmm_free(uint64_t p) {
 static bool canonical(uint64_t v) { return v>>47==0 || v>>47==0x1ffff; }
 bool vmm_query(uint64_t v,uint64_t *p,uint64_t *flags) {
     if(!canonical(v)||!p||!flags) return false;
-    uint64_t f=lock(),pa=memory_state.cr3; bool writable=true,nx=false,ok=false;
+    uint64_t f=lock(),pa=memory_state.cr3; bool writable=true,nx=false,user=true,ok=false;
     for(int level=3;level>=0;level--) {
         uint64_t *t=physical_pointer(pa); if(!t) break;
         uint64_t e=t[(v>>(12+level*9))&511]; if(!(e&1)) break;
-        writable=writable&&((e&2)!=0); nx=nx||((e&VM_NX)!=0);
+        writable=writable&&((e&2)!=0); nx=nx||((e&VM_NX)!=0);user=user&&((e&4)!=0);
         if(level==0 || ((e&128)&&(level==1||level==2))) {
             uint64_t size=1ULL<<(12+9*level);
             *p=((e&MASK)&~(size-1))+(v&(size-1));
-            *flags=1|(writable?2:0)|(nx?VM_NX:0);ok=true;break;
+            *flags=1|(user?4:0)|(writable?2:0)|(nx?VM_NX:0);ok=true;break;
         }
         if(e&128) break;
         pa=e&MASK;
@@ -81,7 +81,8 @@ bool vmm_query(uint64_t v,uint64_t *p,uint64_t *flags) {
 bool vmm_map(uint64_t v,uint64_t p,uint64_t flags) {
     vmm_error=MEM_INVALID;
     if(v<VM_BASE || v-VM_BASE>=VM_SIZE || (v&4095) || (p&4095) ||
-       flags&~(VM_WRITE|VM_NX)) return false;
+       flags&~(VM_WRITE|VM_NX|4ULL)) return false;
+    if((flags&4)&&(v<0xffffc00001000000ULL||v>=0xffffc00001200000ULL))return false;
     uint64_t f=lock(),i=p/4096,pa=memory_state.cr3;bool ok=false;
     vmm_error=MEM_OWNERSHIP;
     if(i>=ceiling || state[i]!=2 || refs[i]==UINT16_MAX) goto done;
@@ -97,6 +98,7 @@ bool vmm_map(uint64_t v,uint64_t p,uint64_t flags) {
         /* Never split huge mappings or enter bootloader-owned subtrees. */
         if(e&128) {vmm_error=MEM_HUGE;goto done;}
         if((e&MASK)/4096>=ceiling||state[(e&MASK)/4096]!=3) goto done;
+        if(flags&4)t[index]|=4;
         pa=e&MASK;
     }
     uint64_t *t=physical_pointer(pa),index=(v>>12)&511;

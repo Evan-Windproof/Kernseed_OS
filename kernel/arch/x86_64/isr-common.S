@@ -21,6 +21,9 @@ isr_common:
     push %r14
     push %r15
     cld
+    pushfq
+    andq $-16385,(%rsp) /* Never execute kernel IRET with NT set. */
+    popfq
     mov %rsp, %rdi
     mov %rsp, %rbx               /* C preserves RBX; original RBX is on stack. */
     and $-16, %rsp              /* SysV: aligned BEFORE call. */

@@ -1,0 +1,42 @@
+[
+  {
+    "app": "hello",
+    "format": "static ELF64",
+    "entry": "0xffffc00001000000"
+  },
+  {
+    "app": "counter",
+    "format": "static ELF64",
+    "entry": "0xffffc00001000000"
+  },
+  {
+    "app": "probe",
+    "format": "static ELF64",
+    "entry": "0xffffc00001000000"
+  },
+  {
+    "app": "privileged",
+    "format": "static ELF64",
+    "entry": "0xffffc00001000000"
+  },
+  {
+    "app": "kernelread",
+    "format": "static ELF64",
+    "entry": "0xffffc00001000000"
+  },
+  {
+    "app": "kernelwrite",
+    "format": "static ELF64",
+    "entry": "0xffffc00001000000"
+  },
+  {
+    "app": "badflags",
+    "format": "static ELF64",
+    "entry": "0xffffc00001000000"
+  },
+  {
+    "app": "badstack",
+    "format": "static ELF64",
+    "entry": "0xffffc00001000000"
+  }
+]

@@ -42,7 +42,7 @@ try:
         name=f'page-fault-{fault}'
         d=q.OUT/name;d.mkdir()
         with (d/'build.log').open('w') as log:
-            subprocess.run(['make',f'BUILD=build/fault-{fault}',f'TEST_FAULT={fault}','-j2','iso'],stdout=log,stderr=subprocess.STDOUT,check=True,timeout=60)
+            subprocess.run(['make',f'BUILD=build/fault-{fault}',f'TEST_FAULT={fault}','USERMODE=0','-j2','iso'],stdout=log,stderr=subprocess.STDOUT,check=True,timeout=60)
         expected_rip='0xffffc00000000000' if fault==8 else '(unsigned long)&memory_fault_site'
         script=f'''
 hbreak cpu_halt

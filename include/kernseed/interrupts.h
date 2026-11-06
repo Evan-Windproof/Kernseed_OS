@@ -41,7 +41,7 @@ struct interrupt_diagnostics {
 extern volatile struct interrupt_diagnostics irq_state;
 extern volatile struct interrupt_frame last_exception;
 extern struct idt_gate idt[256];
-extern uint64_t gdt[5];
+extern uint64_t gdt[5+2*KERNSEED_USERMODE];
 extern struct tss64 kernel_tss;
 extern unsigned char df_stack[16384];
 void gdt_init(void);

@@ -1,0 +1,305 @@
+./build/shell-test
+PASS parser/registry: quotes, escapes, empty args, bounds, independent registration, automatic help and dispatch
+./build/memory-span-test
+PASS memory span: unaligned usable/reserved, zero, boundaries, overflow
+./build/runtime-test
+PASS runtime: overlap matrix, copy/fill canaries, comparison selftest
+memmove cases: 12464
+./build/framebuffer-test
+PASS framebuffer: RGB order, glyph pixels, pitch/edge canaries, wrapping, 11 invalid layouts
+make SCHEDULER=0 CONSOLE_SHELL=0 iso check
+make[1]: Entering directory '/workspace/Kernseed_OS'
+gcc -std=c11 -O2 -g3 -Wall -Wextra -Werror -ffreestanding -fno-builtin -fno-stack-protector -fno-stack-check -fno-pic -fno-pie -fno-asynchronous-unwind-tables -fno-unwind-tables -m64 -march=x86-64 -mno-red-zone -mgeneral-regs-only -mcmodel=kernel -Iinclude -Ithird_party/limine -MMD -MP -DKERNSEED_TEST_FAULT=0 -DKERNSEED_SCHEDULER=0 -DKERNSEED_SHELL=0 -c kernel/arch/x86_64/gdt.c -o build/kernel/arch/x86_64/gdt.o
+gcc -std=c11 -O2 -g3 -Wall -Wextra -Werror -ffreestanding -fno-builtin -fno-stack-protector -fno-stack-check -fno-pic -fno-pie -fno-asynchronous-unwind-tables -fno-unwind-tables -m64 -march=x86-64 -mno-red-zone -mgeneral-regs-only -mcmodel=kernel -Iinclude -Ithird_party/limine -MMD -MP -DKERNSEED_TEST_FAULT=0 -DKERNSEED_SCHEDULER=0 -DKERNSEED_SHELL=0 -c kernel/core/console.c -o build/kernel/core/console.o
+gcc -std=c11 -O2 -g3 -Wall -Wextra -Werror -ffreestanding -fno-builtin -fno-stack-protector -fno-stack-check -fno-pic -fno-pie -fno-asynchronous-unwind-tables -fno-unwind-tables -m64 -march=x86-64 -mno-red-zone -mgeneral-regs-only -mcmodel=kernel -Iinclude -Ithird_party/limine -MMD -MP -DKERNSEED_TEST_FAULT=0 -DKERNSEED_SCHEDULER=0 -DKERNSEED_SHELL=0 -c kernel/core/main.c -o build/kernel/core/main.o
+gcc -std=c11 -O2 -g3 -Wall -Wextra -Werror -ffreestanding -fno-builtin -fno-stack-protector -fno-stack-check -fno-pic -fno-pie -fno-asynchronous-unwind-tables -fno-unwind-tables -m64 -march=x86-64 -mno-red-zone -mgeneral-regs-only -mcmodel=kernel -Iinclude -Ithird_party/limine -MMD -MP -DKERNSEED_TEST_FAULT=0 -DKERNSEED_SCHEDULER=0 -DKERNSEED_SHELL=0 -c kernel/core/runtime.c -o build/kernel/core/runtime.o
+gcc -std=c11 -O2 -g3 -Wall -Wextra -Werror -ffreestanding -fno-builtin -fno-stack-protector -fno-stack-check -fno-pic -fno-pie -fno-asynchronous-unwind-tables -fno-unwind-tables -m64 -march=x86-64 -mno-red-zone -mgeneral-regs-only -mcmodel=kernel -Iinclude -Ithird_party/limine -MMD -MP -DKERNSEED_TEST_FAULT=0 -DKERNSEED_SCHEDULER=0 -DKERNSEED_SHELL=0 -c kernel/core/terminal.c -o build/kernel/core/terminal.o
+gcc -std=c11 -O2 -g3 -Wall -Wextra -Werror -ffreestanding -fno-builtin -fno-stack-protector -fno-stack-check -fno-pic -fno-pie -fno-asynchronous-unwind-tables -fno-unwind-tables -m64 -march=x86-64 -mno-red-zone -mgeneral-regs-only -mcmodel=kernel -Iinclude -Ithird_party/limine -MMD -MP -DKERNSEED_TEST_FAULT=0 -DKERNSEED_SCHEDULER=0 -DKERNSEED_SHELL=0 -c kernel/drivers/framebuffer.c -o build/kernel/drivers/framebuffer.o
+gcc -std=c11 -O2 -g3 -Wall -Wextra -Werror -ffreestanding -fno-builtin -fno-stack-protector -fno-stack-check -fno-pic -fno-pie -fno-asynchronous-unwind-tables -fno-unwind-tables -m64 -march=x86-64 -mno-red-zone -mgeneral-regs-only -mcmodel=kernel -Iinclude -Ithird_party/limine -MMD -MP -DKERNSEED_TEST_FAULT=0 -DKERNSEED_SCHEDULER=0 -DKERNSEED_SHELL=0 -c kernel/drivers/keyboard.c -o build/kernel/drivers/keyboard.o
+gcc -std=c11 -O2 -g3 -Wall -Wextra -Werror -ffreestanding -fno-builtin -fno-stack-protector -fno-stack-check -fno-pic -fno-pie -fno-asynchronous-unwind-tables -fno-unwind-tables -m64 -march=x86-64 -mno-red-zone -mgeneral-regs-only -mcmodel=kernel -Iinclude -Ithird_party/limine -MMD -MP -DKERNSEED_TEST_FAULT=0 -DKERNSEED_SCHEDULER=0 -DKERNSEED_SHELL=0 -c kernel/drivers/serial.c -o build/kernel/drivers/serial.o
+gcc -std=c11 -O2 -g3 -Wall -Wextra -Werror -ffreestanding -fno-builtin -fno-stack-protector -fno-stack-check -fno-pic -fno-pie -fno-asynchronous-unwind-tables -fno-unwind-tables -m64 -march=x86-64 -mno-red-zone -mgeneral-regs-only -mcmodel=kernel -Iinclude -Ithird_party/limine -MMD -MP -DKERNSEED_TEST_FAULT=0 -DKERNSEED_SCHEDULER=0 -DKERNSEED_SHELL=0 -c kernel/interrupts/interrupts.c -o build/kernel/interrupts/interrupts.o
+gcc -std=c11 -O2 -g3 -Wall -Wextra -Werror -ffreestanding -fno-builtin -fno-stack-protector -fno-stack-check -fno-pic -fno-pie -fno-asynchronous-unwind-tables -fno-unwind-tables -m64 -march=x86-64 -mno-red-zone -mgeneral-regs-only -mcmodel=kernel -Iinclude -Ithird_party/limine -MMD -MP -DKERNSEED_TEST_FAULT=0 -DKERNSEED_SCHEDULER=0 -DKERNSEED_SHELL=0 -c kernel/memory/memory.c -o build/kernel/memory/memory.o
+gcc -std=c11 -O2 -g3 -Wall -Wextra -Werror -ffreestanding -fno-builtin -fno-stack-protector -fno-stack-check -fno-pic -fno-pie -fno-asynchronous-unwind-tables -fno-unwind-tables -m64 -march=x86-64 -mno-red-zone -mgeneral-regs-only -mcmodel=kernel -Iinclude -Ithird_party/limine -MMD -MP -DKERNSEED_TEST_FAULT=0 -DKERNSEED_SCHEDULER=0 -DKERNSEED_SHELL=0 -c kernel/memory/span.c -o build/kernel/memory/span.o
+gcc -std=c11 -O2 -g3 -Wall -Wextra -Werror -ffreestanding -fno-builtin -fno-stack-protector -fno-stack-check -fno-pic -fno-pie -fno-asynchronous-unwind-tables -fno-unwind-tables -m64 -march=x86-64 -mno-red-zone -mgeneral-regs-only -mcmodel=kernel -Iinclude -Ithird_party/limine -MMD -MP -DKERNSEED_TEST_FAULT=0 -DKERNSEED_SCHEDULER=0 -DKERNSEED_SHELL=0 -c kernel/scheduler/scheduler.c -o build/kernel/scheduler/scheduler.o
+gcc -std=c11 -O2 -g3 -Wall -Wextra -Werror -ffreestanding -fno-builtin -fno-stack-protector -fno-stack-check -fno-pic -fno-pie -fno-asynchronous-unwind-tables -fno-unwind-tables -m64 -march=x86-64 -mno-red-zone -mgeneral-regs-only -mcmodel=kernel -Iinclude -Ithird_party/limine -MMD -MP -DKERNSEED_TEST_FAULT=0 -DKERNSEED_SCHEDULER=0 -DKERNSEED_SHELL=0 -c shell/commands/about.c -o build/shell/commands/about.o
+gcc -std=c11 -O2 -g3 -Wall -Wextra -Werror -ffreestanding -fno-builtin -fno-stack-protector -fno-stack-check -fno-pic -fno-pie -fno-asynchronous-unwind-tables -fno-unwind-tables -m64 -march=x86-64 -mno-red-zone -mgeneral-regs-only -mcmodel=kernel -Iinclude -Ithird_party/limine -MMD -MP -DKERNSEED_TEST_FAULT=0 -DKERNSEED_SCHEDULER=0 -DKERNSEED_SHELL=0 -c shell/commands/clear.c -o build/shell/commands/clear.o
+gcc -std=c11 -O2 -g3 -Wall -Wextra -Werror -ffreestanding -fno-builtin -fno-stack-protector -fno-stack-check -fno-pic -fno-pie -fno-asynchronous-unwind-tables -fno-unwind-tables -m64 -march=x86-64 -mno-red-zone -mgeneral-regs-only -mcmodel=kernel -Iinclude -Ithird_party/limine -MMD -MP -DKERNSEED_TEST_FAULT=0 -DKERNSEED_SCHEDULER=0 -DKERNSEED_SHELL=0 -c shell/commands/echo.c -o build/shell/commands/echo.o
+gcc -std=c11 -O2 -g3 -Wall -Wextra -Werror -ffreestanding -fno-builtin -fno-stack-protector -fno-stack-check -fno-pic -fno-pie -fno-asynchronous-unwind-tables -fno-unwind-tables -m64 -march=x86-64 -mno-red-zone -mgeneral-regs-only -mcmodel=kernel -Iinclude -Ithird_party/limine -MMD -MP -DKERNSEED_TEST_FAULT=0 -DKERNSEED_SCHEDULER=0 -DKERNSEED_SHELL=0 -c shell/commands/help.c -o build/shell/commands/help.o
+gcc -std=c11 -O2 -g3 -Wall -Wextra -Werror -ffreestanding -fno-builtin -fno-stack-protector -fno-stack-check -fno-pic -fno-pie -fno-asynchronous-unwind-tables -fno-unwind-tables -m64 -march=x86-64 -mno-red-zone -mgeneral-regs-only -mcmodel=kernel -Iinclude -Ithird_party/limine -MMD -MP -DKERNSEED_TEST_FAULT=0 -DKERNSEED_SCHEDULER=0 -DKERNSEED_SHELL=0 -c shell/commands/meminfo.c -o build/shell/commands/meminfo.o
+gcc -std=c11 -O2 -g3 -Wall -Wextra -Werror -ffreestanding -fno-builtin -fno-stack-protector -fno-stack-check -fno-pic -fno-pie -fno-asynchronous-unwind-tables -fno-unwind-tables -m64 -march=x86-64 -mno-red-zone -mgeneral-regs-only -mcmodel=kernel -Iinclude -Ithird_party/limine -MMD -MP -DKERNSEED_TEST_FAULT=0 -DKERNSEED_SCHEDULER=0 -DKERNSEED_SHELL=0 -c shell/commands/reboot.c -o build/shell/commands/reboot.o
+gcc -std=c11 -O2 -g3 -Wall -Wextra -Werror -ffreestanding -fno-builtin -fno-stack-protector -fno-stack-check -fno-pic -fno-pie -fno-asynchronous-unwind-tables -fno-unwind-tables -m64 -march=x86-64 -mno-red-zone -mgeneral-regs-only -mcmodel=kernel -Iinclude -Ithird_party/limine -MMD -MP -DKERNSEED_TEST_FAULT=0 -DKERNSEED_SCHEDULER=0 -DKERNSEED_SHELL=0 -c shell/commands/tasks.c -o build/shell/commands/tasks.o
+gcc -std=c11 -O2 -g3 -Wall -Wextra -Werror -ffreestanding -fno-builtin -fno-stack-protector -fno-stack-check -fno-pic -fno-pie -fno-asynchronous-unwind-tables -fno-unwind-tables -m64 -march=x86-64 -mno-red-zone -mgeneral-regs-only -mcmodel=kernel -Iinclude -Ithird_party/limine -MMD -MP -DKERNSEED_TEST_FAULT=0 -DKERNSEED_SCHEDULER=0 -DKERNSEED_SHELL=0 -c shell/commands/uptime.c -o build/shell/commands/uptime.o
+gcc -std=c11 -O2 -g3 -Wall -Wextra -Werror -ffreestanding -fno-builtin -fno-stack-protector -fno-stack-check -fno-pic -fno-pie -fno-asynchronous-unwind-tables -fno-unwind-tables -m64 -march=x86-64 -mno-red-zone -mgeneral-regs-only -mcmodel=kernel -Iinclude -Ithird_party/limine -MMD -MP -DKERNSEED_TEST_FAULT=0 -DKERNSEED_SCHEDULER=0 -DKERNSEED_SHELL=0 -c shell/dispatch.c -o build/shell/dispatch.o
+gcc -std=c11 -O2 -g3 -Wall -Wextra -Werror -ffreestanding -fno-builtin -fno-stack-protector -fno-stack-check -fno-pic -fno-pie -fno-asynchronous-unwind-tables -fno-unwind-tables -m64 -march=x86-64 -mno-red-zone -mgeneral-regs-only -mcmodel=kernel -Iinclude -Ithird_party/limine -MMD -MP -DKERNSEED_TEST_FAULT=0 -DKERNSEED_SCHEDULER=0 -DKERNSEED_SHELL=0 -c shell/parser.c -o build/shell/parser.o
+gcc -std=c11 -O2 -g3 -Wall -Wextra -Werror -ffreestanding -fno-builtin -fno-stack-protector -fno-stack-check -fno-pic -fno-pie -fno-asynchronous-unwind-tables -fno-unwind-tables -m64 -march=x86-64 -mno-red-zone -mgeneral-regs-only -mcmodel=kernel -Iinclude -Ithird_party/limine -MMD -MP -DKERNSEED_TEST_FAULT=0 -DKERNSEED_SCHEDULER=0 -DKERNSEED_SHELL=0 -c shell/registry.c -o build/shell/registry.o
+gcc -std=c11 -O2 -g3 -Wall -Wextra -Werror -ffreestanding -fno-builtin -fno-stack-protector -fno-stack-check -fno-pic -fno-pie -fno-asynchronous-unwind-tables -fno-unwind-tables -m64 -march=x86-64 -mno-red-zone -mgeneral-regs-only -mcmodel=kernel -Iinclude -Ithird_party/limine -MMD -MP -DKERNSEED_TEST_FAULT=0 -DKERNSEED_SCHEDULER=0 -DKERNSEED_SHELL=0 -c shell/shell.c -o build/shell/shell.o
+gcc -std=c11 -O2 -g3 -Wall -Wextra -Werror -ffreestanding -fno-builtin -fno-stack-protector -fno-stack-check -fno-pic -fno-pie -fno-asynchronous-unwind-tables -fno-unwind-tables -m64 -march=x86-64 -mno-red-zone -mgeneral-regs-only -mcmodel=kernel -Iinclude -Ithird_party/limine -MMD -MP -DKERNSEED_TEST_FAULT=0 -DKERNSEED_SCHEDULER=0 -DKERNSEED_SHELL=0 -c kernel/arch/x86_64/counter-tasks.S -o build/kernel/arch/x86_64/counter-tasks.o
+gcc -std=c11 -O2 -g3 -Wall -Wextra -Werror -ffreestanding -fno-builtin -fno-stack-protector -fno-stack-check -fno-pic -fno-pie -fno-asynchronous-unwind-tables -fno-unwind-tables -m64 -march=x86-64 -mno-red-zone -mgeneral-regs-only -mcmodel=kernel -Iinclude -Ithird_party/limine -MMD -MP -DKERNSEED_TEST_FAULT=0 -DKERNSEED_SCHEDULER=0 -DKERNSEED_SHELL=0 -c kernel/arch/x86_64/entry.S -o build/kernel/arch/x86_64/entry.o
+gcc -std=c11 -O2 -g3 -Wall -Wextra -Werror -ffreestanding -fno-builtin -fno-stack-protector -fno-stack-check -fno-pic -fno-pie -fno-asynchronous-unwind-tables -fno-unwind-tables -m64 -march=x86-64 -mno-red-zone -mgeneral-regs-only -mcmodel=kernel -Iinclude -Ithird_party/limine -MMD -MP -DKERNSEED_TEST_FAULT=0 -DKERNSEED_SCHEDULER=0 -DKERNSEED_SHELL=0 -c kernel/arch/x86_64/gdt-load.S -o build/kernel/arch/x86_64/gdt-load.o
+gcc -std=c11 -O2 -g3 -Wall -Wextra -Werror -ffreestanding -fno-builtin -fno-stack-protector -fno-stack-check -fno-pic -fno-pie -fno-asynchronous-unwind-tables -fno-unwind-tables -m64 -march=x86-64 -mno-red-zone -mgeneral-regs-only -mcmodel=kernel -Iinclude -Ithird_party/limine -MMD -MP -DKERNSEED_TEST_FAULT=0 -DKERNSEED_SCHEDULER=0 -DKERNSEED_SHELL=0 -c kernel/arch/x86_64/interrupt-probe.S -o build/kernel/arch/x86_64/interrupt-probe.o
+gcc -std=c11 -O2 -g3 -Wall -Wextra -Werror -ffreestanding -fno-builtin -fno-stack-protector -fno-stack-check -fno-pic -fno-pie -fno-asynchronous-unwind-tables -fno-unwind-tables -m64 -march=x86-64 -mno-red-zone -mgeneral-regs-only -mcmodel=kernel -Iinclude -Ithird_party/limine -MMD -MP -DKERNSEED_TEST_FAULT=0 -DKERNSEED_SCHEDULER=0 -DKERNSEED_SHELL=0 -c kernel/arch/x86_64/isr-common.S -o build/kernel/arch/x86_64/isr-common.o
+gcc -std=c11 -O2 -g3 -Wall -Wextra -Werror -ffreestanding -fno-builtin -fno-stack-protector -fno-stack-check -fno-pic -fno-pie -fno-asynchronous-unwind-tables -fno-unwind-tables -m64 -march=x86-64 -mno-red-zone -mgeneral-regs-only -mcmodel=kernel -Iinclude -Ithird_party/limine -MMD -MP -DKERNSEED_TEST_FAULT=0 -DKERNSEED_SCHEDULER=0 -DKERNSEED_SHELL=0 -c build/isr-stubs.S -o build/isr-stubs.o
+ld -nostdlib -static -z max-page-size=0x1000 --build-id=none -T boot/linker.ld build/kernel/arch/x86_64/gdt.o build/kernel/core/console.o build/kernel/core/main.o build/kernel/core/runtime.o build/kernel/core/terminal.o build/kernel/drivers/framebuffer.o build/kernel/drivers/keyboard.o build/kernel/drivers/serial.o build/kernel/interrupts/interrupts.o build/kernel/memory/memory.o build/kernel/memory/span.o build/kernel/scheduler/scheduler.o build/shell/commands/about.o build/shell/commands/clear.o build/shell/commands/echo.o build/shell/commands/help.o build/shell/commands/meminfo.o build/shell/commands/reboot.o build/shell/commands/tasks.o build/shell/commands/uptime.o build/shell/dispatch.o build/shell/parser.o build/shell/registry.o build/shell/shell.o build/kernel/arch/x86_64/counter-tasks.o build/kernel/arch/x86_64/entry.o build/kernel/arch/x86_64/gdt-load.o build/kernel/arch/x86_64/interrupt-probe.o build/kernel/arch/x86_64/isr-common.o build/isr-stubs.o -o build/kernseed.elf
+HOST_CC="cc" ./scripts/fetch-limine.sh
+limine.h: OK
+limine.c: OK
+limine-bios-hdd.h: OK
+limine-bios.sys: OK
+limine-bios-cd.bin: OK
+limine-uefi-cd.bin: OK
+BOOTX64.EFI: OK
+LICENSE: OK
+make[2]: Entering directory '/workspace/Kernseed_OS/.cache/limine'
+make[2]: 'limine' is up to date.
+make[2]: Leaving directory '/workspace/Kernseed_OS/.cache/limine'
+rm -rf build/iso-root
+mkdir -p build/iso-root/boot/limine build/iso-root/EFI/BOOT
+cp build/kernseed.elf build/iso-root/boot/
+cp boot/limine.conf .cache/limine/limine-bios.sys .cache/limine/limine-bios-cd.bin .cache/limine/limine-uefi-cd.bin build/iso-root/boot/limine/
+cp .cache/limine/BOOTX64.EFI build/iso-root/EFI/BOOT/
+cp LICENSE THIRD_PARTY_LICENSES.md build/iso-root/
+cp third_party/limine/LICENSE build/iso-root/LIMINE-LICENSE
+/workspace/kernseed-tools/bin/xorriso -as mkisofs -R -r -J -V KERNSEED \
+    -b boot/limine/limine-bios-cd.bin -no-emul-boot -boot-load-size 4 -boot-info-table \
+    --efi-boot boot/limine/limine-uefi-cd.bin -efi-boot-part --efi-boot-image \
+    --protective-msdos-label --modification-date=2026010100000000 \
+    --set_all_file_dates 2026010100000000 \
+    --gpt_disk_guid 6b65726e-7365-4564-8000-000000000001 \
+    -o build/kernseed.iso build/iso-root
+xorriso 1.5.6 : RockRidge filesystem manipulator, libburnia project.
+
+Drive current: -outdev 'stdio:build/kernseed.iso'
+Media current: stdio file, overwriteable
+Media status : is blank
+Media summary: 0 sessions, 0 data blocks, 0 data, 59.3g free
+Added to ISO image: directory '/'='/workspace/Kernseed_OS/build/iso-root'
+xorriso : UPDATE :      13 files added in 1 seconds
+xorriso : UPDATE :      13 files added in 1 seconds
+ISO image produced: 1977 sectors
+Written to medium : 1977 sectors at LBA 0
+Writing to 'stdio:build/kernseed.iso' completed successfully.
+
+.cache/limine/limine bios-install build/kernseed.iso
+Physical block size of 512 bytes.
+Installing to GPT. Logical block size of 512 bytes.
+Secondary header at LBA 0x1ee3.
+Secondary header valid.
+GPT partition NOT specified. Attempting GPT embedding.
+New maximum count of partition entries: 44.
+Stage 2 to be located at 0x1a00 and 0x3d6000.
+Reminder: Remember to copy the limine-bios.sys file in either
+          the root, /boot, /limine, or /boot/limine directories of
+          one of the partitions on the device, or boot will fail!
+Limine BIOS stages installed successfully!
+python3 tests/check_elf.py build/kernseed.elf
+PASS ELF: static x86-64, no unresolved symbols, no RWX segment
+make[1]: Leaving directory '/workspace/Kernseed_OS'
+python3 tests/boot.py
+PASS cold-64M
+PASS cold-128M
+PASS cold-256M
+PASS gdb-128M
+PASS missing-framebuffer
+Evidence: build/test-results/20261106T204346Z
+python3 tests/phase2.py
+PASS descriptors-timer
+PASS fault-1-vector-0-run
+PASS fault-2-vector-6-run
+PASS fault-3-vector-13-run
+PASS fault-4-vector-14-run
+PASS fault-5-vector-8-run
+Phase 2 evidence: build/phase2-results/20261106T204358Z
+python3 tests/phase3.py
+PASS memory-128M
+PASS memory-256M
+PASS memory-512M
+PASS memory-1024M
+PASS page-fault-6-run
+PASS page-fault-7-run
+PASS page-fault-8-run
+Phase 3 evidence: /workspace/Kernseed_OS/build/phase3-results/20261106T204418Z
+make SCHEDULER=1 CONSOLE_SHELL=0 iso check
+make[1]: Entering directory '/workspace/Kernseed_OS'
+gcc -std=c11 -O2 -g3 -Wall -Wextra -Werror -ffreestanding -fno-builtin -fno-stack-protector -fno-stack-check -fno-pic -fno-pie -fno-asynchronous-unwind-tables -fno-unwind-tables -m64 -march=x86-64 -mno-red-zone -mgeneral-regs-only -mcmodel=kernel -Iinclude -Ithird_party/limine -MMD -MP -DKERNSEED_TEST_FAULT=0 -DKERNSEED_SCHEDULER=1 -DKERNSEED_SHELL=0 -c kernel/arch/x86_64/gdt.c -o build/kernel/arch/x86_64/gdt.o
+gcc -std=c11 -O2 -g3 -Wall -Wextra -Werror -ffreestanding -fno-builtin -fno-stack-protector -fno-stack-check -fno-pic -fno-pie -fno-asynchronous-unwind-tables -fno-unwind-tables -m64 -march=x86-64 -mno-red-zone -mgeneral-regs-only -mcmodel=kernel -Iinclude -Ithird_party/limine -MMD -MP -DKERNSEED_TEST_FAULT=0 -DKERNSEED_SCHEDULER=1 -DKERNSEED_SHELL=0 -c kernel/core/console.c -o build/kernel/core/console.o
+gcc -std=c11 -O2 -g3 -Wall -Wextra -Werror -ffreestanding -fno-builtin -fno-stack-protector -fno-stack-check -fno-pic -fno-pie -fno-asynchronous-unwind-tables -fno-unwind-tables -m64 -march=x86-64 -mno-red-zone -mgeneral-regs-only -mcmodel=kernel -Iinclude -Ithird_party/limine -MMD -MP -DKERNSEED_TEST_FAULT=0 -DKERNSEED_SCHEDULER=1 -DKERNSEED_SHELL=0 -c kernel/core/main.c -o build/kernel/core/main.o
+gcc -std=c11 -O2 -g3 -Wall -Wextra -Werror -ffreestanding -fno-builtin -fno-stack-protector -fno-stack-check -fno-pic -fno-pie -fno-asynchronous-unwind-tables -fno-unwind-tables -m64 -march=x86-64 -mno-red-zone -mgeneral-regs-only -mcmodel=kernel -Iinclude -Ithird_party/limine -MMD -MP -DKERNSEED_TEST_FAULT=0 -DKERNSEED_SCHEDULER=1 -DKERNSEED_SHELL=0 -c kernel/core/runtime.c -o build/kernel/core/runtime.o
+gcc -std=c11 -O2 -g3 -Wall -Wextra -Werror -ffreestanding -fno-builtin -fno-stack-protector -fno-stack-check -fno-pic -fno-pie -fno-asynchronous-unwind-tables -fno-unwind-tables -m64 -march=x86-64 -mno-red-zone -mgeneral-regs-only -mcmodel=kernel -Iinclude -Ithird_party/limine -MMD -MP -DKERNSEED_TEST_FAULT=0 -DKERNSEED_SCHEDULER=1 -DKERNSEED_SHELL=0 -c kernel/core/terminal.c -o build/kernel/core/terminal.o
+gcc -std=c11 -O2 -g3 -Wall -Wextra -Werror -ffreestanding -fno-builtin -fno-stack-protector -fno-stack-check -fno-pic -fno-pie -fno-asynchronous-unwind-tables -fno-unwind-tables -m64 -march=x86-64 -mno-red-zone -mgeneral-regs-only -mcmodel=kernel -Iinclude -Ithird_party/limine -MMD -MP -DKERNSEED_TEST_FAULT=0 -DKERNSEED_SCHEDULER=1 -DKERNSEED_SHELL=0 -c kernel/drivers/framebuffer.c -o build/kernel/drivers/framebuffer.o
+gcc -std=c11 -O2 -g3 -Wall -Wextra -Werror -ffreestanding -fno-builtin -fno-stack-protector -fno-stack-check -fno-pic -fno-pie -fno-asynchronous-unwind-tables -fno-unwind-tables -m64 -march=x86-64 -mno-red-zone -mgeneral-regs-only -mcmodel=kernel -Iinclude -Ithird_party/limine -MMD -MP -DKERNSEED_TEST_FAULT=0 -DKERNSEED_SCHEDULER=1 -DKERNSEED_SHELL=0 -c kernel/drivers/keyboard.c -o build/kernel/drivers/keyboard.o
+gcc -std=c11 -O2 -g3 -Wall -Wextra -Werror -ffreestanding -fno-builtin -fno-stack-protector -fno-stack-check -fno-pic -fno-pie -fno-asynchronous-unwind-tables -fno-unwind-tables -m64 -march=x86-64 -mno-red-zone -mgeneral-regs-only -mcmodel=kernel -Iinclude -Ithird_party/limine -MMD -MP -DKERNSEED_TEST_FAULT=0 -DKERNSEED_SCHEDULER=1 -DKERNSEED_SHELL=0 -c kernel/drivers/serial.c -o build/kernel/drivers/serial.o
+gcc -std=c11 -O2 -g3 -Wall -Wextra -Werror -ffreestanding -fno-builtin -fno-stack-protector -fno-stack-check -fno-pic -fno-pie -fno-asynchronous-unwind-tables -fno-unwind-tables -m64 -march=x86-64 -mno-red-zone -mgeneral-regs-only -mcmodel=kernel -Iinclude -Ithird_party/limine -MMD -MP -DKERNSEED_TEST_FAULT=0 -DKERNSEED_SCHEDULER=1 -DKERNSEED_SHELL=0 -c kernel/interrupts/interrupts.c -o build/kernel/interrupts/interrupts.o
+gcc -std=c11 -O2 -g3 -Wall -Wextra -Werror -ffreestanding -fno-builtin -fno-stack-protector -fno-stack-check -fno-pic -fno-pie -fno-asynchronous-unwind-tables -fno-unwind-tables -m64 -march=x86-64 -mno-red-zone -mgeneral-regs-only -mcmodel=kernel -Iinclude -Ithird_party/limine -MMD -MP -DKERNSEED_TEST_FAULT=0 -DKERNSEED_SCHEDULER=1 -DKERNSEED_SHELL=0 -c kernel/memory/memory.c -o build/kernel/memory/memory.o
+gcc -std=c11 -O2 -g3 -Wall -Wextra -Werror -ffreestanding -fno-builtin -fno-stack-protector -fno-stack-check -fno-pic -fno-pie -fno-asynchronous-unwind-tables -fno-unwind-tables -m64 -march=x86-64 -mno-red-zone -mgeneral-regs-only -mcmodel=kernel -Iinclude -Ithird_party/limine -MMD -MP -DKERNSEED_TEST_FAULT=0 -DKERNSEED_SCHEDULER=1 -DKERNSEED_SHELL=0 -c kernel/memory/span.c -o build/kernel/memory/span.o
+gcc -std=c11 -O2 -g3 -Wall -Wextra -Werror -ffreestanding -fno-builtin -fno-stack-protector -fno-stack-check -fno-pic -fno-pie -fno-asynchronous-unwind-tables -fno-unwind-tables -m64 -march=x86-64 -mno-red-zone -mgeneral-regs-only -mcmodel=kernel -Iinclude -Ithird_party/limine -MMD -MP -DKERNSEED_TEST_FAULT=0 -DKERNSEED_SCHEDULER=1 -DKERNSEED_SHELL=0 -c kernel/scheduler/scheduler.c -o build/kernel/scheduler/scheduler.o
+gcc -std=c11 -O2 -g3 -Wall -Wextra -Werror -ffreestanding -fno-builtin -fno-stack-protector -fno-stack-check -fno-pic -fno-pie -fno-asynchronous-unwind-tables -fno-unwind-tables -m64 -march=x86-64 -mno-red-zone -mgeneral-regs-only -mcmodel=kernel -Iinclude -Ithird_party/limine -MMD -MP -DKERNSEED_TEST_FAULT=0 -DKERNSEED_SCHEDULER=1 -DKERNSEED_SHELL=0 -c shell/commands/about.c -o build/shell/commands/about.o
+gcc -std=c11 -O2 -g3 -Wall -Wextra -Werror -ffreestanding -fno-builtin -fno-stack-protector -fno-stack-check -fno-pic -fno-pie -fno-asynchronous-unwind-tables -fno-unwind-tables -m64 -march=x86-64 -mno-red-zone -mgeneral-regs-only -mcmodel=kernel -Iinclude -Ithird_party/limine -MMD -MP -DKERNSEED_TEST_FAULT=0 -DKERNSEED_SCHEDULER=1 -DKERNSEED_SHELL=0 -c shell/commands/clear.c -o build/shell/commands/clear.o
+gcc -std=c11 -O2 -g3 -Wall -Wextra -Werror -ffreestanding -fno-builtin -fno-stack-protector -fno-stack-check -fno-pic -fno-pie -fno-asynchronous-unwind-tables -fno-unwind-tables -m64 -march=x86-64 -mno-red-zone -mgeneral-regs-only -mcmodel=kernel -Iinclude -Ithird_party/limine -MMD -MP -DKERNSEED_TEST_FAULT=0 -DKERNSEED_SCHEDULER=1 -DKERNSEED_SHELL=0 -c shell/commands/echo.c -o build/shell/commands/echo.o
+gcc -std=c11 -O2 -g3 -Wall -Wextra -Werror -ffreestanding -fno-builtin -fno-stack-protector -fno-stack-check -fno-pic -fno-pie -fno-asynchronous-unwind-tables -fno-unwind-tables -m64 -march=x86-64 -mno-red-zone -mgeneral-regs-only -mcmodel=kernel -Iinclude -Ithird_party/limine -MMD -MP -DKERNSEED_TEST_FAULT=0 -DKERNSEED_SCHEDULER=1 -DKERNSEED_SHELL=0 -c shell/commands/help.c -o build/shell/commands/help.o
+gcc -std=c11 -O2 -g3 -Wall -Wextra -Werror -ffreestanding -fno-builtin -fno-stack-protector -fno-stack-check -fno-pic -fno-pie -fno-asynchronous-unwind-tables -fno-unwind-tables -m64 -march=x86-64 -mno-red-zone -mgeneral-regs-only -mcmodel=kernel -Iinclude -Ithird_party/limine -MMD -MP -DKERNSEED_TEST_FAULT=0 -DKERNSEED_SCHEDULER=1 -DKERNSEED_SHELL=0 -c shell/commands/meminfo.c -o build/shell/commands/meminfo.o
+gcc -std=c11 -O2 -g3 -Wall -Wextra -Werror -ffreestanding -fno-builtin -fno-stack-protector -fno-stack-check -fno-pic -fno-pie -fno-asynchronous-unwind-tables -fno-unwind-tables -m64 -march=x86-64 -mno-red-zone -mgeneral-regs-only -mcmodel=kernel -Iinclude -Ithird_party/limine -MMD -MP -DKERNSEED_TEST_FAULT=0 -DKERNSEED_SCHEDULER=1 -DKERNSEED_SHELL=0 -c shell/commands/reboot.c -o build/shell/commands/reboot.o
+gcc -std=c11 -O2 -g3 -Wall -Wextra -Werror -ffreestanding -fno-builtin -fno-stack-protector -fno-stack-check -fno-pic -fno-pie -fno-asynchronous-unwind-tables -fno-unwind-tables -m64 -march=x86-64 -mno-red-zone -mgeneral-regs-only -mcmodel=kernel -Iinclude -Ithird_party/limine -MMD -MP -DKERNSEED_TEST_FAULT=0 -DKERNSEED_SCHEDULER=1 -DKERNSEED_SHELL=0 -c shell/commands/tasks.c -o build/shell/commands/tasks.o
+gcc -std=c11 -O2 -g3 -Wall -Wextra -Werror -ffreestanding -fno-builtin -fno-stack-protector -fno-stack-check -fno-pic -fno-pie -fno-asynchronous-unwind-tables -fno-unwind-tables -m64 -march=x86-64 -mno-red-zone -mgeneral-regs-only -mcmodel=kernel -Iinclude -Ithird_party/limine -MMD -MP -DKERNSEED_TEST_FAULT=0 -DKERNSEED_SCHEDULER=1 -DKERNSEED_SHELL=0 -c shell/commands/uptime.c -o build/shell/commands/uptime.o
+gcc -std=c11 -O2 -g3 -Wall -Wextra -Werror -ffreestanding -fno-builtin -fno-stack-protector -fno-stack-check -fno-pic -fno-pie -fno-asynchronous-unwind-tables -fno-unwind-tables -m64 -march=x86-64 -mno-red-zone -mgeneral-regs-only -mcmodel=kernel -Iinclude -Ithird_party/limine -MMD -MP -DKERNSEED_TEST_FAULT=0 -DKERNSEED_SCHEDULER=1 -DKERNSEED_SHELL=0 -c shell/dispatch.c -o build/shell/dispatch.o
+gcc -std=c11 -O2 -g3 -Wall -Wextra -Werror -ffreestanding -fno-builtin -fno-stack-protector -fno-stack-check -fno-pic -fno-pie -fno-asynchronous-unwind-tables -fno-unwind-tables -m64 -march=x86-64 -mno-red-zone -mgeneral-regs-only -mcmodel=kernel -Iinclude -Ithird_party/limine -MMD -MP -DKERNSEED_TEST_FAULT=0 -DKERNSEED_SCHEDULER=1 -DKERNSEED_SHELL=0 -c shell/parser.c -o build/shell/parser.o
+gcc -std=c11 -O2 -g3 -Wall -Wextra -Werror -ffreestanding -fno-builtin -fno-stack-protector -fno-stack-check -fno-pic -fno-pie -fno-asynchronous-unwind-tables -fno-unwind-tables -m64 -march=x86-64 -mno-red-zone -mgeneral-regs-only -mcmodel=kernel -Iinclude -Ithird_party/limine -MMD -MP -DKERNSEED_TEST_FAULT=0 -DKERNSEED_SCHEDULER=1 -DKERNSEED_SHELL=0 -c shell/registry.c -o build/shell/registry.o
+gcc -std=c11 -O2 -g3 -Wall -Wextra -Werror -ffreestanding -fno-builtin -fno-stack-protector -fno-stack-check -fno-pic -fno-pie -fno-asynchronous-unwind-tables -fno-unwind-tables -m64 -march=x86-64 -mno-red-zone -mgeneral-regs-only -mcmodel=kernel -Iinclude -Ithird_party/limine -MMD -MP -DKERNSEED_TEST_FAULT=0 -DKERNSEED_SCHEDULER=1 -DKERNSEED_SHELL=0 -c shell/shell.c -o build/shell/shell.o
+gcc -std=c11 -O2 -g3 -Wall -Wextra -Werror -ffreestanding -fno-builtin -fno-stack-protector -fno-stack-check -fno-pic -fno-pie -fno-asynchronous-unwind-tables -fno-unwind-tables -m64 -march=x86-64 -mno-red-zone -mgeneral-regs-only -mcmodel=kernel -Iinclude -Ithird_party/limine -MMD -MP -DKERNSEED_TEST_FAULT=0 -DKERNSEED_SCHEDULER=1 -DKERNSEED_SHELL=0 -c kernel/arch/x86_64/counter-tasks.S -o build/kernel/arch/x86_64/counter-tasks.o
+gcc -std=c11 -O2 -g3 -Wall -Wextra -Werror -ffreestanding -fno-builtin -fno-stack-protector -fno-stack-check -fno-pic -fno-pie -fno-asynchronous-unwind-tables -fno-unwind-tables -m64 -march=x86-64 -mno-red-zone -mgeneral-regs-only -mcmodel=kernel -Iinclude -Ithird_party/limine -MMD -MP -DKERNSEED_TEST_FAULT=0 -DKERNSEED_SCHEDULER=1 -DKERNSEED_SHELL=0 -c kernel/arch/x86_64/entry.S -o build/kernel/arch/x86_64/entry.o
+gcc -std=c11 -O2 -g3 -Wall -Wextra -Werror -ffreestanding -fno-builtin -fno-stack-protector -fno-stack-check -fno-pic -fno-pie -fno-asynchronous-unwind-tables -fno-unwind-tables -m64 -march=x86-64 -mno-red-zone -mgeneral-regs-only -mcmodel=kernel -Iinclude -Ithird_party/limine -MMD -MP -DKERNSEED_TEST_FAULT=0 -DKERNSEED_SCHEDULER=1 -DKERNSEED_SHELL=0 -c kernel/arch/x86_64/gdt-load.S -o build/kernel/arch/x86_64/gdt-load.o
+gcc -std=c11 -O2 -g3 -Wall -Wextra -Werror -ffreestanding -fno-builtin -fno-stack-protector -fno-stack-check -fno-pic -fno-pie -fno-asynchronous-unwind-tables -fno-unwind-tables -m64 -march=x86-64 -mno-red-zone -mgeneral-regs-only -mcmodel=kernel -Iinclude -Ithird_party/limine -MMD -MP -DKERNSEED_TEST_FAULT=0 -DKERNSEED_SCHEDULER=1 -DKERNSEED_SHELL=0 -c kernel/arch/x86_64/interrupt-probe.S -o build/kernel/arch/x86_64/interrupt-probe.o
+gcc -std=c11 -O2 -g3 -Wall -Wextra -Werror -ffreestanding -fno-builtin -fno-stack-protector -fno-stack-check -fno-pic -fno-pie -fno-asynchronous-unwind-tables -fno-unwind-tables -m64 -march=x86-64 -mno-red-zone -mgeneral-regs-only -mcmodel=kernel -Iinclude -Ithird_party/limine -MMD -MP -DKERNSEED_TEST_FAULT=0 -DKERNSEED_SCHEDULER=1 -DKERNSEED_SHELL=0 -c kernel/arch/x86_64/isr-common.S -o build/kernel/arch/x86_64/isr-common.o
+gcc -std=c11 -O2 -g3 -Wall -Wextra -Werror -ffreestanding -fno-builtin -fno-stack-protector -fno-stack-check -fno-pic -fno-pie -fno-asynchronous-unwind-tables -fno-unwind-tables -m64 -march=x86-64 -mno-red-zone -mgeneral-regs-only -mcmodel=kernel -Iinclude -Ithird_party/limine -MMD -MP -DKERNSEED_TEST_FAULT=0 -DKERNSEED_SCHEDULER=1 -DKERNSEED_SHELL=0 -c build/isr-stubs.S -o build/isr-stubs.o
+ld -nostdlib -static -z max-page-size=0x1000 --build-id=none -T boot/linker.ld build/kernel/arch/x86_64/gdt.o build/kernel/core/console.o build/kernel/core/main.o build/kernel/core/runtime.o build/kernel/core/terminal.o build/kernel/drivers/framebuffer.o build/kernel/drivers/keyboard.o build/kernel/drivers/serial.o build/kernel/interrupts/interrupts.o build/kernel/memory/memory.o build/kernel/memory/span.o build/kernel/scheduler/scheduler.o build/shell/commands/about.o build/shell/commands/clear.o build/shell/commands/echo.o build/shell/commands/help.o build/shell/commands/meminfo.o build/shell/commands/reboot.o build/shell/commands/tasks.o build/shell/commands/uptime.o build/shell/dispatch.o build/shell/parser.o build/shell/registry.o build/shell/shell.o build/kernel/arch/x86_64/counter-tasks.o build/kernel/arch/x86_64/entry.o build/kernel/arch/x86_64/gdt-load.o build/kernel/arch/x86_64/interrupt-probe.o build/kernel/arch/x86_64/isr-common.o build/isr-stubs.o -o build/kernseed.elf
+HOST_CC="cc" ./scripts/fetch-limine.sh
+limine.h: OK
+limine.c: OK
+limine-bios-hdd.h: OK
+limine-bios.sys: OK
+limine-bios-cd.bin: OK
+limine-uefi-cd.bin: OK
+BOOTX64.EFI: OK
+LICENSE: OK
+make[2]: Entering directory '/workspace/Kernseed_OS/.cache/limine'
+make[2]: 'limine' is up to date.
+make[2]: Leaving directory '/workspace/Kernseed_OS/.cache/limine'
+rm -rf build/iso-root
+mkdir -p build/iso-root/boot/limine build/iso-root/EFI/BOOT
+cp build/kernseed.elf build/iso-root/boot/
+cp boot/limine.conf .cache/limine/limine-bios.sys .cache/limine/limine-bios-cd.bin .cache/limine/limine-uefi-cd.bin build/iso-root/boot/limine/
+cp .cache/limine/BOOTX64.EFI build/iso-root/EFI/BOOT/
+cp LICENSE THIRD_PARTY_LICENSES.md build/iso-root/
+cp third_party/limine/LICENSE build/iso-root/LIMINE-LICENSE
+/workspace/kernseed-tools/bin/xorriso -as mkisofs -R -r -J -V KERNSEED \
+    -b boot/limine/limine-bios-cd.bin -no-emul-boot -boot-load-size 4 -boot-info-table \
+    --efi-boot boot/limine/limine-uefi-cd.bin -efi-boot-part --efi-boot-image \
+    --protective-msdos-label --modification-date=2026010100000000 \
+    --set_all_file_dates 2026010100000000 \
+    --gpt_disk_guid 6b65726e-7365-4564-8000-000000000001 \
+    -o build/kernseed.iso build/iso-root
+xorriso 1.5.6 : RockRidge filesystem manipulator, libburnia project.
+
+Drive current: -outdev 'stdio:build/kernseed.iso'
+Media current: stdio file, overwriteable
+Media status : is blank
+Media summary: 0 sessions, 0 data blocks, 0 data, 59.3g free
+Added to ISO image: directory '/'='/workspace/Kernseed_OS/build/iso-root'
+xorriso : UPDATE :      13 files added in 1 seconds
+xorriso : UPDATE :      13 files added in 1 seconds
+ISO image produced: 1979 sectors
+Written to medium : 1979 sectors at LBA 0
+Writing to 'stdio:build/kernseed.iso' completed successfully.
+
+.cache/limine/limine bios-install build/kernseed.iso
+Physical block size of 512 bytes.
+Installing to GPT. Logical block size of 512 bytes.
+Secondary header at LBA 0x1eeb.
+Secondary header valid.
+GPT partition NOT specified. Attempting GPT embedding.
+New maximum count of partition entries: 44.
+Stage 2 to be located at 0x1a00 and 0x3d7000.
+Reminder: Remember to copy the limine-bios.sys file in either
+          the root, /boot, /limine, or /boot/limine directories of
+          one of the partitions on the device, or boot will fail!
+Limine BIOS stages installed successfully!
+python3 tests/check_elf.py build/kernseed.elf
+PASS ELF: static x86-64, no unresolved symbols, no RWX segment
+make[1]: Leaving directory '/workspace/Kernseed_OS'
+python3 tests/phase4.py
+PASS scheduler 128
+PASS scheduler 256
+PASS scheduler 512
+PASS guard-9-run
+PASS guard-10-run
+Phase 4 evidence: /workspace/Kernseed_OS/build/phase4-results/20261106T204442Z
+make SCHEDULER=1 CONSOLE_SHELL=1 iso check
+make[1]: Entering directory '/workspace/Kernseed_OS'
+gcc -std=c11 -O2 -g3 -Wall -Wextra -Werror -ffreestanding -fno-builtin -fno-stack-protector -fno-stack-check -fno-pic -fno-pie -fno-asynchronous-unwind-tables -fno-unwind-tables -m64 -march=x86-64 -mno-red-zone -mgeneral-regs-only -mcmodel=kernel -Iinclude -Ithird_party/limine -MMD -MP -DKERNSEED_TEST_FAULT=0 -DKERNSEED_SCHEDULER=1 -DKERNSEED_SHELL=1 -c kernel/arch/x86_64/gdt.c -o build/kernel/arch/x86_64/gdt.o
+gcc -std=c11 -O2 -g3 -Wall -Wextra -Werror -ffreestanding -fno-builtin -fno-stack-protector -fno-stack-check -fno-pic -fno-pie -fno-asynchronous-unwind-tables -fno-unwind-tables -m64 -march=x86-64 -mno-red-zone -mgeneral-regs-only -mcmodel=kernel -Iinclude -Ithird_party/limine -MMD -MP -DKERNSEED_TEST_FAULT=0 -DKERNSEED_SCHEDULER=1 -DKERNSEED_SHELL=1 -c kernel/core/console.c -o build/kernel/core/console.o
+gcc -std=c11 -O2 -g3 -Wall -Wextra -Werror -ffreestanding -fno-builtin -fno-stack-protector -fno-stack-check -fno-pic -fno-pie -fno-asynchronous-unwind-tables -fno-unwind-tables -m64 -march=x86-64 -mno-red-zone -mgeneral-regs-only -mcmodel=kernel -Iinclude -Ithird_party/limine -MMD -MP -DKERNSEED_TEST_FAULT=0 -DKERNSEED_SCHEDULER=1 -DKERNSEED_SHELL=1 -c kernel/core/main.c -o build/kernel/core/main.o
+gcc -std=c11 -O2 -g3 -Wall -Wextra -Werror -ffreestanding -fno-builtin -fno-stack-protector -fno-stack-check -fno-pic -fno-pie -fno-asynchronous-unwind-tables -fno-unwind-tables -m64 -march=x86-64 -mno-red-zone -mgeneral-regs-only -mcmodel=kernel -Iinclude -Ithird_party/limine -MMD -MP -DKERNSEED_TEST_FAULT=0 -DKERNSEED_SCHEDULER=1 -DKERNSEED_SHELL=1 -c kernel/core/runtime.c -o build/kernel/core/runtime.o
+gcc -std=c11 -O2 -g3 -Wall -Wextra -Werror -ffreestanding -fno-builtin -fno-stack-protector -fno-stack-check -fno-pic -fno-pie -fno-asynchronous-unwind-tables -fno-unwind-tables -m64 -march=x86-64 -mno-red-zone -mgeneral-regs-only -mcmodel=kernel -Iinclude -Ithird_party/limine -MMD -MP -DKERNSEED_TEST_FAULT=0 -DKERNSEED_SCHEDULER=1 -DKERNSEED_SHELL=1 -c kernel/core/terminal.c -o build/kernel/core/terminal.o
+gcc -std=c11 -O2 -g3 -Wall -Wextra -Werror -ffreestanding -fno-builtin -fno-stack-protector -fno-stack-check -fno-pic -fno-pie -fno-asynchronous-unwind-tables -fno-unwind-tables -m64 -march=x86-64 -mno-red-zone -mgeneral-regs-only -mcmodel=kernel -Iinclude -Ithird_party/limine -MMD -MP -DKERNSEED_TEST_FAULT=0 -DKERNSEED_SCHEDULER=1 -DKERNSEED_SHELL=1 -c kernel/drivers/framebuffer.c -o build/kernel/drivers/framebuffer.o
+gcc -std=c11 -O2 -g3 -Wall -Wextra -Werror -ffreestanding -fno-builtin -fno-stack-protector -fno-stack-check -fno-pic -fno-pie -fno-asynchronous-unwind-tables -fno-unwind-tables -m64 -march=x86-64 -mno-red-zone -mgeneral-regs-only -mcmodel=kernel -Iinclude -Ithird_party/limine -MMD -MP -DKERNSEED_TEST_FAULT=0 -DKERNSEED_SCHEDULER=1 -DKERNSEED_SHELL=1 -c kernel/drivers/keyboard.c -o build/kernel/drivers/keyboard.o
+gcc -std=c11 -O2 -g3 -Wall -Wextra -Werror -ffreestanding -fno-builtin -fno-stack-protector -fno-stack-check -fno-pic -fno-pie -fno-asynchronous-unwind-tables -fno-unwind-tables -m64 -march=x86-64 -mno-red-zone -mgeneral-regs-only -mcmodel=kernel -Iinclude -Ithird_party/limine -MMD -MP -DKERNSEED_TEST_FAULT=0 -DKERNSEED_SCHEDULER=1 -DKERNSEED_SHELL=1 -c kernel/drivers/serial.c -o build/kernel/drivers/serial.o
+gcc -std=c11 -O2 -g3 -Wall -Wextra -Werror -ffreestanding -fno-builtin -fno-stack-protector -fno-stack-check -fno-pic -fno-pie -fno-asynchronous-unwind-tables -fno-unwind-tables -m64 -march=x86-64 -mno-red-zone -mgeneral-regs-only -mcmodel=kernel -Iinclude -Ithird_party/limine -MMD -MP -DKERNSEED_TEST_FAULT=0 -DKERNSEED_SCHEDULER=1 -DKERNSEED_SHELL=1 -c kernel/interrupts/interrupts.c -o build/kernel/interrupts/interrupts.o
+gcc -std=c11 -O2 -g3 -Wall -Wextra -Werror -ffreestanding -fno-builtin -fno-stack-protector -fno-stack-check -fno-pic -fno-pie -fno-asynchronous-unwind-tables -fno-unwind-tables -m64 -march=x86-64 -mno-red-zone -mgeneral-regs-only -mcmodel=kernel -Iinclude -Ithird_party/limine -MMD -MP -DKERNSEED_TEST_FAULT=0 -DKERNSEED_SCHEDULER=1 -DKERNSEED_SHELL=1 -c kernel/memory/memory.c -o build/kernel/memory/memory.o
+gcc -std=c11 -O2 -g3 -Wall -Wextra -Werror -ffreestanding -fno-builtin -fno-stack-protector -fno-stack-check -fno-pic -fno-pie -fno-asynchronous-unwind-tables -fno-unwind-tables -m64 -march=x86-64 -mno-red-zone -mgeneral-regs-only -mcmodel=kernel -Iinclude -Ithird_party/limine -MMD -MP -DKERNSEED_TEST_FAULT=0 -DKERNSEED_SCHEDULER=1 -DKERNSEED_SHELL=1 -c kernel/memory/span.c -o build/kernel/memory/span.o
+gcc -std=c11 -O2 -g3 -Wall -Wextra -Werror -ffreestanding -fno-builtin -fno-stack-protector -fno-stack-check -fno-pic -fno-pie -fno-asynchronous-unwind-tables -fno-unwind-tables -m64 -march=x86-64 -mno-red-zone -mgeneral-regs-only -mcmodel=kernel -Iinclude -Ithird_party/limine -MMD -MP -DKERNSEED_TEST_FAULT=0 -DKERNSEED_SCHEDULER=1 -DKERNSEED_SHELL=1 -c kernel/scheduler/scheduler.c -o build/kernel/scheduler/scheduler.o
+gcc -std=c11 -O2 -g3 -Wall -Wextra -Werror -ffreestanding -fno-builtin -fno-stack-protector -fno-stack-check -fno-pic -fno-pie -fno-asynchronous-unwind-tables -fno-unwind-tables -m64 -march=x86-64 -mno-red-zone -mgeneral-regs-only -mcmodel=kernel -Iinclude -Ithird_party/limine -MMD -MP -DKERNSEED_TEST_FAULT=0 -DKERNSEED_SCHEDULER=1 -DKERNSEED_SHELL=1 -c shell/commands/about.c -o build/shell/commands/about.o
+gcc -std=c11 -O2 -g3 -Wall -Wextra -Werror -ffreestanding -fno-builtin -fno-stack-protector -fno-stack-check -fno-pic -fno-pie -fno-asynchronous-unwind-tables -fno-unwind-tables -m64 -march=x86-64 -mno-red-zone -mgeneral-regs-only -mcmodel=kernel -Iinclude -Ithird_party/limine -MMD -MP -DKERNSEED_TEST_FAULT=0 -DKERNSEED_SCHEDULER=1 -DKERNSEED_SHELL=1 -c shell/commands/clear.c -o build/shell/commands/clear.o
+gcc -std=c11 -O2 -g3 -Wall -Wextra -Werror -ffreestanding -fno-builtin -fno-stack-protector -fno-stack-check -fno-pic -fno-pie -fno-asynchronous-unwind-tables -fno-unwind-tables -m64 -march=x86-64 -mno-red-zone -mgeneral-regs-only -mcmodel=kernel -Iinclude -Ithird_party/limine -MMD -MP -DKERNSEED_TEST_FAULT=0 -DKERNSEED_SCHEDULER=1 -DKERNSEED_SHELL=1 -c shell/commands/echo.c -o build/shell/commands/echo.o
+gcc -std=c11 -O2 -g3 -Wall -Wextra -Werror -ffreestanding -fno-builtin -fno-stack-protector -fno-stack-check -fno-pic -fno-pie -fno-asynchronous-unwind-tables -fno-unwind-tables -m64 -march=x86-64 -mno-red-zone -mgeneral-regs-only -mcmodel=kernel -Iinclude -Ithird_party/limine -MMD -MP -DKERNSEED_TEST_FAULT=0 -DKERNSEED_SCHEDULER=1 -DKERNSEED_SHELL=1 -c shell/commands/help.c -o build/shell/commands/help.o
+gcc -std=c11 -O2 -g3 -Wall -Wextra -Werror -ffreestanding -fno-builtin -fno-stack-protector -fno-stack-check -fno-pic -fno-pie -fno-asynchronous-unwind-tables -fno-unwind-tables -m64 -march=x86-64 -mno-red-zone -mgeneral-regs-only -mcmodel=kernel -Iinclude -Ithird_party/limine -MMD -MP -DKERNSEED_TEST_FAULT=0 -DKERNSEED_SCHEDULER=1 -DKERNSEED_SHELL=1 -c shell/commands/meminfo.c -o build/shell/commands/meminfo.o
+gcc -std=c11 -O2 -g3 -Wall -Wextra -Werror -ffreestanding -fno-builtin -fno-stack-protector -fno-stack-check -fno-pic -fno-pie -fno-asynchronous-unwind-tables -fno-unwind-tables -m64 -march=x86-64 -mno-red-zone -mgeneral-regs-only -mcmodel=kernel -Iinclude -Ithird_party/limine -MMD -MP -DKERNSEED_TEST_FAULT=0 -DKERNSEED_SCHEDULER=1 -DKERNSEED_SHELL=1 -c shell/commands/reboot.c -o build/shell/commands/reboot.o
+gcc -std=c11 -O2 -g3 -Wall -Wextra -Werror -ffreestanding -fno-builtin -fno-stack-protector -fno-stack-check -fno-pic -fno-pie -fno-asynchronous-unwind-tables -fno-unwind-tables -m64 -march=x86-64 -mno-red-zone -mgeneral-regs-only -mcmodel=kernel -Iinclude -Ithird_party/limine -MMD -MP -DKERNSEED_TEST_FAULT=0 -DKERNSEED_SCHEDULER=1 -DKERNSEED_SHELL=1 -c shell/commands/tasks.c -o build/shell/commands/tasks.o
+gcc -std=c11 -O2 -g3 -Wall -Wextra -Werror -ffreestanding -fno-builtin -fno-stack-protector -fno-stack-check -fno-pic -fno-pie -fno-asynchronous-unwind-tables -fno-unwind-tables -m64 -march=x86-64 -mno-red-zone -mgeneral-regs-only -mcmodel=kernel -Iinclude -Ithird_party/limine -MMD -MP -DKERNSEED_TEST_FAULT=0 -DKERNSEED_SCHEDULER=1 -DKERNSEED_SHELL=1 -c shell/commands/uptime.c -o build/shell/commands/uptime.o
+gcc -std=c11 -O2 -g3 -Wall -Wextra -Werror -ffreestanding -fno-builtin -fno-stack-protector -fno-stack-check -fno-pic -fno-pie -fno-asynchronous-unwind-tables -fno-unwind-tables -m64 -march=x86-64 -mno-red-zone -mgeneral-regs-only -mcmodel=kernel -Iinclude -Ithird_party/limine -MMD -MP -DKERNSEED_TEST_FAULT=0 -DKERNSEED_SCHEDULER=1 -DKERNSEED_SHELL=1 -c shell/dispatch.c -o build/shell/dispatch.o
+gcc -std=c11 -O2 -g3 -Wall -Wextra -Werror -ffreestanding -fno-builtin -fno-stack-protector -fno-stack-check -fno-pic -fno-pie -fno-asynchronous-unwind-tables -fno-unwind-tables -m64 -march=x86-64 -mno-red-zone -mgeneral-regs-only -mcmodel=kernel -Iinclude -Ithird_party/limine -MMD -MP -DKERNSEED_TEST_FAULT=0 -DKERNSEED_SCHEDULER=1 -DKERNSEED_SHELL=1 -c shell/parser.c -o build/shell/parser.o
+gcc -std=c11 -O2 -g3 -Wall -Wextra -Werror -ffreestanding -fno-builtin -fno-stack-protector -fno-stack-check -fno-pic -fno-pie -fno-asynchronous-unwind-tables -fno-unwind-tables -m64 -march=x86-64 -mno-red-zone -mgeneral-regs-only -mcmodel=kernel -Iinclude -Ithird_party/limine -MMD -MP -DKERNSEED_TEST_FAULT=0 -DKERNSEED_SCHEDULER=1 -DKERNSEED_SHELL=1 -c shell/registry.c -o build/shell/registry.o
+gcc -std=c11 -O2 -g3 -Wall -Wextra -Werror -ffreestanding -fno-builtin -fno-stack-protector -fno-stack-check -fno-pic -fno-pie -fno-asynchronous-unwind-tables -fno-unwind-tables -m64 -march=x86-64 -mno-red-zone -mgeneral-regs-only -mcmodel=kernel -Iinclude -Ithird_party/limine -MMD -MP -DKERNSEED_TEST_FAULT=0 -DKERNSEED_SCHEDULER=1 -DKERNSEED_SHELL=1 -c shell/shell.c -o build/shell/shell.o
+gcc -std=c11 -O2 -g3 -Wall -Wextra -Werror -ffreestanding -fno-builtin -fno-stack-protector -fno-stack-check -fno-pic -fno-pie -fno-asynchronous-unwind-tables -fno-unwind-tables -m64 -march=x86-64 -mno-red-zone -mgeneral-regs-only -mcmodel=kernel -Iinclude -Ithird_party/limine -MMD -MP -DKERNSEED_TEST_FAULT=0 -DKERNSEED_SCHEDULER=1 -DKERNSEED_SHELL=1 -c kernel/arch/x86_64/counter-tasks.S -o build/kernel/arch/x86_64/counter-tasks.o
+gcc -std=c11 -O2 -g3 -Wall -Wextra -Werror -ffreestanding -fno-builtin -fno-stack-protector -fno-stack-check -fno-pic -fno-pie -fno-asynchronous-unwind-tables -fno-unwind-tables -m64 -march=x86-64 -mno-red-zone -mgeneral-regs-only -mcmodel=kernel -Iinclude -Ithird_party/limine -MMD -MP -DKERNSEED_TEST_FAULT=0 -DKERNSEED_SCHEDULER=1 -DKERNSEED_SHELL=1 -c kernel/arch/x86_64/entry.S -o build/kernel/arch/x86_64/entry.o
+gcc -std=c11 -O2 -g3 -Wall -Wextra -Werror -ffreestanding -fno-builtin -fno-stack-protector -fno-stack-check -fno-pic -fno-pie -fno-asynchronous-unwind-tables -fno-unwind-tables -m64 -march=x86-64 -mno-red-zone -mgeneral-regs-only -mcmodel=kernel -Iinclude -Ithird_party/limine -MMD -MP -DKERNSEED_TEST_FAULT=0 -DKERNSEED_SCHEDULER=1 -DKERNSEED_SHELL=1 -c kernel/arch/x86_64/gdt-load.S -o build/kernel/arch/x86_64/gdt-load.o
+gcc -std=c11 -O2 -g3 -Wall -Wextra -Werror -ffreestanding -fno-builtin -fno-stack-protector -fno-stack-check -fno-pic -fno-pie -fno-asynchronous-unwind-tables -fno-unwind-tables -m64 -march=x86-64 -mno-red-zone -mgeneral-regs-only -mcmodel=kernel -Iinclude -Ithird_party/limine -MMD -MP -DKERNSEED_TEST_FAULT=0 -DKERNSEED_SCHEDULER=1 -DKERNSEED_SHELL=1 -c kernel/arch/x86_64/interrupt-probe.S -o build/kernel/arch/x86_64/interrupt-probe.o
+gcc -std=c11 -O2 -g3 -Wall -Wextra -Werror -ffreestanding -fno-builtin -fno-stack-protector -fno-stack-check -fno-pic -fno-pie -fno-asynchronous-unwind-tables -fno-unwind-tables -m64 -march=x86-64 -mno-red-zone -mgeneral-regs-only -mcmodel=kernel -Iinclude -Ithird_party/limine -MMD -MP -DKERNSEED_TEST_FAULT=0 -DKERNSEED_SCHEDULER=1 -DKERNSEED_SHELL=1 -c kernel/arch/x86_64/isr-common.S -o build/kernel/arch/x86_64/isr-common.o
+gcc -std=c11 -O2 -g3 -Wall -Wextra -Werror -ffreestanding -fno-builtin -fno-stack-protector -fno-stack-check -fno-pic -fno-pie -fno-asynchronous-unwind-tables -fno-unwind-tables -m64 -march=x86-64 -mno-red-zone -mgeneral-regs-only -mcmodel=kernel -Iinclude -Ithird_party/limine -MMD -MP -DKERNSEED_TEST_FAULT=0 -DKERNSEED_SCHEDULER=1 -DKERNSEED_SHELL=1 -c build/isr-stubs.S -o build/isr-stubs.o
+ld -nostdlib -static -z max-page-size=0x1000 --build-id=none -T boot/linker.ld build/kernel/arch/x86_64/gdt.o build/kernel/core/console.o build/kernel/core/main.o build/kernel/core/runtime.o build/kernel/core/terminal.o build/kernel/drivers/framebuffer.o build/kernel/drivers/keyboard.o build/kernel/drivers/serial.o build/kernel/interrupts/interrupts.o build/kernel/memory/memory.o build/kernel/memory/span.o build/kernel/scheduler/scheduler.o build/shell/commands/about.o build/shell/commands/clear.o build/shell/commands/echo.o build/shell/commands/help.o build/shell/commands/meminfo.o build/shell/commands/reboot.o build/shell/commands/tasks.o build/shell/commands/uptime.o build/shell/dispatch.o build/shell/parser.o build/shell/registry.o build/shell/shell.o build/kernel/arch/x86_64/counter-tasks.o build/kernel/arch/x86_64/entry.o build/kernel/arch/x86_64/gdt-load.o build/kernel/arch/x86_64/interrupt-probe.o build/kernel/arch/x86_64/isr-common.o build/isr-stubs.o -o build/kernseed.elf
+HOST_CC="cc" ./scripts/fetch-limine.sh
+limine.h: OK
+limine.c: OK
+limine-bios-hdd.h: OK
+limine-bios.sys: OK
+limine-bios-cd.bin: OK
+limine-uefi-cd.bin: OK
+BOOTX64.EFI: OK
+LICENSE: OK
+make[2]: Entering directory '/workspace/Kernseed_OS/.cache/limine'
+make[2]: 'limine' is up to date.
+make[2]: Leaving directory '/workspace/Kernseed_OS/.cache/limine'
+rm -rf build/iso-root
+mkdir -p build/iso-root/boot/limine build/iso-root/EFI/BOOT
+cp build/kernseed.elf build/iso-root/boot/
+cp boot/limine.conf .cache/limine/limine-bios.sys .cache/limine/limine-bios-cd.bin .cache/limine/limine-uefi-cd.bin build/iso-root/boot/limine/
+cp .cache/limine/BOOTX64.EFI build/iso-root/EFI/BOOT/
+cp LICENSE THIRD_PARTY_LICENSES.md build/iso-root/
+cp third_party/limine/LICENSE build/iso-root/LIMINE-LICENSE
+/workspace/kernseed-tools/bin/xorriso -as mkisofs -R -r -J -V KERNSEED \
+    -b boot/limine/limine-bios-cd.bin -no-emul-boot -boot-load-size 4 -boot-info-table \
+    --efi-boot boot/limine/limine-uefi-cd.bin -efi-boot-part --efi-boot-image \
+    --protective-msdos-label --modification-date=2026010100000000 \
+    --set_all_file_dates 2026010100000000 \
+    --gpt_disk_guid 6b65726e-7365-4564-8000-000000000001 \
+    -o build/kernseed.iso build/iso-root
+xorriso 1.5.6 : RockRidge filesystem manipulator, libburnia project.
+
+Drive current: -outdev 'stdio:build/kernseed.iso'
+Media current: stdio file, overwriteable
+Media status : is blank
+Media summary: 0 sessions, 0 data blocks, 0 data, 59.3g free
+Added to ISO image: directory '/'='/workspace/Kernseed_OS/build/iso-root'
+xorriso : UPDATE :      13 files added in 1 seconds
+xorriso : UPDATE :      13 files added in 1 seconds
+ISO image produced: 1978 sectors
+Written to medium : 1978 sectors at LBA 0
+Writing to 'stdio:build/kernseed.iso' completed successfully.
+
+.cache/limine/limine bios-install build/kernseed.iso
+Physical block size of 512 bytes.
+Installing to GPT. Logical block size of 512 bytes.
+Secondary header at LBA 0x1ee7.
+Secondary header valid.
+GPT partition NOT specified. Attempting GPT embedding.
+New maximum count of partition entries: 44.
+Stage 2 to be located at 0x1a00 and 0x3d6800.
+Reminder: Remember to copy the limine-bios.sys file in either
+          the root, /boot, /limine, or /boot/limine directories of
+          one of the partitions on the device, or boot will fail!
+Limine BIOS stages installed successfully!
+python3 tests/check_elf.py build/kernseed.elf
+PASS ELF: static x86-64, no unresolved symbols, no RWX segment
+make[1]: Leaving directory '/workspace/Kernseed_OS'
+python3 tests/phase5.py
+PASS shell keyboard/commands/reboot 128
+PASS shell keyboard/commands/reboot 256
+Phase 5 evidence: /workspace/Kernseed_OS/build/phase5-results/20261106T204511Z

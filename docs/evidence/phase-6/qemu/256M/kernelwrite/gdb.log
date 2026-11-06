@@ -1,0 +1,6 @@
+counter_task_a () at kernel/arch/x86_64/counter-tasks.S:68
+68	    cmpq $0,demo_stop(%rip)
+Warning: the current language does not match this frame.
+PASS user fault kernelwrite: actual vector/error and safe cleanup
+$1 = {slot = 0x4, active = 0x0, calls = 0x294, last_cs = 0x2b, last_rsp = 0xffffc00001100ff8, last_number = 0x3, exits = 0x8, faults = 0x4, vector = 0xe, error = 0x7, cr2 = 0xffffffff80000000, invalid = 0x4, preemptions = 0x4, fault_rip = 0xffffc00001000000}
+[Inferior 1 (process 1) detached]
