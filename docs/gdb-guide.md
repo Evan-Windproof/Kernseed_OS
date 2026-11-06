@@ -63,3 +63,16 @@ GDTR.limit=39，IDTR.limit=4095，TR=0x18；IDT[8].ist=1，TSS.ist[0] 是 DF 栈
 
 危险异常请使用 `make test-phase2` 自动创建的独立镜像与匹配 ELF，不要在正常构建手动
 执行 `int $8` 等错误码向量。`int` 不会模拟 CPU 的错误码压栈，也不等同于真实异常。
+
+## Phase 4 调度现场
+
+默认镜像启用抢占。启动后可用 `hbreak *scheduler_interrupt` 和 `continue` 观察真实IRQ/软件请求，
+读取 `sched_state`、`tasks`、`demo_a`、`demo_b`、`register_errors`。
+`tasks[i].context` 是该任务离开CPU时保存的帧，不应把RUNNING任务的旧context当实时寄存器。
+A/B持续运行时Idle不必获得CPU，不能期待默认模式总能命中kernel_idle_halt。
+若要观察全部任务退出后的Idle，可设置 `set variable demo_stop=1`，继续运行至回收完成。
+这还会运行显式生命周期/容量收尾测试；普通运行不自动退出。
+
+runtime_ticks统计IRQ采样时的CPU归属，不是纳秒级CPU时间；短C任务可能runtime_ticks=0，
+同时其switches/records持续增长。暂停整个vCPU时计数不会增长。
+Phase 4测试在目标栈与寄存器上做断言，原始脚本见报告证据目录。

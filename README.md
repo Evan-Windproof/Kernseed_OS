@@ -4,8 +4,8 @@
 
 Kernseed OS 使用 **C11 + 少量 x86-64 汇编**编写内核，由 **Limine** 引导，借助 **QEMU** 启动、**GDB** 调试。项目由 Codex 主导实现，发起人进行构建、运行与审查。它不是 Linux 发行版，也不依赖 Linux 用户空间；与 Orfreon、Evavind 等其他项目无关。
 
-> **当前版本：Phase 3（物理与虚拟内存管理）**
-> 已能从 ISO 启动，加载自有 GDT/TSS/IDT，处理 CPU 异常并通过 IRQ0 维护真实 tick；**尚无键盘输入、Shell、调度器或文件系统**。屏幕停留在 `BOOT READY - ENTERING IDLE LOOP` 属于预期结果，而非死机。
+> **当前版本：Phase 4（内核任务与抢占式调度）**
+> 已能从 ISO 启动，加载自有 GDT/TSS/IDT，处理 CPU 异常并通过 IRQ0 维护真实 tick；**尚无键盘输入、Shell或文件系统**。屏幕停留在 `BOOT READY - ENTERING IDLE LOOP` 属于预期结果，而非死机。
 >
 > 仅供学习与研究，不适用于生产环境；项目计划在教学目标完成后停止长期维护。
 
@@ -44,7 +44,7 @@ make -j2
 make run
 ```
 
-成功时，QEMU 内会显示 `KERNSEED OS - PHASE 3`、CPU 与 framebuffer 信息，以及 `BOOT READY - ENTERING IDLE LOOP`。**此阶段不能输入命令**。关闭 QEMU 窗口即可退出；若终端仍运行，按 `Ctrl+C`。
+成功时，QEMU 内会显示 `KERNSEED OS - PHASE 4`、CPU 与 framebuffer 信息，以及 `BOOT READY - ENTERING IDLE LOOP`。**此阶段不能输入命令**。关闭 QEMU 窗口即可退出；若终端仍运行，按 `Ctrl+C`。
 
 ## 首次安装与 WSL 2 准备
 
@@ -195,7 +195,7 @@ gdb -x scripts/debug.gdb
 启动画面示意（实际寄存器地址会因运行而变化）：
 
 ```text
-KERNSEED OS - PHASE 3
+KERNSEED OS - PHASE 4
 BOOT: LIMINE BASE REVISION 3
 BSS: ZERO CHECKED
 C RUNTIME: SELFTEST PASSED
@@ -212,7 +212,7 @@ BOOT READY - ENTERING IDLE LOOP
 ### 目前不能做什么？
 
 - **不能输入 Shell 命令**，因为还没有键盘驱动与命令解释器。
-- **没有任务调度**、文件系统、用户态进程或应用程序执行环境。
+- **已实现内核任务抢占调度，但没有用户进程隔离**、文件系统、用户态进程或应用程序执行环境。
 - 当前根页表仍由引导器准备，Phase 3 在其上提供受控虚拟内存管理；没有用户态隔离、APIC/SMP 或异常恢复机制。
 - 屏幕启动文字不是实时 tick 仪表。可在 GDB 中读取 `irq_state.ticks`；CPU 暂停时 tick 不会增长。
 
@@ -286,7 +286,7 @@ Kernseed_OS/
 - [Phase 1 开发报告](docs/reports/phase-1.md)
 - [Phase 2 开发报告](docs/reports/phase-2.md)
 
-预定学习阶段：Phase 1 引导 → Phase 2 中断与定时器 → Phase 3 内存管理 → Phase 4 内核任务调度 → Phase 5 键盘与 Shell → Phase 6 系统调用接口 → Phase 7 集成测试和教学发布。**Phase 1–3 已实现；Phase 4–7 仍是后续计划。**
+预定学习阶段：Phase 1 引导 → Phase 2 中断与定时器 → Phase 3 内存管理 → Phase 4 内核任务调度 → Phase 5 键盘与 Shell → Phase 6 系统调用接口 → Phase 7 集成测试和教学发布。**Phase 1–4 已实现；Phase 5–7 仍是后续计划。**
 
 ## 许可证与免责声明
 
@@ -305,4 +305,18 @@ Kernseed OS 的项目自有源码采用 **[PolyForm Noncommercial License 1.0.0]
 
 教学文档：[内存图](docs/memory-map.md)、[PMM](docs/physical-memory.md)、
 [VMM](docs/virtual-memory.md)、[页表与故障](docs/page-tables.md)、[测试报告](docs/phase3-test-report.md)。
-Phase 3不包含调度器、键盘、Shell或系统调用。
+Phase 3 历史交付不含调度器；Phase 4 增加内核任务，仍无键盘、Shell或系统调用。
+
+## Phase 4 抢占式内核任务
+
+默认镜像启用真正的IRQ0抢占，每任务5 tick时间片，独立16 KiB NX栈与上下guard页。
+A/B无需yield持续增加真实计数，C每10 tick记录统计；退出由其他栈延迟回收。
+通过GDB读取 `tasks`、`sched_state`、`demo_a`、`demo_b`、`register_errors`；不并发刷新屏幕。
+普通运行持续演示；测试可设置demo_stop触发受控退出、复用与空队列验证。
+
+`make test`先用SCHEDULER=0完整执行旧阶段夹具，再恢复默认SCHEDULER=1运行抢占测试；
+结束保留默认调度镜像。只测调度可运行 `make test-scheduler`。
+任务下/上guard故障使用独立 `TEST_FAULT=9/10` 镜像。当前不保存FPU/SIMD状态，不提供用户进程或SMP。
+
+[任务管理](docs/task-management.md) · [上下文切换](docs/context-switching.md) ·
+[调度原理](docs/scheduler.md) · [Phase 4 测试报告](docs/phase4-test-report.md)

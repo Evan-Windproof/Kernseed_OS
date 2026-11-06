@@ -16,6 +16,9 @@ _start:
 .global kernel_idle
 .type kernel_idle, @function
 kernel_idle:
+    sub $8, %rsp
+    call scheduler_start
+    add $8, %rsp
     sti                         /* Called only after GDT/IDT/PIC/PIT are ready. */
 .global kernel_idle_halt
 kernel_idle_halt:

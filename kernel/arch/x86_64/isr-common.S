@@ -25,7 +25,9 @@ isr_common:
     mov %rsp, %rbx               /* C preserves RBX; original RBX is on stack. */
     and $-16, %rsp              /* SysV: aligned BEFORE call. */
     call interrupt_dispatch
-    mov %rbx, %rsp
+    mov %rbx, %rdi
+    call scheduler_interrupt
+    mov %rax, %rsp
     pop %r15
     pop %r14
     pop %r13

@@ -183,7 +183,7 @@ bool memory_selftest(void) {
 
 /* Isolated fault probes are absent from normal builds. */
 void memory_fault_test(void) {
-#if KERNSEED_TEST_FAULT >= 6
+#if KERNSEED_TEST_FAULT >= 6 && KERNSEED_TEST_FAULT <= 8
     uint64_t p=pmm_alloc(1);
     if(!p||!vmm_map(VM_BASE,p,VM_NX)) __asm__ volatile("ud2");
 #if KERNSEED_TEST_FAULT == 6

@@ -1,0 +1,19 @@
+HOST_CC="cc" ./scripts/fetch-limine.sh
+limine.h: OK
+limine.c: OK
+limine-bios-hdd.h: OK
+limine-bios.sys: OK
+limine-bios-cd.bin: OK
+limine-uefi-cd.bin: OK
+BOOTX64.EFI: OK
+LICENSE: OK
+make[1]: Entering directory '/workspace/Kernseed_OS/.cache/limine'
+make[1]: 'limine' is up to date.
+make[1]: Leaving directory '/workspace/Kernseed_OS/.cache/limine'
+python3 tests/phase4.py
+PASS scheduler 128
+PASS scheduler 256
+PASS scheduler 512
+PASS guard-9-run
+PASS guard-10-run
+Phase 4 evidence: /workspace/Kernseed_OS/build/phase4-results/20261106T105508Z
