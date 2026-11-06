@@ -1,0 +1,22 @@
+[
+  {
+    "name": "cold-64M",
+    "result": "passed"
+  },
+  {
+    "name": "cold-128M",
+    "result": "passed"
+  },
+  {
+    "name": "cold-256M",
+    "result": "passed"
+  },
+  {
+    "name": "gdb-128M",
+    "result": "passed"
+  },
+  {
+    "name": "missing-framebuffer",
+    "result": "passed"
+  }
+]

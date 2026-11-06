@@ -1,6 +1,6 @@
 # 宏内核架构与开发计划
 
-## 当前实现（Phase 1）
+## 当前实现（Phase 1 + Phase 2）
 
 ```mermaid
 flowchart TD
@@ -11,15 +11,19 @@ flowchart TD
     Main --> Serial[16550 COM1]
     Main --> FB[Limine framebuffer + 自有字体]
     Main --> CPU[读取 CR0/CR3/CR4/EFER]
-    Runtime --> Idle[关闭中断的 HLT 循环]
-    CPU --> Idle
+    Runtime --> Tables[GDT / TSS / IDT]
+    CPU --> Tables
+    Tables --> Probe[软件 INT 寄存器恢复自检]
+    Probe --> Timer[PIC 重映射 / PIT / 只放行 IRQ0]
+    Timer --> Idle[STI + HLT / IRQ0 后 IRETQ 返回]
+    Tables --> Exception[异常诊断 / DF 独立 IST / 受控停机]
 ```
 
 所有当前代码运行于 CPL0，共享 Limine 建立的地址空间。`console_write` 同时调用串口和
 framebuffer，早期 framebuffer 未初始化时只输出串口。`runtime.c` 不依赖其他内核模块。
 驱动不调用宿主系统服务；宿主进程只负责构建、模拟与检查。
 
-## 后续依赖（均未实现）
+## 阶段依赖（1–2 已实现，3–7 尚未实现）
 
 | 阶段 | 前置依赖 | 预期交付与必须验收 |
 |---|---|---|
@@ -37,7 +41,7 @@ framebuffer，早期 framebuffer 未初始化时只输出串口。`runtime.c` �
 ## 约束
 
 - 单核 x86-64、传统宏内核；不采用微内核或 Exokernel。
-- 中断与调度前先定义共享状态保护；Phase 1 无并发输出支持。
+- 中断与调度前先定义共享状态保护；当前 IRQ0 不打印、不分配、不获取锁；控制台不是通用并发输出接口。
 - 只在硬件入口、寄存器操作和上下文切换处使用必要汇编。
 - 未初始化内核 IDT 前不能 `sti`。不能回收 Limine 所用内存后继续依赖它的页表或响应。
 - 当前不是安全边界完善的系统，不用于生产部署。

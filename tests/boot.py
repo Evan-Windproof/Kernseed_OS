@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: PolyForm-Noncommercial-1.0.0
 """Real QEMU/TCG boots + QMP display capture + GDB CPU/memory inspection.
 
-Only Phase 1 is tested here. This is not an interrupt, MMU allocator, task,
+Phase 1 behavior is regressed here. This is not an IRQ, MMU allocator, task,
 keyboard or shell test. Every subprocess status and timeout is significant.
 """
 import json
@@ -16,7 +16,8 @@ import traceback
 ROOT = Path(__file__).resolve().parents[1]
 os.chdir(ROOT)
 OUT = ROOT / "build" / "test-results" / time.strftime("%Y%m%dT%H%M%SZ", time.gmtime())
-OUT.mkdir(parents=True, exist_ok=False)
+if __name__ == "__main__":
+    OUT.mkdir(parents=True, exist_ok=False)
 
 class QMP:
     def __init__(self, path):
@@ -173,7 +174,14 @@ def boot(name, memory, debug=False, no_display=False):
                     time.sleep(2)  # Verify continued halt, rather than momentary output.
                     assert process.poll() is None
                     assert qmp.command("query-status")["status"] == "running"
-                    registers = qmp.command("human-monitor-command", {"command-line": "info registers"})
+                    registers = ""
+                    def idle_seen():
+                        nonlocal registers
+                        registers = qmp.command("human-monitor-command", {"command-line": "info registers"})
+                        return "HLT=1" in registers
+                    # Phase 2 IRQs periodically wake HLT. Allow a snapshot in
+                    # the ISR, but require the CPU to return to idle promptly.
+                    wait_for(idle_seen, process, "return to HLT idle", seconds=2)
                     (directory / "registers.log").write_text(registers)
                     assert "HLT=1" in registers, "CPU did not settle into HLT"
                     qmp.command("screendump", {"filename": str(directory / "screen.ppm")})
@@ -193,19 +201,23 @@ def boot(name, memory, debug=False, no_display=False):
                         process.wait()
     print(f"PASS {name}", flush=True)
 
-results = []
-try:
-    for name, memory, debug, no_display in [
-        ("cold-64M", 64, False, False), ("cold-128M", 128, False, False),
-        ("cold-256M", 256, False, False), ("gdb-128M", 128, True, False),
-        ("missing-framebuffer", 128, False, True),
-    ]:
-        boot(name, memory, debug, no_display)
-        results.append({"name": name, "result": "passed"})
-except Exception:
-    (OUT / "failure.log").write_text(traceback.format_exc())
-    results.append({"name": name, "result": "failed"})
-    raise
-finally:
-    (OUT / "results.json").write_text(json.dumps(results, indent=2) + "\n")
-    print(f"Evidence: {OUT.relative_to(ROOT)}", flush=True)
+def main():
+    results = []
+    try:
+        for name, memory, debug, no_display in [
+            ("cold-64M", 64, False, False), ("cold-128M", 128, False, False),
+            ("cold-256M", 256, False, False), ("gdb-128M", 128, True, False),
+            ("missing-framebuffer", 128, False, True),
+        ]:
+            boot(name, memory, debug, no_display)
+            results.append({"name": name, "result": "passed"})
+    except Exception:
+        (OUT / "failure.log").write_text(traceback.format_exc())
+        results.append({"name": name, "result": "failed"})
+        raise
+    finally:
+        (OUT / "results.json").write_text(json.dumps(results, indent=2) + "\n")
+        print(f"Evidence: {OUT.relative_to(ROOT)}", flush=True)
+
+if __name__ == "__main__":
+    main()

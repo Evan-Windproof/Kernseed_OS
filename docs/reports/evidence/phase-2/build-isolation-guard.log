@@ -1,0 +1,2 @@
+exit_status=2
+Makefile:14: *** Fault injection requires a separate BUILD=build/fault-N directory.  Stop.
