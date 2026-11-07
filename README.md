@@ -1,5 +1,7 @@
 # Kernseed OS
 
+Status: Completed — No active development or regular maintenance planned.
+
 [English](README.md) | [简体中文](README.zh-CN.md)
 
 An educational x86-64 monolithic operating system implemented primarily in freestanding C and assembly, led by OpenAI Codex with founder review and acceptance. For learners with basic C and architecture knowledge; not a Linux distribution or production OS.
