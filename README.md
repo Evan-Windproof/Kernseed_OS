@@ -51,3 +51,13 @@ Phases1–7 are complete. The founder reports a published release and basic QEMU
 ## License
 
 Source-available under [PolyForm Noncommercial1.0.0](LICENSE). Commercial use is restricted; this is not OSI Approved Open Source. Third-party components retain their licenses: [notices](THIRD_PARTY_LICENSES.md). Educational/experimental use only; do not use for production or important data.
+
+### Minimum RAM Experiment
+
+Kernseed OS was tested under QEMU with a single virtual CPU and TCG acceleration.
+
+The lowest tested configuration that successfully booted into the interactive shell and executed an embedded Ring 3 userspace application was **6 MiB RAM**.
+
+Configurations with 5 MiB and 4 MiB failed during Limine's executable loading process with a `High memory allocator: Out of memory` error.
+
+These results apply to the tested Phase 7 build and QEMU configuration. They do not establish a universal minimum memory requirement or guarantee long-term stability under low-memory conditions.
