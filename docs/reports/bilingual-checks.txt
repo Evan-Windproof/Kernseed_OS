@@ -1,0 +1,11 @@
+PASS bilingual chapter filename parity (19 each)
+PASS relative file links in both README and new language trees
+PASS Makefile target names
+PASS Shell hello example freestanding compilation with warnings as errors
+PASS documentation-only tracked changes; kernel/apps/Makefile/licenses unchanged
+PASS make iso check test-host
+QEMU Shell result: see accompanying shell-validation.log
+Release query: Forbidden, no exact version independently verified
+VMware: founder report only; not executed here
+PASS QEMU real keyboard/Shell/reboot at128/256MiB
+PASS final relative links and unchanged kernel/apps/build/licenses
