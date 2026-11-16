@@ -1,5 +1,5 @@
 #!/bin/sh
-# SPDX-License-Identifier: PolyForm-Noncommercial-1.0.0
+# SPDX-License-Identifier: GPL-3.0-or-later
 set -eu
 cd "$(dirname "$0")/.."
 # Keep existing test evidence and normal artifacts. Each iteration starts from

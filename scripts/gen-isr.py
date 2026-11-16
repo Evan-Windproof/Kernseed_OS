@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# SPDX-License-Identifier: PolyForm-Noncommercial-1.0.0
+# SPDX-License-Identifier: GPL-3.0-or-later
 """Generate mechanical vector stubs, not C handlers. Intel/AMD error-code set.
 21=#CP, 29=#VC and 30=#SX matter on CPUs exposing those features too.
 Never use software INT to test an error-code exception: INT pushes no error.

@@ -1,4 +1,4 @@
-/* SPDX-License-Identifier: PolyForm-Noncommercial-1.0.0 */
+/* SPDX-License-Identifier: GPL-3.0-or-later */
 #include "abi.h"
 void _start(void){
     unsigned long t=call(1,0,0);

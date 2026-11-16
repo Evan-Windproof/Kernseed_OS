@@ -48,4 +48,8 @@ Phase1–7已完成。发起人报告正式Release已发布并通过QEMU/VMware�
 
 ## License
 
-自有代码采用[PolyForm Noncommercial1.0.0](LICENSE)，属于source-available，商业使用受限，不是OSI Approved Open Source。第三方保留原许可，见[声明](THIRD_PARTY_LICENSES.md)。仅供教学实验，不用于生产或重要数据。
+项目自有代码采用 [GNU GPL 第 3 版或任何后续版本](LICENSE)（`GPL-3.0-or-later`）。允许商业与非商业使用，但必须遵守 GPL。第三方组件保留原许可证，见[声明](THIRD_PARTY_LICENSES.md)。
+
+本次变更不撤销历史 Release 已授予的许可；历史版本继续适用其原有许可条款。HoofTTY 是基于 Kernseed OS 的派生项目。迁移范围和来源核查见[许可证迁移审查](docs/license-migration.md)。
+
+本项目为教学实验软件，不适用于生产环境或重要数据。

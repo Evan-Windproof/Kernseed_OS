@@ -1,4 +1,4 @@
-/* SPDX-License-Identifier: PolyForm-Noncommercial-1.0.0 */
+/* SPDX-License-Identifier: GPL-3.0-or-later */
 #ifndef KERNSEED_RUNTIME_H
 #define KERNSEED_RUNTIME_H
 #include <stddef.h>

@@ -1,4 +1,4 @@
-/* SPDX-License-Identifier: PolyForm-Noncommercial-1.0.0 */
+/* SPDX-License-Identifier: GPL-3.0-or-later */
 #include <kernseed/shell.h>
 #include <kernseed/terminal.h>
 #include <kernseed/api.h>

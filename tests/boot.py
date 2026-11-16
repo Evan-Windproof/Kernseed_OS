@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# SPDX-License-Identifier: PolyForm-Noncommercial-1.0.0
+# SPDX-License-Identifier: GPL-3.0-or-later
 """Real QEMU/TCG boots + QMP display capture + GDB CPU/memory inspection.
 
 Phase 1 behavior is regressed here. This is not an IRQ, MMU allocator, task,

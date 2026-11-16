@@ -1,7 +1,9 @@
 # Third-party notices
 
-Kernseed 自有源码使用 [PolyForm Noncommercial 1.0.0](LICENSE)。以下组件保留原许可；
-项目不是 OSI Approved Open Source。工具只用于构建或测试，不链接进内核。
+Kernseed 项目自有源码采用 [GNU GPL 第 3 版或任何后续版本](LICENSE)
+（`GPL-3.0-or-later`），允许商业与非商业使用，但必须遵守 GPL。
+以下第三方组件保留各自原许可证，不因本次迁移而重新许可。
+工具只用于构建或测试，不链接进内核。
 
 ## Limine bootloader
 
@@ -11,16 +13,23 @@ Kernseed 自有源码使用 [PolyForm Noncommercial 1.0.0](LICENSE)。以下组�
   [third_party/limine/LICENSE](third_party/limine/LICENSE)。
 - `limine.h`：BSD Zero Clause，完整通知保留在该头文件开头。
 - 镜像带有 `LIMINE-LICENSE`；不修改第三方二进制。
-- 许可允许非商业项目使用和再分发；再分发仍须保留原通知。
+- BSD 许可允许商业和非商业使用与再分发；再分发仍须保留适用的原通知。
 - 构建前核对固定 Git 提交与 `third_party/limine/SHA256SUMS`。
   哈希记录从 HTTPS 官方仓库获取的文件身份，不代表独立代码审计或上游签名。
 
-## PolyForm license text
+## Project license text and historical licensing
 
-`LICENSE` 原样复制自 PolyForm 官方仓库：
-https://github.com/polyformproject/polyform-licenses/blob/76a278c402bc43b8d2b561da140b0f3e17263015/PolyForm-Noncommercial-1.0.0.md
+`LICENSE` 是完整、未经修改的 GNU GPLv3 正式文本，取自 GNU GCC 的官方 GitHub 镜像：
+https://github.com/gcc-mirror/gcc/blob/5115c7e447fc07457443df874bf57840e8316d5f/COPYING3
 
-正式页面：https://polyformproject.org/licenses/noncommercial/1.0.0/
+GNU 正式页面：https://www.gnu.org/licenses/gpl-3.0.html
+
+项目授权为 `GPL-3.0-or-later`；“或任何后续版本”的授权见 README 和各自有源文件的 SPDX 标识，
+不通过修改 GPL 正文表达。该正文属于 Free Software Foundation，保留其原有版权与复制声明。
+
+历史版本使用 PolyForm Noncommercial 1.0.0；本次迁移不撤销历史 Release 的原有许可。
+历史提交中的原始 `LICENSE` 和阶段报告保留，来源记录见[迁移审查](docs/license-migration.md)。
+HoofTTY 是基于 Kernseed OS 的派生项目；本次提交仅处理 Kernseed OS。
 
 ## Development tools (not included in the boot image)
 

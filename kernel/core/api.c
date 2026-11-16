@@ -1,4 +1,4 @@
-/* SPDX-License-Identifier: PolyForm-Noncommercial-1.0.0 */
+/* SPDX-License-Identifier: GPL-3.0-or-later */
 #include <kernseed/api.h>
 #include <kernseed/terminal.h>
 static uint64_t lock(void){uint64_t f;__asm__ volatile("pushfq; popq %0; cli":"=r"(f)::"memory");return f;}

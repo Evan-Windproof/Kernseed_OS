@@ -1,4 +1,4 @@
-/* SPDX-License-Identifier: PolyForm-Noncommercial-1.0.0 */
+/* SPDX-License-Identifier: GPL-3.0-or-later */
 #ifndef KERNSEED_TERMINAL_H
 #define KERNSEED_TERMINAL_H
 #include <stdint.h>

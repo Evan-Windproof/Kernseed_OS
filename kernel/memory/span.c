@@ -1,4 +1,4 @@
-/* SPDX-License-Identifier: PolyForm-Noncommercial-1.0.0 */
+/* SPDX-License-Identifier: GPL-3.0-or-later */
 #include <kernseed/memory.h>
 bool memory_span(uint64_t base,uint64_t length,bool reserved,uint64_t *first,uint64_t *last) {
     if(!first||!last||length>UINT64_MAX-base)return false;

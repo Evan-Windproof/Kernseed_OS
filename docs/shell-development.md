@@ -33,7 +33,7 @@ Makefile自动发现shell/commands/*.c，不需要修改中央命令清单、解
 创建 `shell/commands/hello.c`：
 
 ```c
-/* SPDX-License-Identifier: PolyForm-Noncommercial-1.0.0 */
+/* SPDX-License-Identifier: GPL-3.0-or-later */
 #include <kernseed/shell.h>
 #include <kernseed/terminal.h>
 

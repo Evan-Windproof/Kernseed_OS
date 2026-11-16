@@ -1,5 +1,5 @@
 #!/bin/sh
-# SPDX-License-Identifier: PolyForm-Noncommercial-1.0.0
+# SPDX-License-Identifier: GPL-3.0-or-later
 set -eu
 if [ "$(id -u)" != 0 ]; then
     echo 'Run on Debian/Ubuntu: sudo sh scripts/setup-host.sh' >&2

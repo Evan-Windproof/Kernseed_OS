@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# SPDX-License-Identifier: PolyForm-Noncommercial-1.0.0
+# SPDX-License-Identifier: GPL-3.0-or-later
 """Real CPU faults in separate images, descriptor inspection and IRQ0 progress.
 Fault images deliberately halt; a successful process start or text alone cannot pass.
 """

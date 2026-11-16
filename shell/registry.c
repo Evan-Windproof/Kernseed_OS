@@ -1,4 +1,4 @@
-/* SPDX-License-Identifier: PolyForm-Noncommercial-1.0.0 */
+/* SPDX-License-Identifier: GPL-3.0-or-later */
 #include <kernseed/shell.h>
 int shell_equal(const char *a,const char *b){while(*a&&*a==*b){a++;b++;}return *a==*b;}
 const struct command *command_find(const char *name){

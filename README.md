@@ -50,7 +50,11 @@ Phases1–7 are complete. The founder reports a published release and basic QEMU
 
 ## License
 
-Source-available under [PolyForm Noncommercial1.0.0](LICENSE). Commercial use is restricted; this is not OSI Approved Open Source. Third-party components retain their licenses: [notices](THIRD_PARTY_LICENSES.md). Educational/experimental use only; do not use for production or important data.
+Project-owned code is licensed under [GNU GPL version 3 or any later version](LICENSE) (`GPL-3.0-or-later`). Commercial and noncommercial use are permitted subject to the GPL. Third-party components retain their original licenses: [notices](THIRD_PARTY_LICENSES.md).
+
+This change does not revoke the licenses granted for historical releases; those releases remain available under their original terms. HoofTTY is a derivative project based on Kernseed OS. See the [license migration review](docs/license-migration.md) for scope and provenance.
+
+Educational/experimental software; not suitable for production or important data.
 
 ### Minimum RAM Experiment
 

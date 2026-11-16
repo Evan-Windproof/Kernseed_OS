@@ -1,4 +1,4 @@
-/* SPDX-License-Identifier: PolyForm-Noncommercial-1.0.0 */
+/* SPDX-License-Identifier: GPL-3.0-or-later */
 #ifndef KERNSEED_SHELL_H
 #define KERNSEED_SHELL_H
 #include <stddef.h>

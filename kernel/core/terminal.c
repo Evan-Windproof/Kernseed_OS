@@ -1,4 +1,4 @@
-/* SPDX-License-Identifier: PolyForm-Noncommercial-1.0.0 */
+/* SPDX-License-Identifier: GPL-3.0-or-later */
 #include <kernseed/terminal.h>
 #include <kernseed/console.h>
 /* One shell task owns interactive display. Never called by keyboard IRQ. */

@@ -16,4 +16,4 @@
 - 没有生产环境安全性、实时性能或长期维护保证；此次有限测试不是全面安全审计。
 - 云端实测 Debian/QEMU TCG；WSL 2 Phase1–6 启动是发起人报告，本次没有在 WSL/VMware/KVM/真实硬件执行 Phase7。UEFI 仅覆盖报告指定的 OVMF、无 Secure Boot；不泛化到所有固件。
 
-许可证是 PolyForm Noncommercial 1.0.0（source-available，非 OSI Approved）。第三方组件保留原许可。
+项目自有代码采用 GPL-3.0-or-later，允许商业和非商业使用，但必须遵守 GPL。第三方组件保留原许可证；历史 Release 的原有许可不因本次迁移而撤销。

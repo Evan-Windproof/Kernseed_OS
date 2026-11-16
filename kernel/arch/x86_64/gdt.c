@@ -1,4 +1,4 @@
-/* SPDX-License-Identifier: PolyForm-Noncommercial-1.0.0 */
+/* SPDX-License-Identifier: GPL-3.0-or-later */
 #include <kernseed/interrupts.h>
 
 uint64_t gdt[5+2*KERNSEED_USERMODE] __attribute__((aligned(16)));

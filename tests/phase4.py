@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# SPDX-License-Identifier: PolyForm-Noncommercial-1.0.0
+# SPDX-License-Identifier: GPL-3.0-or-later
 import json,os,subprocess,tempfile,time,traceback
 from pathlib import Path
 from boot import QMP,wait_for,ROOT

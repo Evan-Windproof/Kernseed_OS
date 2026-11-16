@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# SPDX-License-Identifier: PolyForm-Noncommercial-1.0.0
+# SPDX-License-Identifier: GPL-3.0-or-later
 """Final BIOS/optional OVMF cold boots and existing real Ring3 integration tests.
 Measurements use host monotonic time, include emulation/polling overhead, and
 are not isolated kernel operation latencies. No firmware is bundled here.

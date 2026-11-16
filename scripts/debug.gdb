@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
 set pagination off
 set disassembly-flavor intel
 file build/kernseed.elf

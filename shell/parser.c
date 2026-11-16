@@ -1,4 +1,4 @@
-/* SPDX-License-Identifier: PolyForm-Noncommercial-1.0.0 */
+/* SPDX-License-Identifier: GPL-3.0-or-later */
 #include <kernseed/shell.h>
 /* In-place bounded tokenization: whitespace, single/double quotes, backslash.
  * Return -1 for too many arguments, -2 for unterminated quote/escape. */
